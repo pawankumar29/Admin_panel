@@ -1,0 +1,323 @@
+{% extends "./layout.html" %} {% block css %}
+<link href="{{getVersionedPath('/stylesheets/bootstrap-fileinput.css')}}" rel="stylesheet" type="text/css" />
+<style>
+    .upload_pic {
+        display: inline !important;
+    }
+
+    .email_div {
+        float: right;
+
+    }
+
+    .email_color {
+        color: #578ede;
+    }
+
+    .error_getEmail {
+        color: #FF0000;
+    }
+
+    .error_getOtp {
+        color: #FF0000;
+    }
+
+</style>
+{% endblock %} {% block content %}
+<div class="page-content">
+    <div class="row margin-top-12">
+        <div class="col-md-12">
+            {% include "./flashMessage_Success.html" %}
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-pencil"></i>My Profile
+                    </div>
+                </div>
+
+                <div class="portlet-body">
+                    <!-- Begin Form -->
+                    <form class="profile-form" action="/dashboard/profile" method="post" style="width:50%">
+                        <input type="text" id="remove_image" value="0" name="remove_image" hidden>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div>
+                                    {% include "./validationError.html" %}
+                                </div>
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            <b>First Name</b>
+                                        </label>
+                                        <span class="star">*</span>
+                                        <input class="form-control placeholder-no-fix" type="text" maxlength="20" value="{{user.firstName}}" name="firstName" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            <b>Last Name</b>
+                                        </label>
+                                        <span class="star">*</span>
+                                        <input class="form-control placeholder-no-fix" type="text" maxlength="20" value="{{user.lastName}}" name="lastName" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            <b>E-Mail</b>
+                                        </label>
+                                        <div placeholder="abc@xyz.com" class="form-control form-control-static" maxlength="50" name="email" autocomplete="off" value="{{user.email}}"
+                                             disabled>{{user.email}}
+                                        </div>
+                                        <label id="sub_error_email" class="error"></label>
+                                        <a class="email_color pull-right email_div" id="change_get_email" >Change E-Mail</a>
+                                    </div>
+
+                                    <div class="form-group ">
+                                        <label for="exampleInputFile1">
+                                            <b>Profile Image</b>
+                                        </label>
+                                        <div id="uploaded_image" class="load">
+                                            <img class="img-circle" id="preview_image" style="height: 80px;width:80px" alt="no-image" src="{{user.profile_pic}}" onerror="this.src = '{{global.image}}'">
+                                            <div class="image_remove">
+                                                <a class="clear_image" href="javascript:void(0);">
+                                                    <i style="color:red" class="fa fa-remove"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div id="uploadFile_div" class="">
+                                            <input id="pic" class="form-group upload_pic" type="file" style="overflow: hidden">
+                                            <input class="form-group " type="hidden" name="profile_pic" id="hidden_url" value="{{user.profile_pic}}">
+                                            <input type="hidden" id="saved_image_url" value="{{user.profile_pic}}">
+                                            <input type="hidden" id="deleted_image_url" value="">
+                                            <label id="image_url-error" class="error" style="float: left;"></label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-actions ">
+                                    <button type="submit" id="register-submit-btn" class="btn btn-success">Save Changes</button>
+                                    <a id="register-back-btn" href="/dashboard" class="btn btn-default">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                    <!-- END Form -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Modal for email verification -->
+<div class="modal fade" id="email_verify"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog color-dialog">
+        <form id="getEmail-form" role="form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Please enter the new e-mail.</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="get_email" placeholder="Enter your new e-mail" autocomplete="off" maxlength="50" class="form-control"
+                           name="email" value="" />
+                    <br>
+                    <label id="sub_error_getEmail" class="error_getEmail"></label>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="email_verify_btn" type="button" class="btn green default confirm" data-toggle="modal">Next</button>
+                    <button type="button" class="btn black" data-dismiss="modal">Cancel</button>
+
+                </div>
+            </div>
+        </form>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- Modal for email verification ends here-->
+
+
+<!-- Modal for OTP sent -->
+<div class="modal fade" id="otp_verify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog color-dialog">
+        <form id="getOtp-form" role="form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">We have just sent you an OTP on your old e-mail,
+                        <br> Please enter the OTP in below text box.</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="get_otp" placeholder="Enter OTP" autocomplete="off" maxlength="8" class="form-control" name="otp"
+                           value="" />
+                    <br>
+                    <label id="sub_error_getOtp" class="error_getOtp"></label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="otp_send_btn" class="btn green default confirm" data-toggle="modal">Submit</button>
+                    <button type="button" id="resend_otp_btn" class="btn black" data-toggle="modal">Resend OTP</button>
+                </div>
+            </div>
+        </form>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- Modal for OTP sent ends here-->
+
+<!-- Modal for link sent to email -->
+<div class="modal fade" id="email_link" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog color-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">We have just sent you a verification link on your updated email,
+                    <br> please verify your email.</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn green default confirm" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<!-- Modal for link sent to email ends here-->
+{% endblock %} {% block js %}
+<script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+<script src="{{getVersionedPath('/javascripts/firebase_credentials.js')}}" type="text/javascript"></script>
+<script src="{{getVersionedPath('/javascripts/firebase_login.js')}}"></script>
+<script src="{{getVersionedPath('/javascripts/developer.js')}}"></script>
+<script src="{{getVersionedPath('/javascripts/bootbox.min.js')}}" type="text/javascript"></script>
+<script src="{{getVersionedPath('/javascripts/modals.js')}}" type="text/javascript"></script>
+<script src="{{getVersionedPath('/javascripts/bootstrap-fileinput.js')}}" type="text/javascript"></script>
+<script>
+$(document).ready(function () {
+
+
+    //let path = "{{}}"
+    //       console.log();
+    firebase_login("vybe.debut@gmail.com", 'security@01');
+    var default_image = '{{global.image}}';
+    if ($("#preview_image").attr("src") === default_image) {
+        $('.image_remove').css("display", "none");
+    }
+
+
+    $(document).on("click ", "#register-submit-btn", function () {
+
+        if ($('.profile-form').valid()) {
+            var deleted_images_url = $("#deleted_image_url").val();
+            if (deleted_images_url) {
+                // Create a reference to the file to delete
+                var desertRef = firebase.storage().refFromURL(deleted_images_url);
+
+                // Delete the file
+                desertRef.delete().then(function () {
+                    // File deleted successfully
+                }).catch(function (error) {
+                    // Uh-oh, an error occurred!
+                });
+            }
+            $('.profile-form').submit();
+        }
+    });
+
+    $(document).on("click ", ".clear_image", function () {
+
+        var saved_image = $("#saved_image_url").val();
+        var previous_images_url = $("#hidden_url").val();
+        if (previous_images_url && previous_images_url !== default_image && previous_images_url !== saved_image) {
+            // Create a reference to the file to delete
+            var desertRef = firebase.storage().refFromURL(previous_images_url);
+
+            // Delete the file
+            desertRef.delete().then(function () {
+                // File deleted successfully
+            }).catch(function (error) {
+                // Uh-oh, an error occurred!
+            });
+        } else if (previous_images_url === saved_image) {
+            $("#deleted_image_url").val(saved_image);
+        }
+
+        $("#register-submit-btn").removeAttr('disabled');
+        $('.upload_pic').val("");
+        $('#hidden_url').val("");
+        $('.image_remove').css("display", "none");
+        $("#preview_image").attr("src", default_image);
+        if ($("#preview_image").attr("src") === default_image) {
+            $('.image_remove').css("display", "none");
+        }
+    });
+
+    $(document).on("change ", ".upload_pic", function () {
+        if ($("#preview_image").attr("src") === default_image) {
+            $('.image_remove').css("display", "none");
+        }
+        $("#image_url-error").text("");
+
+        var file = $(this)[0].files[0];
+        if (file.type !== 'image/png' && file.type !== 'image/jpeg' && file.type !== 'image/jpg') {
+            $("#image_url-error").text("Invalid file. Please browse png or jpg file.");
+            return false;
+        }
+
+        $("#register-submit-btn ").attr('disabled', 'disabled');
+        addLoader(".load");
+
+        //uplaod to firebase
+        var storageRef = firebase.storage().ref();
+
+        // Create file metadata including the content type
+        var metadata = {
+            contentType: 'image/jpeg',
+        };
+
+        var type = file.type;
+        type = type.split("/");
+
+        var uploadTask = storageRef.child('profileImages/image-' + Date.now() + "." + type[1]);
+        var res_upload = uploadTask.put(file);
+
+        res_upload.on('state_changed', function (snapshot) {
+        }, function (error) {
+            console.log(error);
+            switch (error.code) {
+                case 'storage/unauthorized':
+                    // User doesn't have permission to access the object
+                    alert("You doesn't have permission to access");
+                    break;
+                case 'storage/canceled':
+                    // User canceled the upload
+                    alert("You canceled the upload");
+                    break;
+                case 'storage/unknown':
+                    $("#image_url-error ").text("Unknown error occurred ");
+                    // Unknown error occurred, inspect error.serverResponse
+                    break;
+            }
+        }, function () {
+            // Upload completed successfully, now we can get the download URL
+            $("#preview_image").attr("src", res_upload.snapshot.downloadURL);
+            $("#hidden_url").val(res_upload.snapshot.downloadURL);
+            $("#register-submit-btn ").removeAttr('disabled');
+            $('.image_remove').css("display", "inline-block");
+
+        });
+    });
+    $("img").load(function () {
+        removeLoader(".load");
+    });
+});
+$('input#get_email').keypress(function (e) {
+    if (e.which == 13) {
+        e.preventDefault();
+        $('#email_verify_btn').trigger("click");
+    }
+});
+</script> {% endblock %}

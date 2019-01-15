@@ -1,0 +1,181 @@
+{% extends "../layout.html" %} {% block content %}
+<div class="page-content">
+    <div class="row margin-top-12">
+        <!-- Begin Form -->
+        <div class="col-md-12">
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="glyphicon glyphicon-user"></i>User details
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <input type="hidden" id="url" name="url" value="/users/">
+                    <input type="hidden" id="filterUrl" name="filterUrl" value="/users/">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group text-center">
+                                {% if userDetailData.profile_pic == "no-image" || userDetailData.profile_pic == null || userDetailData.profile_pic == ''
+                                %}
+                                <a class="single_image" title="Click to view" id="single_image" href="/images/default.png">
+                                    <img alt="" class="img-circle" style="width: 90px; height: 90px;" src="/images/default.png" />
+                                </a>
+                                {% else %}
+                                <a class="single_image" title="Click to view" id="single_image" href="{{userDetailData.profile_pic}}">
+                                    <img alt="" class="img-circle" style="width: 90px; height: 90px;" src="{{userDetailData.profile_pic}}" />
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <br/>
+                                <br/>
+                                <div class="form-group"> 
+                                    <label class="bold control-label" style="font-size: small;">
+                                        As a host: 
+                                    </label>
+                                    <span style="padding: 2%;">
+                                        {% if userDetailData.host_rating_overall  %}
+                                        {% set temp_rat = parseInt(userDetailData.host_rating_overall) %}
+                                        {% for i in Array(temp_rat) %}
+                                        <i class = "fa fa-star" style="color:#F87C00" > </i> 
+                                        {% endfor %}
+                                        {% if userDetailData.host_rating_overall.toString().length > 1  %}
+                                        <i class = "fa fa-star-half-o" style="color:#F87C00" > </i> 
+                                        {% for i in Array(4-temp_rat) %}
+                                        <i class = "fa fa-star-o" style="color:#F87C00"> </i> 
+                                        {% endfor %}
+                                        {% else %}
+                                        {% for i in Array(5-temp_rat) %}
+                                        <i class = "fa fa-star-o" style="color:#F87C00"> </i> 
+                                        {% endfor %}
+                                        {% endif %}
+                                        {% else %}
+                                        {% for i in Array(5) %}
+                                        <i class = "fa fa-star-o" style="color:#F87C00"> </i> 
+                                        {% endfor %}
+                                        {% endif %}
+                                    </span>
+                                    <br>
+                                    <label class="bold control-label" style="font-size: small;">
+                                        As a donor: 
+                                    </label>
+                                    <span style="padding: 1%;">
+                                        {% if userDetailData.donor_rating_overall  %}
+                                        {% set temp_rat = parseInt(userDetailData.donor_rating_overall) %}
+                                        {% for i in Array(temp_rat) %}
+                                        <i class = "fa fa-star" style="color:#F87C00" > </i> 
+                                        {% endfor %}
+                                        {% if userDetailData.donor_rating_overall.toString().length > 1  %}
+                                        <i class = "fa fa-star-half-o" style="color:#F87C00" > </i> 
+                                        {% for i in Array(4-temp_rat) %}
+                                        <i class = "fa fa-star-o" style="color:#F87C00"> </i> 
+                                        {% endfor %}
+                                        {% else %}
+                                        {% for i in Array(5-temp_rat) %}
+                                        <i class = "fa fa-star-o" style="color:#F87C00"> </i> 
+                                        {% endfor %}
+                                        {% endif %}
+                                        {% else %}
+                                        {% for i in Array(5) %}
+                                        <i class = "fa fa-star-o" style="color:#F87C00"> </i> 
+                                        {% endfor %}
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div> -->
+                    <div class="form-group">
+                        <label class="control-label">
+                            <b>First Name:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value="{{userDetailData.firstName}} " type="text" readonly maxlength="25"
+                               />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <b>Last Name:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value=" {{userDetailData.lastName}}" type="text" readonly maxlength="25" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <b>Gender:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value=" {{userDetailData.gender}}" type="text" readonly maxlength="25" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <b>E-mail:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value=" {{userDetailData.email}}" type="text" readonly maxlength="25" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <b>Country code:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value=" {{userDetailData.country_code}}" type="text" readonly maxlength="25" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <b>Phone number:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value=" {{userDetailData.phone}}" type="text" readonly maxlength="25" />
+                    </div>
+                    <!--                    <div class="form-group">
+                                            <label class="control-label">
+                                                <b>Date of Birth:</b>
+                                            </label>
+                                            <input class="form-control placeholder-no-fix" value="{{userDetailData.dob}}" type="text" readonly maxlength="25" />
+                                        </div>-->
+                    <div class="form-group">
+                        <label class="control-label"><!-- include bootbox js file -->
+                            <!-- <script src="../../assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script> -->
+
+                            <!-- include bootbox-confirmation js file -->
+                            <!-- <script src="../../assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js" type="text/javascript"></script> -->
+                            <!--range slider-->
+
+                            <!-- BEGIN PAGE LEVEL PLUGINS
+                            <script src="../../assets/global/plugins/nouislider/jquery.nouislider.all.js"></script> -->
+                            <b>Location:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value="{{userDetailData.location}}" type="text" readonly maxlength="25" />
+                    </div>
+
+
+                    <br>
+                    <div class="form-actions text-left">
+                        {% if back_url !== "" %}
+                        <a class="btn default" href="{{back_url}}">OK</a>
+                        {% else %}
+                        <a class="btn default" href="/users">Ok</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-4">
+
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-6">
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+</div>
+{% include "./user_disable_model.html" %} {% endblock %} {% block js %}
+<script src="/javascripts/developer.js"></script>
+<script src="/javascripts/frydBox.min.js"></script>
+<script>
+$("#single_image").frydBox({
+    closeImage: "/images/close.png",
+    borderSize: 0,
+    screenPercent: 1
+});
+</script> {% endblock %}

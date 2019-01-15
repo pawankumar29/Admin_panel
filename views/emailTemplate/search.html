@@ -1,0 +1,34 @@
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead >
+            <tr>
+                <th width="5%">S.No.</th>								
+                <th>Name</th>
+                <th>Subject</th>
+                <th>Message</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        <input type="text" id="action" name="action"  hidden>
+        {% set curr = response.current-1  %}
+        {% set perPage = 10 %}
+        {% set index = curr*perPage+1  %}                                
+        {% if response.results != "" %}     
+        {% for template in response.results %}	 
+        <tr>							
+            <td>{{index}}</td>	
+            <td>{{template.name | capitalize}}</td>
+            <td>{{template.subject}}</td>
+            <td>{{template.content | safe | striptags}}</td>
+            <td><a class="btn btn-circle btn-icon-only btn-default" title="Edit" href="/emailTemplate/edit/?id={{template._id}}&page={{response.current}}"><i style="color:orange" class="fa fa-edit"></i></a> </td> 
+        </tr>
+        {% set index=index+1 %}                                
+        {% endfor %}
+        {% else %}
+        <tr><td colspan="10" class="text-center">No records to display</td></tr>
+        {% endif %}																		
+        </tbody>
+    </table>
+</div>
+<div class="text-center">{% include "../paginate.html" %}</div><br><br>

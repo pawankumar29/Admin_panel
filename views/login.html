@@ -1,0 +1,46 @@
+{% extends "./login_layout.html" %}
+
+{% block content %}
+
+<form class="login-form"  action="/login" method="post">
+    <h3 class="form-title">Sign In</h3>		
+    {% include "./flashMessage_Success.html" %}
+    <div class="form-group">
+        <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+        <label class="control-label visible-ie8 visible-ie9">E-Mail</label>
+        {% if email %}
+        <input class="form-control" type="text" placeholder="E-Mail" value="{{email}}" maxlength="40" name="email" readonly/>
+        <!-- <input class="form-control" type="text" placeholder="E-Mail" value="{{email}}" maxlength="40" name="email" readonly/> -->
+        {% else %}
+        <input class="form-control" type="text" placeholder="E-Mail" value="" maxlength="40" name="email" readonly/>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Password</label>
+        <input class="form-control password_field" type="password" id="password" autocomplete="off" maxlength="21" placeholder="Password" name="password"/>
+    </div>
+    {%  if data.failed_attepmt >= 5 %}
+    <div class="form-group">
+        <img id ="image_captcha" src="data:image/jpeg;base64,{{valicode}}"  class="image_captcha">
+    </div>
+    <div class="form-group">
+        <input class="form-control" type="text" name="captcha"  maxlength=4 id="contactcode" placeholder="Enter the Numbers above">
+    </div>
+    {% endif %}
+    <div class="form-actions">
+        <a href="/forgot-password" id="forget-password" class="forget-password">Forgot Password?</a>
+    </div>
+    <div class="form-actions row" style="padding-top:15px">
+        <a class="btn btn-default" href="/login">Back</a>
+        <button type="submit" class="btn btn-success uppercase pull-right">Login</button>
+    </div>
+</form>
+{% endblock %}
+
+{% block js %}
+<!-- include developer js file -->
+<script src="/javascripts/developer.js"></script>
+{% endblock %}
+
+
+

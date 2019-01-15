@@ -1,0 +1,91 @@
+<!--admin pagesList.html-->
+
+{% extends "../layout.html" %}
+
+{% block content %}
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12">
+
+            {% include "../flashMessage_Success.html" %}
+
+            <!-- BEGIN BORDERED TABLE PORTLET-->
+            <div class="portlet box green">
+                <div class="portlet-title">
+
+                    <div class="caption">
+                        <i class="fa fa-file-text-o"></i>Manage CMS Pages
+                    </div>
+                </div>
+                <div class="portlet-body">
+                        <input type="text" id="url" name="url" value="/pages/" hidden>
+                        <input type="text" id="filterUrl" name="filterUrl" value="/pages/" hidden>
+                    <!--<a class="btn btn blue pull-right" href="/pages/add">Add CMS page</a>-->
+                    <div class="row"><br/></div>
+                    <form id="filter_form">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <div class="col-md-5 form-group">
+                                    <label class="control-label"><b>Search By </b></label>
+                                    <input id="search_by" class="form-control searchList" type="text" name="search_by" autocomplete="off" placeholder="Name or Title">
+                                    <label id="search_by_error" class="error" for="search_by" hidden>Enter only letters or numbers.</label>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label class="control-label"><b>Sort By</b></label>
+                                    <select id="sort_field" class="form-control" name="sort_field">
+                                        <option value="">--Select--</option>
+                                        <option value="name">Name</option>
+                                        <option value="heading">Title</option>
+                                    </select>	
+                                </div>
+                                <div id="sort_type_error" class="col-md-3 form-group">
+                                    <label class="control-label"><b>Sort Type</b></label>
+                                    <select id="sort_type" class="form-control" name="sort_type" disabled>
+                                        <option value="">--Select--</option>
+                                        <option value="1">Ascending</option>
+                                        <option value="-1">Descending</option>
+                                    </select>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group text-center">
+                                <button id="filter" class="btn btn-primary btn-danger btn-sm" type="button" title="Filter" >Filter</button>
+                                <button id = "clear" class="btn btn-primary btn-primary btn-sm clear_form" type="button" title="Reset">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row"><br/></div>
+                    <div>
+                        <input type="text" id="url" name="url" value="/pages" hidden> 
+                        <input type="text" id="filterUrl" name="filterUrl" value="/pages/" hidden>
+
+                        <div id="ajaxResponce"> <!-- To show Ajax Responce -->	
+                            {% include "./search.html" %} 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END BORDERED TABLE PORTLET-->
+</div>
+</div>
+</div>	
+
+{% endblock %}
+
+{% block js %}
+<script src="{{getVersionedPath('/javascripts/developer.js')}}" type="text/javascript"></script>
+<!-- <script src="{{getVersionedPath('/javascripts/bootstrap-typeahead.min.js')}}" type="text/javascript"></script> -->
+<!-- <script src="{{getVersionedPath('/javascripts/typeahead.js')}}" type="text/javascript"></script> -->
+<script src="{{getVersionedPath('/javascripts/bootbox.min.js')}}" type="text/javascript"></script>
+<!-- include pagination js file -->
+<script src="{{getVersionedPath('/javascripts/pagination.js')}}"></script> 
+<script src="{{getVersionedPath('/javascripts/template.js')}}"></script> 
+
+
+
+{% endblock %}

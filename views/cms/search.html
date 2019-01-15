@@ -1,0 +1,36 @@
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead >
+            <tr>
+                <th width="5%">S.No.</th>								
+                <th>Name</th>
+                <th>Title</th>
+                <th>Message</th>
+                <th width="15%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        <input type="text" id="action" name="action"  hidden>
+        {% set curr = response.current-1  %}
+        {% set index = curr*response.options.perPage+1  %}                                
+        {% if response.results.length != 0 %}
+        {% for pages in response.results %}	 
+        <tr>							
+            <td>{{index}}</td>	
+            <td>{{pages.name | capitalize}}</td>
+            <td>{{pages.heading}}</td>
+            <td>{{(pages.description|striptags).substr(0, 300)}}...</td>
+            <td>
+                <a class="btn btn-circle btn-icon-only btn-default" title="Edit" href="/pages/edit/{{pages._id}}"><i style="color:orange" class="fa fa-edit"></i></a> 
+                <!-- <a  class="delete btn btn-circle btn-icon-only btn-default" title="Delete" deleteLink="/pages/delete/{{pages._id}}"><i style="color:red" class="fa fa-times"></i></a> -->
+            </td> 
+        </tr>
+        {% set index=index+1 %}                                
+        {% endfor %}
+        {% else %}
+        <tr><td colspan="10" class="text-center">No records to display</td></tr>
+        {% endif %}																		
+        </tbody>
+    </table>
+</div>
+<div class="text-center">{% include "../paginate.html" %}</div><br><br>

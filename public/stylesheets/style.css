@@ -1,0 +1,128 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,800,600);
+body
+{
+    padding:0;
+    margin:0;
+}
+.main
+{
+    width:100%;
+    float:left;
+}
+.top_bar
+{
+    width:100%;
+    background:#DD3440;
+    float:left;
+    text-align:center;
+}
+.top_bar h1 img {
+    display: inline-block;
+    text-align: center;
+}
+.clear{ clear:both}
+.top_bar h1
+{
+    text-align:center;
+    color:#fff;
+    font-weight:bold;
+    font-family: 'Open Sans', sans-serif;
+    font-size:30px;
+    text-transform:uppercase;
+}
+.field_box_center
+{
+    margin:40px auto 20px; 
+    width:420px; max-width:100%;
+
+}
+
+.field_box_centerIn
+{
+    padding:15px 25px; float:left; background:#f3f3f3;
+    width:100%; max-width:100%;
+
+}
+.field_box_centerIn h1
+{
+    text-align:center;
+    color:#f0576b;
+    font-size:25px;
+    font-family: 'Open Sans', sans-serif;
+    margin-top:0px;
+}
+.pswrd_field
+{
+    text-align:center;
+    margin:auto;
+    width:100%;
+    margin-top:20px;
+}
+.pswrd_field label
+{
+    text-align:left;
+    font-family: 'Open Sans', sans-serif;
+    font-size:15px;
+    font-weight:500;
+    width:100%;
+}
+.pswrd_field input[type=password]
+{
+    padding:10px 10px; width:100%;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border:1px solid #c2c2c2;
+    font-family: 'Open Sans', sans-serif;
+}
+.pswrd_field input[type=password]:focus
+{
+    border:1px solid #ed1d2f;
+}
+.field_box_centerIn [type=submit]
+{
+    text-align:center;
+    background:#f0576b;
+    font-family: 'Open Sans', sans-serif;
+    color:#fff;
+    font-size:15px;
+    padding:8px 15px;
+    border:none;
+
+}
+.success_pswrd
+{
+    background:#e7fcd1;
+    border:1px solid #6aaa27;
+    width:100%;
+    text-align:center;
+    padding:10px;
+    font-size:15px;
+    margin-bottom:20px;
+    color:#555555;
+    font-family: 'Open Sans', sans-serif;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+.did_not_pswrd
+{
+    background:#fabbc1;
+    border:1px solid #ed1d2f;
+    width:100%;
+    text-align:center;
+    padding:10px;
+    font-size:15px;
+    margin-bottom:20px;
+    color:#555555;
+    font-family: 'Open Sans', sans-serif;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+
+form.formIcon
+{
+    width:14px;
+    float:left;
+}

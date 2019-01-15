@@ -1,0 +1,75 @@
+{% extends '../layout.html' %}
+{% block content %}
+<div class="page-content">
+    <!-- BEGIN PAGE CONTENT-->
+    <div class="row">
+        <div class="col-md-12">
+            {% include '../flashMessage_Success.html' %}
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-question-circle"></i>Manage FAQ
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <a class="btn btn blue pull-right" href="/faqs/add">Add FAQ</a>
+                    <div class="row"><br/></div>
+                    <div class="row"><br/></div>
+                    <form id="filter_form">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <div class="col-md-5 form-group">
+                                    <label class="control-label"><b>Search By </b></label>
+                                    <input id="search_by" class="form-control searchList" type="text" name="search_by" autocomplete="off" placeholder="Question">
+                                    <label id="search_by_error" class="error" for="search_by" hidden>Enter only letters or numbers.</label>
+                                </div>
+                              
+                                <div class="col-md-4 form-group">
+                                    <label class="control-label">
+                                        <b>Status</b>
+                                    </label>
+                                    <select id="filter_status" class="form-control" name="status">
+                                        <option value="">--Select--</option>
+                                        <option value="all">All</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>                                     
+                                    </select>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group text-center">
+                                <button id="filter" class="btn btn-primary btn-danger btn-sm" type="button" title="Filter" >Filter</button>
+                                <button id = "clear" class="btn btn-primary btn-primary btn-sm clear_form" type="button" title="Reset">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row"><br/></div>
+                    <input type="text" id="url" name="url" value="/faqs/" hidden>
+                    <input type="text" id="filterUrl" name="filterUrl" value="/faqs/" hidden>
+                    <form method="post" action="/faqs/faqDeleteSel" id="frm">
+                        <div id="ajaxResponce"> <!-- To show Ajax Responce -->
+                            {% include "./search.html" %} 
+                        </div>
+                        <input type="hidden" name="faqs_status" id="record_status" value="">
+                        <input type="hidden" name="action" id="action" value="">
+                    </form>
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+    </div>
+    <!-- END PAGE CONTENT-->
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{{getVersionedPath('/javascripts/developer.js')}}" type="text/javascript"></script>
+<!-- <script src="{{getVersionedPath('/javascripts/bootstrap-typeahead.min.js')}}" type="text/javascript"></script> -->
+<!-- <script src="{{getVersionedPath('/javascripts/typeahead.js')}}" type="text/javascript"></script> -->
+<script src="{{getVersionedPath('/javascripts/bootbox.min.js')}}" type="text/javascript"></script>
+<!-- include pagination js file -->
+<script src="{{getVersionedPath('/javascripts/pagination.js')}}"></script> {% endblock %}
+

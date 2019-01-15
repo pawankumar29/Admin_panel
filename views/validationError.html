@@ -1,0 +1,9 @@
+{% if errorList %}
+<div class="alert alert-danger" >	
+    <strong>Error!</strong>		
+    {% for err in errorList %}
+    <li>{{err.message}}</li>
+    {% endfor %}
+    <br>
+</div>
+{% endif %}

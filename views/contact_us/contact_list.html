@@ -1,0 +1,202 @@
+<!--admin userList.html-->
+{% extends "../layout.html" %} {% block css %}
+
+
+<link href="{{getVersionedPath('/stylesheets/daterangepicker-bs3.css')}}" rel="stylesheet" type="text/css" /> 
+<style>
+    th,td {
+
+        text-align: left !important;
+        padding: 15px
+    }
+    .daterangepicker .ranges .input-mini {
+        width: 70px !important;
+    }
+    .cancelBtn{       
+        padding: 6px 12px 6px 12px !important;
+    }
+    .applyBtn{
+        padding: 6px 12px 6px 12px !important;
+    }
+</style>
+
+{% endblock %} {% block content %}
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include "../flashMessage_Success.html" %}
+            <!-- BEGIN BORDERED TABLE PORTLET-->
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-question"></i>Manage Queries
+                    </div>
+                </div>
+                <div class="portlet-body">
+
+                    <div class="row">
+                        <br/>
+                    </div>
+                    <div class="">
+                        <!-- <input type="text" id="export_csv_url" name="export_csv_url" value="/contact_us/getcsv" hidden> -->
+                        <input type="text" id="url" name="url" value="/contact_us/" hidden>
+                        <input type="text" id="filterUrl" name="filterUrl" value="/contact_us/" hidden>
+                        <!-- <div type="text" id="hidden_content" name="hidden_content" hidden></div> -->
+
+                        <!--search panel on the top --start---->
+                        <form id="filter_form">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <div class="col-md-3 form-group">
+                                        <label class="control-label">
+                                            <b>Search By </b>
+                                        </label>
+                                        <input id="search_by" class="form-control searchList" type="text" name="search_by" autocomplete="off" placeholder="Name or E-mail">
+                                        <label id="search_by_error" class="error" for="search_by" hidden>Enter only letters or numbers.</label>
+                                    </div>
+                                    <div class="form-group col-md-5 ">
+                                        <label class="control-label "><b>Filter by Date</b> </label>                                      
+                                        <div class="input-group" id="defaultrange">
+                                            <input type="text" class="col-md-10 form-control" id="selected_date" placeholder="Query from and Query to" name="selected_date" readonly>
+                                            <span class="input-group-btn">
+                                                <button class="btn default date-range-toggle" type="button">
+                                                    <i class="fa fa-calendar"></i>
+                                                </button>
+                                            </span>
+                                        </div>                                
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label class="control-label">
+                                            <b>Status</b>
+                                        </label>
+                                        <select id="filter_status" class="form-control" name="status">
+                                            <option value="">--Select--</option>
+                                            <option value="1">Resolved</option>
+                                            <option value="0">Unresolved</option>
+                                            <option value="all">All</option>
+                                        </select>
+                                    </div>
+
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group text-center">
+                                    <button id="filter" class="btn btn-primary btn-danger btn-sm" type="button" title="Filter">Filter</button>
+                                    <button id="clear" class="btn btn-primary btn-primary btn-sm clear_form" type="button" title="Reset">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                        <!--search panel on the top --ends---->
+
+                        <div class="row">
+                            <br/>
+                        </div>
+                        <form id="frm" action="/contact_us/con_dlt_selected" method="post">
+                            <input type="text" id="action" name="action" hidden>
+                            <div id="ajaxResponce">
+                                <!-- To show Ajax Responce -->
+                                {% include "./search.html" %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- END BORDERED TABLE PORTLET-->
+        </div>
+    </div>
+</div>
+
+<!-- view details of query in model -->
+<div id="query-details" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header text-left">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h3 class="modal-title center">Query Details </h3>
+            </div>
+            <div class="modal-body text-center">
+                <div class="scroller" style="min-height:250px;max-height:400px" data-always-visible="1" data-rail-visible1="1">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table style="width:100%; padding:auto;margin:auto" id="query_details_table" class="table-borderless table-striped">
+
+                                <tr>
+                                    <th>User Name</th>
+                                    <td class="username"></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Date and Time</th>
+                                    <td class="date_time"></td>
+                                </tr>
+                                <tr>
+                                    <th>Subject</th>
+                                    <td class="subject"></td>
+                                </tr>
+                                <tr>
+                                    <th>Description</th>
+                                    <td class="description"></td>
+                                </tr>
+
+                                <tr>
+                                    <th></th>
+                                    <td id="resolve_container">
+                                        <!-- <div class="resolved">                                   
+                                                <a linkdata='' id='my_anchor'>Mark as resolved</a>
+                                                <input type='checkbox' id='checkbox_switch'>
+                                             
+                                        </div> -->
+                                    </td> 
+                                </tr>
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn default center">Close</button>
+
+            </div>
+        </div>
+    </div>
+
+    {% endblock %} {% block js %}
+
+    <!-- include bootbox js file -->
+
+
+    <script src="{{getVersionedPath('/javascripts/bootbox.min.js')}}" type="text/javascript"></script>
+    <script src="{{getVersionedPath('/javascripts/developer.js')}}" type="text/javascript"></script>
+    <!-- <script src="{{getVersionedPath('/assets/bootstrap-daterangepicker/moment.min.js')}}" type="text/javascript"></script> -->
+    <script src="{{getVersionedPath('/assets/bootstrap-daterangepicker/daterangepicker.js')}}" type="text/javascript"></script>
+
+    <!-- <script src="{{getVersionedPath('/javascripts/bootstrap-typeahead.min.js')}}" type="text/javascript"></script> -->
+    <!-- <script src="{{getVersionedPath('/javascripts/typeahead.js')}}" type="text/javascript"></script> -->
+
+    <!-- include pagination js file -->
+    <script src="{{getVersionedPath('/javascripts/pagination.js')}}"></script>
+    <script>
+
+$(document).ready(function () {
+    $('#defaultrange').daterangepicker({
+        opens: (Metronic.isRTL() ? 'left' : 'right'),
+        format: 'MM/DD/YYYY',
+        separator: ' to ',
+        startDate: moment().subtract(29, 'days'),
+        endDate: moment(),
+        minDate: '01/01/2012',
+
+    },
+            function (start, end) {
+                $('#defaultrange input').val(start.format('MM/DD/YYYY') + ' - ' + end.format('MM/DD/YYYY'));
+            }
+    );
+})
+
+
+
+    </script> {% endblock %}
