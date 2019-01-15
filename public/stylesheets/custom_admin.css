@@ -1,0 +1,188 @@
+
+/*********admin pannel custom classes******************/
+/*for header-logo in admin pannel*/
+.custom_for_logo{
+    margin: 7px;
+}
+.rating_display{
+    color: #26A69A;   
+}
+.anchor_username{
+    color: #26A69A;
+    font-weight: bold;
+}
+.anchor_username:hover{
+    text-decoration: none;
+    color: #C23F44;
+    font-weight: bold;
+}
+/*for range-slider background color*/
+.noUi-connect {
+    background: #3fb8af none repeat scroll 0 0 !important;
+}
+.hr_booking_history{background-color: black; height: 1px;}
+.label_booking_history{color:green; font-size:20px;}
+.padding-class-icon{float: left;padding: 25px 10px;}
+.display_img_bg{height: 76px;width:236px;}
+.display_img_icon{height: 80px;width:80px;}
+
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu .dropdown-menu-list {
+    padding: 8px;
+}
+.notification_accept{
+   padding: 4px 10px 4px 8px; 
+}
+
+
+/*//css was added inrenally before */
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    cursor: default !important;
+}
+textarea {
+    resize: none;
+}
+.link_color
+{
+    color:#578ede;
+}
+hr {
+    border-top-color: #a7aaae !important
+}
+th {
+    text-align:center !important;
+}
+td {
+    text-align:center !important;
+}
+.bootbox-body{
+    margin-top: 15px;
+}
+.modal-title{
+    margin-top: 15px !important;
+}
+body.modal-open {
+    overflow: hidden !important;
+}
+#header_notification_bar .dropdown dropdown-extended dropdown-notification open{
+    overflow: hidden !important;
+}
+
+#myModal .modal-body {
+    max-height: 400px !important;
+}
+.table .btn {
+    margin-top: 5px !important; 
+}
+label.error{ color : red }
+
+.star{ color : red }
+
+.centered{
+    margin: 0 auto;
+}
+.modal-body {
+    position: relative;
+    overflow-y: auto;
+    max-height: 600px;
+    padding: 15px;
+}
+/*for notification panel on the top*/
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-notification .dropdown-menu .dropdown-menu-list.drowndropnotfication > li a .details .label-icon{text-align: center; width: 28px; height:28px; padding:0; display:inline-block;}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-notification .dropdown-menu .dropdown-menu-list.drowndropnotfication > li a .details .label-icon i{ margin-left:0; margin-right: 0; }
+
+
+.overlay {
+    height: 100%;
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    background:rgba(0,0,0, 0.8);                
+    overflow-x: hidden;
+    width:100%;
+    display:none
+/*    display:block;*/
+}
+
+
+.overlay:before { 
+    content:""; 
+    position: absolute; 
+    top:50%; 
+    left: 50%;
+    border: 6px solid #f3f3f3; /* Light grey */
+    border-top: 6px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/*.overlay-content {
+    position: absolute;
+    top: 45%;
+    width: 100%;
+    text-align: center;
+}*/
+
+.slimScrollDiv{
+    height:auto !important
+}
+
+.capitalize{
+    text-transform: capitalize;
+}
+
+#noscript-warning {
+    font-family: sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1050;
+    text-align: center;
+    font-weight: bold;
+    font-size: 120%;
+    padding: 5px 0;
+}
+
+.details_table th {
+    text-align: left !important;
+    padding-left: 18px!important;
+}
+
+.details_table td {
+    text-align: left !important;
+    padding-left: 30px!important;
+}
+
+#uploaded_image {
+    margin-top: 10px;
+    position: relative;
+}
+
+#uploadFile_div {
+    overflow: hidden;
+}
+
+#image_url-error {
+    display: inline;
+}
+
+.image_remove {
+    position: absolute;
+    top: 0px;
+    left: 80px;
+    display:"none";
+}
+.alertify-notifier{
+    z-index:10000;
+}
+
+

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- BEGIN HEAD -->
+
+    <head>
+        <meta charset="utf-8" />
+        <title>{{config.project_name}} | {{title}}</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+        <link rel="shortcut icon" href="{{fav_icon_path}}">
+        <link rel="apple-touch-icon" href="{{fav_icon_path}}">
+        <link rel="icon" sizes="228x228" href="{{fav_icon_path}}">
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"
+              />
+
+        <link href="{{getVersionedPath('/assets/layout/stylesheet/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
+        <!-- END GLOBAL MANDATORY STYLES -->
+        <!-- BEGIN PAGE LEVEL STYLES -->
+        <link href="{{getVersionedPath('/stylesheets/login.css')}}" rel="stylesheet" type="text/css" />
+
+        <style>
+            .form-control[disabled],
+            .form-control[readonly],
+            fieldset[disabled] .form-control {
+                cursor: default !important;
+            }
+
+            .error {
+                color: red
+            }
+        </style>
+
+        <!-- END THEME STYLES -->
+    </head>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+
+    <body class="login">
+        <div class="page-md login">
+            <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            <div class="menu-toggler sidebar-toggler">
+            </div>
+            <!-- END SIDEBAR TOGGLER BUTTON -->
+            <!-- BEGIN LOGO -->
+            <div class="logo">
+                <a href="/login">
+                    <img height="100" src="{{logo_path}}" alt="{{config.project_name}}"/>
+                </a>
+            </div>
+            <!-- END LOGO -->
+
+            <!-- BEGIN form -->
+            <div class="content">
+
+                {% block content %} {% endblock %}
+
+            </div>
+            <!-- END FORM -->
+
+            <div class="copyright" style="color:white">
+                <!--<span id="year">2018</span> {{copyright_project_name}}.com. All rights reserved.-->
+                <div class=""  style="text-align:center;color:white">
+                    <center> Copyright &copy; <span id="year"></span> {{config.copyright_project_name }}</center>
+                </div>
+            </div>
+        </div>
+        <script src="{{getVersionedPath('/assets/layout/javascript/jquery.min.js')}}" type="text/javascript"></script>
+        <script>
+            jQuery(function () {
+                var d = new Date();
+                var n = d.getFullYear();
+                $("#year").html(n)
+                $.cookie("time_zone_name", moment.tz.guess());
+            });
+        </script> 
+        {% block js %} 
+        {% endblock %}
+    </body>
+    <!-- END BODY -->
+
+</html>

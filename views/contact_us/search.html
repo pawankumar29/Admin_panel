@@ -1,0 +1,49 @@
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <!--<th width="3%"><input type="checkbox" id="checkAll"/></th>-->
+                <th width="5%">S.No.</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>E-mail </th>
+                <th>Date and Time</th>
+                <th>Subject</th>
+                <th>Status</th>               
+                <th width="15%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set curr = response.current-1  %}
+            {% set perPage = 10 %}
+            {% set index = curr * perPage +1  %} 
+            {% if response.results.data.length != 0 %}
+            {% for contact in response.results.data %}	 
+            <tr>
+
+                <td>{{index}}</td>
+                <td>{{contact.user.firstName}}</td>                   
+                <td>{{contact.user.lastName}}</td>                   
+                <td>{{contact.user.email}}</td>
+                <td>{{contact.created_at }}</td>
+                <td>{{contact.contact.name}}</td>
+                {% if contact.status == 1 %}
+                <td>Resolved</td>
+                {% else %}
+                <td>Unresolved</td>
+                {% endif %}
+                <td>
+                    <a class="btn btn-circle btn-icon-only btn-default view-contact-us" link="/contact_us/view/{{contact._id.toString()}}" title="View Detail"><i style="color:green" class="fa fa-eye"></i></a>
+                    <a deletelink="/contact_us/delete/{{contact._id.toString()}}" title="Delete" class="delete btn btn-circle btn-icon-only btn-default"><i class="fa fa-times" style="color:red"></i></a>
+                </td>
+            </tr>
+            {% set index=index+1 %}
+            {% endfor %}					
+            {% else %}
+            <tr><td colspan="12"> <p class="text-center">No records to display</p></td></tr>
+            {% endif %}	
+
+        </tbody>
+    </table>
+</div>
+<div class="text-center">{% include "../paginate.html" %}</div><br><br>

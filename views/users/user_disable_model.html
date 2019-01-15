@@ -1,0 +1,26 @@
+<!-- Modal for Disable user -->
+<div class="modal fade" id="disableUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog color-dialog">
+        <form id="disableUser-form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                    <h4 class="modal-title disable_reason_popup"></h4>
+
+                </div>
+                <div class="modal-body">
+                    <textarea rows="6" cols="50" id="disableUserID" name="reason" Placeholder="Enter reason..." class="form-control" value = ""></textarea>  
+                    <label id="sub_error_getEmail" class="error_getEmail"></label>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="disable_user_btn" userid="" status = "" type="button" class="btn green default confirm" data-toggle="modal">Confirm</button>
+                    <button type="button" class="btn black" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </form>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

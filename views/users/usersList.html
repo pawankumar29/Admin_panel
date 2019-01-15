@@ -1,0 +1,208 @@
+<!--admin userList.html-->
+
+{% block css %}
+<style>
+    th,td {
+
+        text-align: left !important;
+        padding:15px
+    }
+</style>
+
+{% endblock %}
+{% extends "../layout.html" %} {% block content %}
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include "../flashMessage_Success.html" %}
+            <!-- BEGIN BORDERED TABLE PORTLET-->
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-user"></i>Manage Users
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <!-- <div class="row">
+                        <div class="col-md-12">
+                            <a class="btn btn green pull-right" id="export_button_csv">Export CSV</a>
+                        </div>
+                    </div> -->
+                    <div class="row">
+                        <br/>
+                    </div>
+                    <div class="">
+                        <input type="hidden" id="url" name="url" value="/users/">
+                        <input type="hidden" id="filterUrl" name="filterUrl" value="/users/">
+                        <!-- <input type="text" id="export_csv_url" name="export_csv_url" value="/users/getcsv" hidden> -->
+                        <!--search panel on the top --start---->
+                        <form id="filter_form">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <div class="col-md-5 form-group">
+                                        <label class="control-label">
+                                            <b>Search By </b>
+                                        </label>
+                                        <input id="search_by" class="form-control searchList" type="text" name="search_by" autocomplete="off" placeholder="Name or E-mail">
+                                        <label id="search_by_error" class="error" for="search_by" hidden>Enter only letters or numbers.</label>
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label class="control-label">
+                                            <b>Gender</b>
+                                        </label>
+                                        <!-- <select id="sort_field" class="form-control" name="sort_field"> -->
+                                        <select id="filter_gender" class="form-control" name="gender">
+                                            <option value="">--Select--</option>
+                                            <option value="1">Male</option>
+                                            <option value="2">Female</option>
+                                            <option value="3">Others</option>
+                                            <option value="all">All</option>
+                                        </select>
+                                    </div>
+                                    <!-- <div id="sort_type_error" class="col-md-3 form-group"> -->
+                                    <div  class="col-md-3 form-group">
+                                        <label class="control-label">
+                                            <b>User Status</b>
+                                        </label>
+                                        <!-- <select id="sort_type" class="form-control" name="sort_type" disabled> -->
+                                        <select id="filter_status" class="form-control" name="status" >
+                                            <option value="">--Select--</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
+                                            <option value="all">All</option>
+                                        </select>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group text-center">
+                                    <button id="filter" class="btn btn-primary btn-danger btn-sm" type="button" title="Filter">Filter</button>
+                                    <button id="clear" class="btn btn-primary btn-primary btn-sm clear_form" type="button" title="Reset">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                        <!--search panel on the top --ends---->
+                        <div class="row">
+                            <br/>
+                        </div>
+                        <form id="frm" action="/users/multipleChangeStatus" method="post">
+                            <input type="hidden" id="action" name="action">
+                            <div id="ajaxResponce">
+                                <!-- To show Ajax Responce -->
+                                {% include "./search.html" %}
+                            </div>
+                        </form>
+                        {% include "./user_disable_model.html" %}
+                    </div>
+                </div>
+            </div>
+            <!-- END BORDERED TABLE PORTLET-->
+        </div>
+    </div>
+</div>
+
+
+<div id="user-details" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header text-left">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h3 class="modal-title center">User Details </h3>
+            </div>
+            <div class="modal-body text-center">
+                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible1="1">
+                    <div class="row">
+                        <div class="col-md-12">                            
+                            <table style="width:90%; padding:auto;margin:auto" id="user_details_table" class="table-borderless table-striped">
+                                <tr >
+                                    <th width="30%">User Profile Pic</th>
+                                    <td width="50%" class="profile_pic">
+                                        <!--                                        <a class="single_image" title="Click to view" id="single_image" href="">-->
+                                        <a href="#" class="pop">
+                                            <img id="myimg" alt="Profile-image" class="img-circle" style="width: 50px; height: 50px;" src="" />
+                                        </a>
+                                        <!--</a>-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>First Name</th>
+                                    <td class="first_name"></td>
+                                </tr>
+                                <tr >
+                                    <th>Last Name</th>
+                                    <td class="last_name"></td>
+                                </tr>
+                                <tr >
+                                    <th>Gender</th>
+                                    <td class="gender"></td>
+                                </tr>
+                                <tr >
+                                    <th>E-mail</th>
+                                    <td class="email"></td>
+                                </tr>
+                                <tr >
+                                    <th>Country code</th>
+                                    <td class="country_code"></td>
+                                </tr>
+                                <tr >
+                                    <th>Phone</th>
+                                    <td class="phone"></td>
+                                </tr>
+                                <tr >
+<!--                                <tr >
+>>>>>>> b595a7034034db342140ce08d522478e1feb84f8
+                                    <th>Date Of Birth</th>
+                                    <td class="dob"></td>
+                                </tr>-->
+                                <tr >
+                                    <th>Location</th>
+                                    <td class="location"></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" data-dismiss="modal" class="btn default ">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- The Modal -->
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">              
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <img src="" class="imagepreview" style="width: 100%;" >
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} {% block js %}
+
+
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- include developer js file -->
+<script src="{{getVersionedPath('/javascripts/developer.js')}}" type="text/javascript"></script>
+<!-- <script src="{{getVersionedPath('/javascripts/bootstrap-typeahead.min.js')}}" type="text/javascript"></script> -->
+<!-- <script src="{{getVersionedPath('/javascripts/typeahead.js')}}" type="text/javascript"></script> -->
+<script src="{{getVersionedPath('/javascripts/bootbox.min.js')}}" type="text/javascript"></script>
+<!-- include pagination js file -->
+<script src="{{getVersionedPath('/javascripts/pagination.js')}}"></script> 
+<script>
+$(function () {
+    $('.pop').on('click', function () {
+        $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+        $('#imagemodal').modal('show');
+    });
+});
+</script>
+{% endblock %}

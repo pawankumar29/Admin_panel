@@ -1,0 +1,31 @@
+{% extends "./login_layout.html" %}
+
+{% block content %}
+
+<form class="login-form"  action="/authentication" method="post">
+    <h3 class="form-title">Sign In</h3>		
+    {% include "./flashMessage_Success.html" %}
+    <div class="form-group">
+        <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+        <label class="control-label visible-ie8 visible-ie9">E-Mail</label>
+        <input class="form-control" type="text" placeholder="E-Mail" value="{{email}}" id="email" maxlength="40" name="email"/>
+    </div>
+    <div class ="row">
+
+        <div style="margin-top: 25px;margin-right: 15px">
+            <a href="/forgot-password" id="forget-password" class="forget-password">Forgot Password?</a>
+        </div>
+        <div class="form-actions" style="display:inline-block;margin-left:-15px">
+            <button type="submit" class="btn btn-success uppercase">Next</button>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block js %}
+<!-- include developer js file -->
+<script src="/javascripts/developer.js"></script>
+{% endblock %}
+
+
+

@@ -1,0 +1,60 @@
+{% extends "../layout.html" %}
+
+{% block content %}
+<div class="page-content">
+    <div class="row margin-top-12">
+        <!-- Begin Form -->
+        <div class="col-md-12">
+            {% include "../validationError.html" %}
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="glyphicon glyphicon-user"></i>Query details
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label"><b>User Name:</b> </label>
+                                <input class="form-control placeholder-no-fix" value="{{query_data.name}}" type="text" readonly/>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label"><b>User E-Mail:</b> </label>
+
+                                <input class="form-control placeholder-no-fix" value="{{query_data.email}}" type="text" readonly/>
+                            </div>              
+                            <div class="form-group">
+                                <label class="control-label"><b>Phone Number:</b> </label>
+                                <input class="form-control placeholder-no-fix" value="{{query_data.phone}}" type="text" readonly/>
+                            </div>            
+                            <div class="form-group">
+                                <label class="control-label"><b>Category:</b> </label>
+                                <input class="form-control placeholder-no-fix" value="{{query_data.subject}}" type="text" readonly/>
+                            </div>            
+                            <div class="form-group">
+                                <label class="control-label"><b>Description:</b> </label>
+                                <textarea class="form-control" rows="6" readonly> {{query_data.message}}</textarea>
+                            </div> 
+                            <div class="form-group">
+                                <label class="control-label"><b>Date Posted:</b> </label>
+                                <input class="form-control placeholder-no-fix" value="{{query_data.created_at}}" type="text" readonly/>
+                            </div>
+                            <br>
+                            <div class="form-actions text-left">
+                                <a class="btn default" href="/contact_us">Cancel</a><br><br>
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

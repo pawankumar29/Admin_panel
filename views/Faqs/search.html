@@ -1,0 +1,43 @@
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <!--<th width="3%"><input type="checkbox" id="checkAll"/></th>-->
+                <th width="5%">S.No.</th>
+                <th>Question</th>
+                <th width="50%">Answer</th>
+                <th width="5%">Status</th>
+                <th width="15%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--	Listing users data	-->
+            {% set curr = response.current-1  %}
+            {% set index = curr*response.options.perPage+1  %}                                
+            {% if response.results != "" %}
+            {% for faq in response.results %}
+            <tr>
+                <!--<td width="3%"><span class="checked"><input type="checkbox" class="check" name="chk" value="{{faq.id}}"></span></td>-->
+                <td>{{index}}</td>
+                <td>{{faq.heading}}</td>
+                <td>{{faq.description.substring(0,80)| safe | striptags}}{% if faq.description.length > 80 %} ... {% endif %}</td>
+                {% if faq.status == 1  %}
+                <td><a class="change_status btn btn-circle btn-icon-only btn-default" href="javascript:;" val="{{faq._id}}" value="0" title="Click to Inactive"><i class="fa fa-circle" style="color:green"></i></a></td>
+                {% else %}
+                <td><a class="change_status btn btn-circle btn-icon-only btn-default" href="javascript:;" val="{{faq._id}}" value="1" title="Click to Active"><i class="fa fa-circle" style="color:red"></i></a></td> 
+                {% endif %}
+                <td>
+                    <!--                                                    <a  class="view btn btn-circle btn-icon-only btn-default" title="View Detail" data-toggle="modal" user_id="{{faq.id}}"><i style="color:green" class="fa fa-eye"></i></a>  -->
+                    <a  class="btn btn-circle btn-icon-only btn-default" title="Edit" href="/faqs/edit/{{faq._id}}"><i style="color:orange" class="fa fa-edit"></i></a> 
+                    <a  class="delete btn btn-circle btn-icon-only btn-default" title="Delete" deleteLink="/faqs/delete/{{faq._id}}"><i style="color:red" class="fa fa-times"></i></a>
+                </td>
+            </tr>
+            {% set index=index+1 %}                                
+            {% endfor %}
+            {% else %}
+            <tr><td colspan="10" ><p class="text-center">No records to display</p></td></tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+<div class="text-center">{% include "../paginate.html" %}</div><br><br>
