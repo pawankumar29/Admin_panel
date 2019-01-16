@@ -1,6 +1,6 @@
 var swig = require('swig');
 var nodemailer = require('nodemailer');
-const ev = require("../env");
+const env = require("../env");
 // create  smtp transport
 var smtpTransport = nodemailer.createTransport(global.config.smtp);
 
