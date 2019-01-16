@@ -1,7 +1,7 @@
 var local = {
     name: 'development',
-    serviceUrl: 'http://127.0.0.1:3001/',
-//        adminUrl: 'http://192.168.0.78:3017/',
+    serviceUrl: 'http://127.0.0.1:3038/',
+    adminUrl: 'http://127.0.0.1:3039/',
     server: {
         host: '127.0.0.1',
         port: '3039'

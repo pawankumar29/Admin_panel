@@ -28,9 +28,8 @@
             fieldset[disabled] .form-control {
                 cursor: default !important;
             }
-
             .error {
-                color: red
+                color: #a94442
             }
         </style>
 
@@ -69,13 +68,18 @@
             </div>
         </div>
         <script src="{{getVersionedPath('/assets/layout/javascript/jquery.min.js')}}" type="text/javascript"></script>
+        <script src="{{getVersionedPath('/assets/layout/javascript/jquery.cokie.min.js')}}" type="text/javascript"></script>
+        <script src="{{getVersionedPath('/assets/layout/javascript/jquery.validate.min.js')}}" type="text/javascript"></script>
+        <script src="{{getVersionedPath('/assets/layout/javascript/additional-methods.min.js')}}" type="text/javascript"></script>
+        <!-- END PAGE LEVEL PLUGINS -->
+        <script src="{{getVersionedPath('/javascripts/moment.js')}}" type="text/javascript"></script>
+        <script src="{{getVersionedPath('/javascripts/moment-timezone.js')}}" type="text/javascript"></script>
         <script>
-            jQuery(function () {
-                var d = new Date();
-                var n = d.getFullYear();
-                $("#year").html(n)
-                $.cookie("time_zone_name", moment.tz.guess());
-            });
+jQuery(function () {
+    var d = new Date();
+    var n = d.getFullYear();
+    $("#year").html(n)
+});
         </script> 
         {% block js %} 
         {% endblock %}

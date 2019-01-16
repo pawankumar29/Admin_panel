@@ -43,9 +43,9 @@ jQuery(document).ready(function () {
         },
         messages: {
             email: {
-                required: "Enter e-mail.",
+                required: "Please enter a valid email address.",
                 maxlength: "E-mail maximum length is 50.",
-                match: "Enter valid e-mail.",
+                match: "Please enter a valid email address.",
             }
         }
     });
@@ -146,12 +146,12 @@ jQuery(document).ready(function () {
                 required: "Enter current password."
             },
             newPassword: {
-                required: "Enter new password.",
-                rangelength: "Enter a password between 8 to 16 characters. Your password should include letters, numbers and special characters.",
+                required: "Please enter a new password.",
+                rangelength: "PLease enter a new password between 8 to 16 characters. Your password should include letters, numbers and special characters.",
                 match: "Enter a password between 8 to 16 characters. Your password should include letters, numbers and special characters."
             },
             confirmPassword: {
-                required: "Enter confirm password.",
+                required: "Please confirm  the password.",
                 equalTo: "The passwords you have entered do not match."
             }
         }

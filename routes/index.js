@@ -12,56 +12,55 @@ const passwordHash = require('password-hash');
 const passport = require('passport');
 // require the strategy that we want to use
 const LocalStrategy = require('passport-local').Strategy;
-
-
+const roles = require("../helper/roles");
+const users = mongoose.model("users");
 // Middleware for supplied strategy and their configuration
 passport.use(new LocalStrategy(
-    { usernameField: 'email', passwordField: 'password' },
-    function (email, password, done) {
-        try {
-            email = email.trim();
-            password = password.trim();
-            // find user by email
-            let query = { email: email, is_deleted: 0, type: 1 };
-            user.findOne(query).then((user) => {
-                if (!user) {
-                    return done(null, false, { message: 'There is no account currently associated with this e-mail' });
-                }
-                if (!passwordHash.verify(password, user.password)) {
-                    return done(null, false, { message: 'The password entered is incorrect. Try again' });
-                }
-                return done(null, user);
+        {usernameField: 'email', passwordField: 'password'},
+        function (email, password, done) {
+            try {
+                email = email.trim();
+                password = password.trim();
+                // find user by email
+                let query = {email: email, is_deleted: 0, role: {$ne: roles.app_user}};
+                user.findOne(query).then((user) => {
+                    if (user.status != 1) {
+                        return done(null, false, {message: 'There is no account currently associated with this e-mail'});
+                    } else if (!passwordHash.verify(password, user.data.password)) {
+                        return done(null, false, {message: 'The password entered is incorrect. Try again'});
+                    }
+                    return done(null, user.data);
 
-            })
-                .catch((error) => {
+                }).catch((error) => {
                     return done(error);
                 })
 
-        } catch (err) {
-            console.log(err);
-            return done(null, false, { message: err.message });
-            
-        }
-    }));
+            } catch (err) {
+                console.log(err);
+                return done(null, false, {message: err.message});
+
+            }
+        }));
 
 // SerializeUser method of passport
 passport.serializeUser(function (user, done) {
     try {
-        done(null, user.id);
+        console.log(user);
+        done(null, user._id);
     } catch (err) {
-        return done(null, false, { message: err.message });
+        return done(null, false, {message: err.message});
     }
 });
 
 // DeserializeUser method of passport
 passport.deserializeUser(function (id, done) {
     try {
-        user.findById(id, function (err, user) {
+        users.findById(id, function (err, user) {
             done(err, user);
         });
     } catch (err) {
         console.log(err);
-        return done(null, false, { message: err.message });
+        return done(null, false, {message: err.message});
     }
 });
 
@@ -83,12 +82,12 @@ router.post('/login', controller.post_login, passport.authenticate('local', {
 }), function (req, res, next) {
     try {
         req.body.email = req.body.email.toLowerCase().trim();
-        res.cookie('friendSpire', req.body.email, { httpOnly: true, maxAge: 28800000 });
+        res.cookie('friendSpire', req.body.email, {httpOnly: true, maxAge: 28800000});
         req.session.image = 'logo.png';
         res.redirect('/dashboard');
     } catch (err) {
         console.log(err);
-        res.render('error', { error: err });
+        res.render('error', {error: err});
     }
 });
 
