@@ -45,7 +45,8 @@ passport.use(new LocalStrategy(
 // SerializeUser method of passport
 passport.serializeUser(function (user, done) {
     try {
-        console.log(user);
+        console.log("user login");
+        console.log({_id: user._id, name: user.name});
         done(null, user._id);
     } catch (err) {
         return done(null, false, {message: err.message});
@@ -82,7 +83,7 @@ router.post('/login', controller.post_login, passport.authenticate('local', {
 }), function (req, res, next) {
     try {
         req.body.email = req.body.email.toLowerCase().trim();
-        res.cookie('friendSpire', req.body.email, {httpOnly: true, maxAge: 28800000});
+        res.cookie('campus_recruiter', req.body.email, {httpOnly: true, maxAge: 28800000});
         req.session.image = 'logo.png';
         res.redirect('/dashboard');
     } catch (err) {

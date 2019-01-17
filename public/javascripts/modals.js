@@ -119,10 +119,7 @@ $(document).ready(function () {
 
     $('#otp_send_btn').click(function () {
         var otp = $('#get_otp').val();
-
-
         if ($('#getOtp-form').valid()) {
-
             $.ajax({
                 url: '/otp_verification',
                 type: "POST",

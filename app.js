@@ -71,7 +71,7 @@ module.exports.appPromise = startTheAsyncOperation().then(() => {
     app.use('/', function (req, res, next)
     {
         if (req.user) {
-            res.locals.user = req.user;
+            res.locals.user = {_id: req.user._id, name: req.user.name, role: req.user.role, profile_pic: req.user.profile_pic, organisation_id: req.user.organisation_id};
 //            res.locals.session = req.session;
             res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
             next();

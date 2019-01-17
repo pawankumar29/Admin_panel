@@ -14,7 +14,7 @@
         <!-- BEGIN RESPONSIVE MENU TOGGLER -->
         <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
         </a>
-      
+
         <!-- END RESPONSIVE MENU TOGGLER -->
         <!-- BEGIN TOP NAVIGATION MENU -->
         <div class="top-menu">
@@ -63,12 +63,12 @@
                 <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                 <li class="dropdown dropdown-user">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-               
+
                         <img alt="no-image" class="img-circle" src="{{user.profile_pic}}" onerror="this.src = '{{image}}'" height="30px" width="30px" id="admin_image"/>
-                        
+
 
                         <span class="username username-hide-on-mobile">
-                            {{user.firstName}} {{user.lastName}} </span>
+                            {{user.name}} </span>
                         <i class="fa fa-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-default">
@@ -80,10 +80,10 @@
                             <a href="/dashboard/changePassword">
                                 <i class="icon-key"></i>Change Password</a>
                         </li>
-<!--                        <li>
-                            <a href="/dashboard/settings">
-                                <i class="glyphicon glyphicon-cog"></i>Settings</a>
-                        </li>-->
+                        <!--                        <li>
+                                                    <a href="/dashboard/settings">
+                                                        <i class="glyphicon glyphicon-cog"></i>Settings</a>
+                                                </li>-->
                         <hr>
                         <li>
                             <a href="/logout">

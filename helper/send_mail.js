@@ -7,9 +7,8 @@ var smtpTransport = nodemailer.createTransport(global.config.smtp);
 // send mail
 exports.send = function (to, subject, content) {
     var tpl_swig = swig.compileFile('public/mail_page/index.html');
-    let logo_url = global.logo_path;
-    var template = tpl_swig({content: content, image_logo: env.adminUrl + 'images/logo.png'});
-
+    var template = tpl_swig({content: content, logo_path: env.adminUrl + global.logo_path});
+    console.log(env.adminUrl + global.logo_path);
     smtpTransport.sendMail({
         from: global.config.admin_email, // sender address from configuration collection
         to: to, // user email_id
@@ -17,7 +16,7 @@ exports.send = function (to, subject, content) {
         html: template
     }, function (mailError, info) {
         if (!mailError) {
-
+            
             console.log(info);
             console.log('mail_info ' + info.messageId);
         } else {
@@ -30,7 +29,7 @@ exports.send = function (to, subject, content) {
 // send mail
 exports.send_with_attachment = function (to, subject, content, pdf_name, pdfData) {
     var tpl_swig = swig.compileFile('public/mail_page/index.html');
-    var template = tpl_swig({content: content, image_logo: env.adminUrl + 'images/logo.png'});
+    var template = tpl_swig({content: content, logo_path: env.adminUrl + 'images/logo.png'});
     smtpTransport.sendMail({
         from: config.admin_email, // sender address from configuration collection
         to: to, // user email_id
@@ -49,16 +48,11 @@ exports.send_with_attachment = function (to, subject, content, pdf_name, pdfData
 
 exports.send_to_all = function (code_info, email_array, subject, content) {
     var tpl_swig = swig.compileFile('public/mail_page/index.html');
-    content = content.replace('@name@', code_info.code);
-    content = content.replace('@discount@', code_info.discount);
-    content = content.replace('@description@', code_info.description);
-    content = content.replace('@expiry@', code_info.expiry);
-
     var template;
     for (var i = 0; i < email_array.length; i++) {
         console.log(email_array[i].email);
         content = content.replace('@cust_name@', email_array[i].name);
-        template = tpl_swig({content: content, image_logo: env.adminUrl + 'images/logo.png'});
+        template = tpl_swig({content: content, logo_path: env.adminUrl + 'images/logo.png'});
         smtpTransport.sendMail({
             from: config.admin_email, // sender address from configuration collection
             to: email_array[i].email, // user email_id

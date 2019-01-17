@@ -14,5 +14,6 @@ config = local;
 
 global.fav_icon_path = "/images/favicon.ico";
 global.logo_path = "/images/logo.png";
+global.image = "/images/default.png"
 
 module.exports = config;

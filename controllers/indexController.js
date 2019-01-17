@@ -21,7 +21,7 @@ var crypto = require('crypto'),
 
 // function for encrypt the text
 function encrypt(text) {
-  
+
     var cipher = crypto.createCipher(algorithm, password);
     var crypted = cipher.update(text, 'utf8', 'hex');
     crypted += cipher.final('hex');
@@ -96,7 +96,7 @@ exports.get_auth = (req, res, next) => {
 exports.post_auth = (req, res, next) => {
     try {
         req.body.email = req.body.email.toLowerCase().trim();
-        let query = {email: req.body.email, is_deleted: 0, role: {$ne: roles.app_user}};
+        let query = {email: req.body.email, is_deleted: 0, status: 1, role: {$ne: roles.app_user}};
         user.findOne(query).then((user) => {
             if (user["status"] == 1) {
                 res.cookie('temp_email', req.body.email);
@@ -139,7 +139,7 @@ exports.post_login = (req, res, next) => {
         }
         req.body.email = req.body.email.toLowerCase().trim();
         req.body.password = req.body.password.trim();
-        let query = {email: req.body.email, is_deleted: 0, type: 1};
+        let query = {email: req.body.email, is_deleted: 0, status: 1, role: {$ne: roles.app_user}};
         user.findOne(query).then((data) => {
             if (data.status == 1) {
                 if (!passwordHash.verify(req.body.password, data.data.password)) {
@@ -191,7 +191,7 @@ exports.post_forgot_password = (req, res, next) => {
         let logo = '';
         req.body.email = req.body.email.toLowerCase().trim();
         // find data from database for confirmation
-        let user_promise = user.findOne({email: req.body.email, role: {$ne: roles.app_user}, is_deleted: 0});
+        let user_promise = user.findOne({email: req.body.email, role: {$ne: roles.app_user}, status: 1, is_deleted: 0});
 //        let template_promise = email_template.findOne({type: template_json.forgot_password_admin, organisation_id: mongoose.Types.ObjectId()});
         let password_resets_promise = password_resets.remove({email: req.body.email});
 
@@ -221,7 +221,7 @@ exports.post_forgot_password = (req, res, next) => {
                                 content = content.replace('@link@', link);
                                 content = content.replace('@project_name@', global.config.project_name);
                                 subject = subject.replace('@project_name@', global.config.project_name);
-                                let tpl_admin = tpl_swig({content: content, image_logo: env.adminUrl + 'images/logo.png'});
+                                let tpl_admin = tpl_swig({content: content, logo_path: env.adminUrl + 'images/logo.png'});
                                 // call the sendMail method
                                 smtpTransport.sendMail(
                                         {
@@ -306,7 +306,7 @@ exports.post_reset_password = (req, res, next) => {
                     email = pwdResetData.email;
                     req.body.password = passwordHash.generate(req.body.password);
                     /* update password corresponding to email coming from password-reset */
-                    return user.findOneAndUpdate({email: pwdResetData.email}, {password: req.body.password});
+                    return user.findOneAndUpdate({email: pwdResetData.email, status: 1, is_deleted: 0}, {password: req.body.password});
                 }
             }).then((userdata) => {
                 let temp_id = template_json.password_changed;

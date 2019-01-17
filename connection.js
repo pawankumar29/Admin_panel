@@ -49,7 +49,10 @@ var userSchema = new Schema({
     status: {type: Number, default: 0}, // 0-inactive,1-active
     password: {type: String},
     phone_no: {type: String, default: ""},
+    profile_pic: {type: String, default: ""},
+    latest_token: {type: String},
     dob: {type: Date},
+    temp_email: {type: String},
 //    test_status: {type: Number, default: 0}, //user not allowed to login when test begin
     otp_code: {type: String, default: ""},
     otp_expiry: Date, // otp expiry is 30 min

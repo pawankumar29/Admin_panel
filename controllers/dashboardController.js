@@ -7,48 +7,30 @@ var mails = require('../helper/send_mail');
 var email = require('../email_template_cms_pages');
 var email_templates = require('../models/email_template');
 var passwordHash = require('password-hash'); // require passport-hash module for encrypt the password
-
+const roles = require("../helper/roles");
 
 
 
 /* GET method for dashboard */
 exports.dashboard_get = (req, res, next) => {
     new Promise((resolve, reject) => {
-        let user_count = 0;
-        let contact_us_count = 0;
-        let promise1 = users.count({
-            type: {$ne: 1},
-            status: {$ne: 2},
-            is_phone_verified: 1,
-            is_deleted: 0
-        });
-        let promise2 = contact.find_count({});
-        Promise.all([promise1, promise2]).then(([ user_data, contact_us_data ]) => {
-            if (user_data.status === 1) {
-                user_count = user_data.data;
-            }
-            if (contact_us_data.status === 1) {
-                contact_us_count = contact_us_data.data;
-            }
-            res.render('dashboard', {
-                active: 'dashboardpage',
-                title: 'Dashboard',
-                users: user_count,
-                contact_us: contact_us_count,
-            });
+        res.render('dashboard', {
+            active: 'dashboardpage',
+            title: 'Dashboard'
         });
     }).catch(err => {
         console.log(err);
         res.render('error', {error: err});
     });
 }
+
 //
 ///*dashboard get profile */
 exports.get_profile = (req, res, next) => {
 
     try {
         // find user by id that exists in user session       
-        users.findOne({_id: req.session.passport.user}).then((result) => {
+        users.findOne({_id: req.session.passport.user}, {name: 1, email: 1, profile_pic: 1}).then((result) => {
 
             res.render('profile', {id: req.session.passport.user, title: 'Edit Profile', user: result.data, message: req.flash()});
 
@@ -65,19 +47,18 @@ exports.get_profile = (req, res, next) => {
 ///**dashboard post profile */
 exports.post_profile = (req, res, next) => {
     try {
-
+        console.log(req.body);
         if (req.body.name) {
             req.body.name = req.body.name.trim();
         }
         // update user profile
-        users.update({_id: req.session.passport.user}, req.body).then((result) => {
+        users.update({_id: req.session.passport.user}, {name: req.body.name, profile_pic: req.body.profile_pic}).then((result) => {
             req.flash('success', 'Profile is Updated');
             res.redirect('/dashboard/profile');
         }).catch((error) => {
             req.flash('error', error);
             res.redirect('/dashboard/profile');
         });
-
 
     } catch (err) {
         res.render('error', {error: err});
@@ -182,25 +163,28 @@ exports.send_otp_post = (req, res, next) => {
         } else if (req.user.email === req.body.temp_email) {
             reject({message: 'Oops! Looks like this is your current email id.'});
         }
-        users.findOne({email: req.body.temp_email, is_deleted: 0, status: {$ne: 2}}).then((user_find) => {
+        users.findOne({email: req.body.temp_email, is_deleted: 0}).then((user_find) => {
             if (user_find.status !== 1) {
-                var temp_id = email.otp_verification;
-                return email_templates.findOne({_id: temp_id});
+                var temp_type = email.otp_verification_admin;
+                return email_templates.findOne({type: temp_type, organisation_id: req.user.organisation_id});
             } else {
                 return reject(Error('Email already exist.'));
             }
         }).then((template) => {
+
             if (template.status === 1) {
                 var otp_code = otp_generate.makeCode();
                 var otp_expiry = new Date();
                 otp_expiry.setMinutes(otp_expiry.getMinutes() + 30);
-
                 var content = template.data.content;
-                content = content.replace('@name@', req.user.firstName);
-                content = content.replace('@otp_code@', otp_code);
-                mails.send(req.user.email, template.data.subject, content);
-                return users.update({_id: req.user._id}, {otp_code: otp_code, otp_expiry: otp_expiry, temp_email: req.body.temp_email});
+                var subject = template.data.subject;
+                subject = subject.replace('@project_name@', global.config.project_name);
+                content = content.replace('@project_name@', global.config.project_name);
+                content = content.replace('@name@', req.user.name);
+                content = content.replace('@otp@', otp_code);
 
+                mails.send(req.user.email, subject, content);
+                return users.update({_id: req.user._id, status: 1, is_deleted: 0}, {otp_code: otp_code, otp_expiry: otp_expiry, temp_email: req.body.temp_email});
             } else {
                 return reject(Error(template.message));
             }
@@ -211,12 +195,9 @@ exports.send_otp_post = (req, res, next) => {
             } else {
                 return reject(Error(user_update.message));
             }
-
         }).catch((error) => {
-
             reject(error);
         });
-
     }).catch((err) => {
         res.send({message: err.message, status: 0});
     });
@@ -231,18 +212,23 @@ exports.resend_otp_get = (req, res, next) => {
         let otp_code = otp_generate.makeCode();
         let otp_expiry = new Date();
         otp_expiry.setMinutes(otp_expiry.getMinutes() + 30);
-        let temp_id = email.otp_verification;
-        let template_promise = email_templates.findOne({_id: temp_id});
-        let user_update_promise = users.update({_id: req.user._id}, {otp_code: otp_code, otp_expiry: otp_expiry});
+        var temp_type = email.otp_verification_admin;
+        let template_promise = email_templates.findOne({type: temp_type, organisation_id: req.user.organisation_id});
+        let user_update_promise = users.update({_id: req.user._id, status: 1, is_deleted: 0}, {otp_code: otp_code, otp_expiry: otp_expiry});
         Promise.all([template_promise, user_update_promise]).then(([template, user_update]) => {
             if (template.status === 1) {
-                let content = template.data.content;
-                content = content.replace('@name@', req.user.firstName);
-                content = content.replace('@otp_code@', otp_code);
-                mails.send(req.user.email, template.data.subject, content);
+                var content = template.data.content;
+                var subject = template.data.subject;
+                subject = subject.replace('@project_name@', global.config.project_name);
+                content = content.replace('@project_name@', global.config.project_name);
+                content = content.replace('@name@', req.user.name);
+                content = content.replace('@otp@', otp_code);
+                mails.send(req.user.email, subject, content);
+            } else {
+                reject(template);
             }
             if (user_update.status === 1) {
-                res.send({message: 'OTP sent successfully. Please enter the new OTP.', status: 1, otp_code: otp_code});
+                res.send({message: 'OTP sent successfully. Please enter the new OTP.', status: 1});
             } else {
                 return reject(Error(user_update.message));
         }
