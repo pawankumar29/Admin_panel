@@ -1,0 +1,102 @@
+<!-- BEGIN HEADER -->
+<div class="page-header md-shadow-z-1-i navbar navbar-fixed-top">
+    <!-- BEGIN HEADER INNER -->
+    <div class="page-header-inner">
+        <!-- BEGIN LOGO -->
+        <div class="page-logo">
+            <a href="/dashboard">
+                <img class="custom_for_logo" height="35px" width="35px" alt="no-image" src="{{logo_path}}"/>
+            </a>
+            <div class="menu-toggler sidebar-toggler hide">
+            </div>
+        </div>
+        <!-- END LOGO -->
+        <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+        <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+        </a>
+
+        <!-- END RESPONSIVE MENU TOGGLER -->
+        <!-- BEGIN TOP NAVIGATION MENU -->
+        <div class="top-menu">
+            <ul class="nav navbar-nav pull-right">
+                <!-- BEGIN NOTIFICATION DROPDOWN -->
+                <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+                <li id="header_notification_bar" class="dropdown dropdown-extended dropdown-notification">
+                    <a class="dropdown-toggle" id="notifications" data-close-others="true" data-toggle="dropdown" href="javascript;">
+                        <i class="icon-bell"></i>
+                        <span class="badge badge-default" id="notification_count"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="external">
+                            <h3><span class="bold" id="notification_pending_count">0 </span> pending notifications</h3>
+                            <br>
+                            <h6><a class="bold pull-right" id="mark_all_as_read" style="color:rgb(38,166,154)">Mark all as read</a></h6>
+                        </li>
+                        <li>
+                            <ul class="dropdown-menu-list scroller drowndropnotfication drowndropnotficationMa bold" style="height: 400px;" data-handle-color="#637283" id="notification_content">
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
+                    <a href="javascript:;" id="contact_notifications"  class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                        <i class="icon-users"></i>
+                        <span class="badge badge-default" id="contact_request_count"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="external">
+                            <h3><span class="bold" id="contact_request_pending_count"> 0 </span> pending contact requests</h3>
+                            <br>
+                            <h6><a class="bold pull-right" id="contact_mark_all_as_read" style="color:rgb(38,166,154)">Mark all as read</a></h6>
+                        </li>
+                        <li>
+                            <ul class="dropdown-menu-list scroller drowndropnotfication drowndropnotficationMa bold" style="height: 400px;" data-handle-color="#637283"  id="contact_request_content">
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <style>
+                    .drowndropnotficationMa .details{ position:relative; padding-left:40px; width:100%; display:block;}
+                    .drowndropnotficationMa .details span.label{ position:absolute; left:0; top:0;}
+                </style>
+                <!-- END NOTIFICATION DROPDOWN -->
+                <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+                <li class="dropdown dropdown-user">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+
+                        <img alt="no-image" class="img-circle" src="{{user.profile_pic}}" onerror="this.src = '{{image}}'" height="30px" width="30px" id="admin_image"/>
+
+
+                        <span class="username username-hide-on-mobile">
+                            {{user.name}} </span>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-default">
+                        <li>
+                            <a href="/dashboard/profile">
+                                <i class="icon-user"></i> My Profile </a>
+                        </li>
+                        <li>
+                            <a href="/dashboard/changePassword">
+                                <i class="icon-settings"></i>Change Password</a>
+                        </li>
+                        <!--                        <li>
+                                                    <a href="/dashboard/settings">
+                                                        <i class="glyphicon glyphicon-cog"></i>Settings</a>
+                                                </li>-->
+                        <hr>
+                        <li>
+                            <a href="/logout">
+                                <i class="icon-key"></i> Log Out </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- END USER LOGIN DROPDOWN -->
+            </ul>
+
+        </div>
+        <!-- END TOP NAVIGATION MENU -->
+    </div>
+    <!-- END HEADER INNER -->
+</div>
+<!-- END HEADER -->

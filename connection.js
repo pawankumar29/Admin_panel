@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var env = require('./env');
 
-mongoose.set('debug', true);
+//mongoose.set('debug', true);
 
 
 var organisationSchema = new Schema({
@@ -69,7 +69,8 @@ var userSchema = new Schema({
     last_login: {type: Number},
     device_type: {type: Number}, //1- android , 2-IOS,
     device_id: {type: String, default: ""},
-    app_version: {type: String}
+    app_version: {type: String},
+    theme: {type: Number, default: 1},
 }, {timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}});
 
 var roleSchema = new Schema({
@@ -92,9 +93,10 @@ var instituteSchema = new Schema({
     name: {type: String, default: ""},
     po_name: {type: String, default: ""},
     po_phone_no: {type: String, default: ""},
-    no_of_number: {type: Number, default: 0},
+    no_of_students: {type: Number, default: 0},
     qualification: {type: [String], default: []},
     instruction: {type: [String], default: []},
+    is_walkin: {type: Number, default: 0},
     status: {type: Number, default: 1}, // 0-inactive,1-active     
     is_deleted: {type: Number, default: 0}, //1-deleted by admin
 }, {timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}});
@@ -199,7 +201,8 @@ var settingSchema = new Schema({
     'secret': {type: String, default: ""},
     'project_name': {type: String, default: ""},
     'copyright_project_name': {type: String, default: ""},
-    'pagination_limit': {type: Number, default: ""},
+    'pagination_limit': {type: Number, default: 15},
+    'delta': {type: Number, default: 4},
     'app_info_email': {type: String, default: ""},
     'admin_email': {type: String, default: ""},
     'smtp': {type: Schema.Types.Mixed},

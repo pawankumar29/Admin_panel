@@ -1,24 +1,23 @@
-
-{% if response.count > 15  %}
+{% if count > options.perPage  %}
 <div class="margin-top-20">
     <ul class="pagination">
         <li>
-            <a href="javascript:;" page=1 {% if response.current == response.prev %} style="display:none" {% endif %}>
+            <a href="javascript:;" page=1 {% if current == prev %} style="display:none" {% endif %}>
                First </a>
         </li>
         <li>
-            <a href="javascript:;" page={{response.prev}} {% if response.current == response.prev %} style="display:none" {% endif %}>
+            <a href="javascript:;" page={{prev}} {% if current == prev %} style="display:none" {% endif %}>
                Prev </a>
         </li>
-        {% for page in response.pages %}
-        <li {% if response.current == page %} class="active" {% endif %}><a href="javascript:;" page={{page}}> {{page}} </a></li>
+        {% for page in pages %}
+        <li {% if current == page %} class="active" {% endif %}><a href="javascript:;" page={{page}}> {{page}} </a></li>
         {% endfor %}
         <li>
-            <a href="javascript:;" page={{response.next}} {% if response.next == response.last  %} style="display:none" {% endif %}>
+            <a href="javascript:;" page={{next}} {% if response.next == response.last  %} style="display:none" {% endif %}>
                Next </a>
         </li>
         <li>
-            <a href="javascript:;" page={{response.last}} {% if response.next == response.last  %} style="display:none" {% endif %}>
+            <a href="javascript:;" page={{last}} {% if response.next == response.last  %} style="display:none" {% endif %}>
                Last </a>
         </li>
     </ul>

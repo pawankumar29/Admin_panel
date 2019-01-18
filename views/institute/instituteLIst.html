@@ -8,6 +8,43 @@
         text-align: left !important;
         padding:15px
     }
+    .action_dropdown {
+        height:30px;
+        width:30px;
+        background-color: white;
+    }
+    .action_dropdown > i{
+        color:black;
+    }
+    .dropdown-left-manual {
+        right: 0;
+        left: auto;
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+    .dropdown > .dropdown-menu:after, .dropdown-toggle > .dropdown-menu:after, .btn-group > .dropdown-menu:after {
+        position: absolute;
+        top: -7px;
+        left: auto;
+        right: 20px;
+        display: inline-block !important;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #fff;
+        border-left: 7px solid transparent;
+        content: '';
+    }
+    .dropdown > .dropdown-menu:before, .dropdown-toggle > .dropdown-menu:before, .btn-group > .dropdown-menu:before {
+        position: absolute;
+        top: -7px;
+        left: auto;
+        right: 20px;
+        display: inline-block !important;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #fff;
+        border-left: 7px solid transparent;
+        content: '';
+
+    }
 </style>
 
 {% endblock %}
@@ -21,7 +58,7 @@
             <div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-user"></i>Manage Users
+                        <i class="fa fa-user"></i>{{title}}
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -34,68 +71,19 @@
                         <br/>
                     </div>
                     <div class="">
-                        <input type="hidden" id="url" name="url" value="/users/">
-                        <input type="hidden" id="filterUrl" name="filterUrl" value="/users/">
+                        <input type="hidden" id="url" name="url" value="/institutes/">
+                        <!--<input type="hidden" id="filterUrl" name="filterUrl" value="/users/">-->
                         <!-- <input type="text" id="export_csv_url" name="export_csv_url" value="/users/getcsv" hidden> -->
-                        <!--search panel on the top --start---->
-                        <form id="filter_form">
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-                                    <div class="col-md-5 form-group">
-                                        <label class="control-label">
-                                            <b>Search By </b>
-                                        </label>
-                                        <input id="search_by" class="form-control searchList" type="text" name="search_by" autocomplete="off" placeholder="Name or E-mail">
-                                        <label id="search_by_error" class="error" for="search_by" hidden>Enter only letters or numbers.</label>
-                                    </div>
-                                    <div class="col-md-3 form-group">
-                                        <label class="control-label">
-                                            <b>Gender</b>
-                                        </label>
-                                        <!-- <select id="sort_field" class="form-control" name="sort_field"> -->
-                                        <select id="filter_gender" class="form-control" name="gender">
-                                            <option value="">--Select--</option>
-                                            <option value="1">Male</option>
-                                            <option value="2">Female</option>
-                                            <option value="3">Others</option>
-                                            <option value="all">All</option>
-                                        </select>
-                                    </div>
-                                    <!-- <div id="sort_type_error" class="col-md-3 form-group"> -->
-                                    <div  class="col-md-3 form-group">
-                                        <label class="control-label">
-                                            <b>User Status</b>
-                                        </label>
-                                        <!-- <select id="sort_type" class="form-control" name="sort_type" disabled> -->
-                                        <select id="filter_status" class="form-control" name="status" >
-                                            <option value="">--Select--</option>
-                                            <option value="1">Active</option>
-                                            <option value="0">Inactive</option>
-                                            <option value="all">All</option>
-                                        </select>
-                                    </div>
-                                    <br>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 form-group text-center">
-                                    <button id="filter" class="btn btn-primary btn-danger btn-sm" type="button" title="Filter">Filter</button>
-                                    <button id="clear" class="btn btn-primary btn-primary btn-sm clear_form" type="button" title="Reset">Reset</button>
-                                </div>
-                            </div>
-                        </form>
-                        <!--search panel on the top --ends---->
                         <div class="row">
                             <br/>
                         </div>
-                        <form id="frm" action="/users/multipleChangeStatus" method="post">
+                        <form id="frm" action="/institutionss/multipleChangeStatus" method="post">
                             <input type="hidden" id="action" name="action">
                             <div id="ajaxResponce">
                                 <!-- To show Ajax Responce -->
-                                {% include "./search.html" %}
+                                {% include "./table.html" %}
                             </div>
                         </form>
-                        {% include "./user_disable_model.html" %}
                     </div>
                 </div>
             </div>
@@ -105,7 +93,7 @@
 </div>
 
 
-<div id="user-details" class="modal fade" tabindex="-1" aria-hidden="true">
+<!--<div id="user-details" class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header text-left">
@@ -120,11 +108,11 @@
                                 <tr >
                                     <th width="30%">User Profile Pic</th>
                                     <td width="50%" class="profile_pic">
-                                        <!--                                        <a class="single_image" title="Click to view" id="single_image" href="">-->
+                                                                                <a class="single_image" title="Click to view" id="single_image" href="">
                                         <a href="#" class="pop">
                                             <img id="myimg" alt="Profile-image" class="img-circle" style="width: 50px; height: 50px;" src="" />
                                         </a>
-                                        <!--</a>-->
+                                        </a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -152,11 +140,11 @@
                                     <td class="phone"></td>
                                 </tr>
                                 <tr >
-                                    <!--                                <tr >
+                                                                    <tr >
                                     >>>>>>> b595a7034034db342140ce08d522478e1feb84f8
                                                                         <th>Date Of Birth</th>
                                                                         <td class="dob"></td>
-                                                                    </tr>-->
+                                                                    </tr>
                                 <tr >
                                     <th>Location</th>
                                     <td class="location"></td>
@@ -172,11 +160,11 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 
 <!-- The Modal -->
-<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">              
             <div class="modal-body">
@@ -185,7 +173,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 {% endblock %} {% block js %}
 
@@ -198,12 +186,14 @@
 <script src="{{getVersionedPath('/javascripts/bootbox.min.js')}}" type="text/javascript"></script>
 <!-- include pagination js file -->
 <script src="{{getVersionedPath('/javascripts/pagination.js')}}"></script> 
+<script src="/javascripts/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+
 <script>
 $(function () {
-    $('.pop').on('click', function () {
-        $('.imagepreview').attr('src', $(this).find('img').attr('src'));
-        $('#imagemodal').modal('show');
-    });
+//    $('.pop').on('click', function () {
+//        $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+//        $('#imagemodal').modal('show');
+//    });
 });
 </script>
 {% endblock %}

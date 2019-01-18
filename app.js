@@ -71,7 +71,7 @@ module.exports.appPromise = startTheAsyncOperation().then(() => {
     app.use('/', function (req, res, next)
     {
         if (req.user) {
-            res.locals.user = {_id: req.user._id, name: req.user.name, role: req.user.role, profile_pic: req.user.profile_pic, organisation_id: req.user.organisation_id};
+            res.locals.user = {_id: req.user._id, name: req.user.name, theme: req.user.theme, role: req.user.role, profile_pic: req.user.profile_pic, organisation_id: req.user.organisation_id};
 //            res.locals.session = req.session;
             res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
             next();
@@ -84,14 +84,8 @@ module.exports.appPromise = startTheAsyncOperation().then(() => {
 
 
     app.use('/dashboard', require('./routes/dashboard'));
-    app.use('/faqs', require('./routes/faqs'));
-    app.use('/pages', require('./routes/pages'));
-    app.use('/emailTemplate', require('./routes/emailTemplate'));
-    app.use('/contact_us', require('./routes/contact_us'));
-    app.use('/users', require('./routes/users'));
+    app.use('/institutes', require('./routes/institutes'));
     app.use('/otp_verification', require('./routes/otp_verification'));
-    app.use('/get_contact_messages', require('./routes/get_contact_messages'));
-//app.use('/get_notifications', require('./routes/get_notifications'));
 
 // middleware for logout
     app.get('/logout', function (req, res) {

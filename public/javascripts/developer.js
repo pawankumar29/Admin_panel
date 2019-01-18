@@ -223,12 +223,7 @@ jQuery(document).ready(function () {
             }
         },
         rules: {
-            firstName: {
-                match: /^[a-z,0-9,'-]+$/i,
-                rangelength: [3, 20],
-                required: true
-            },
-            lastName: {
+            name: {
                 match: /^[a-z,0-9,'-]+$/i,
                 rangelength: [3, 20],
                 required: true
@@ -239,14 +234,9 @@ jQuery(document).ready(function () {
             }
         },
         messages: {
-            firstName: {
+            name: {
                 required: "Enter first name.",
                 rangelength: "Enter first name between 3 to 20 characters.",
-                match: "Enter only numbers and letters."
-            },
-            lastName: {
-                required: "Enter last name.",
-                rangelength: "Enter last name between 3 to 20 characters.",
                 match: "Enter only numbers and letters."
             },
             photo: {
