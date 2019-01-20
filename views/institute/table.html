@@ -62,25 +62,62 @@
                     {% endif %}
                 </td>
                 <td>
-                                        <div class=" dropdown dropleft button-group">
-                                            <button type="button" class="btn btn-default btn-circle btn-icon-only  action_dropdown dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-chevron-down"></i></button>
-                                            <ul class="dropdown-menu dropdown-left-manual" role="menu" aria-labelledby="dropdownMenuButton">
-                                                <li>
-                                                    <i class="fa fa-home"></i>
-                                                    <span class="title">Edit Details</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-<!--                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropdown button
-                        </button>
-                        <div class="dropdown-menu" >
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>-->
+                    <div class=" dropdown dropleft button-group">
+                        <button type="button" class="btn btn-default btn-circle btn-icon-only  action_dropdown dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-chevron-down"></i></button>
+                        <ul class="dropdown-menu dropdown-left-manual" role="menu" aria-labelledby="dropdownMenuButton">
+                            <li><a>
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                    <span>Edit Details</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <i class="fa fa-users"></i>
+                                    <span>Manage Students</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <i class="glyphicon glyphicon-th-large"></i>
+                                    <span>Add quiz Categories</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <i class="fa fa-info"></i>
+                                    <span>Manage Instructions</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    <span>Add new Batch</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <i class="fa fa-history"></i>
+                                    <span>View History</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                    <span>Delete Institution</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--                    <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Dropdown button
+                                            </button>
+                                            <div class="dropdown-menu" >
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                            </div>
+                                        </div>-->
                 </td>
             </tr>
             {% set index=index+1 %}

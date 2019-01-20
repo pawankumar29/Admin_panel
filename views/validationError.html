@@ -1,9 +1,12 @@
-{% if errorList %}
-<div class="alert alert-danger" >	
-    <strong>Error!</strong>		
-    {% for err in errorList %}
-    <li>{{err.message}}</li>
-    {% endfor %}
-    <br>
+{% if errorList.length > 0 %}
+<div class="alert alert-danger">
+    <strong>Error!</strong>
+    <ul>
+        {% for err in errorList %} {{err.msg}}
+        <li>{{err.msg}}</li>
+        {% endfor %}
+        <br>
+    </ul>
+
 </div>
 {% endif %}

@@ -2,14 +2,15 @@ var express = require('express');
 var router = express.Router();
 const controller = require("../controllers/instituteController");
 
-
-
 /* GET method for list and search Users  */
 router.get('/', controller.get_institutions);
 
-// get user details
-//router.get('/user_detail/:id', controller.get_user_detail);
-//
+// get add institute page-
+router.get('/add', controller.add_institutions);
+
+// get institution
+router.post('/add', controller.add_new_institutions);
+
 //// disable user
 //router.post('/disable_user', controller.post_disable_user);
 //
@@ -18,6 +19,5 @@ router.get('/', controller.get_institutions);
 
 //predictive search
 // router.post('/search_by',controller.predictive_search);
-
 
 module.exports = router;
