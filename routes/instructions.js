@@ -6,7 +6,7 @@ const controller = require("../controllers/instructionsController");
 router.get('/:id', controller.get_instructions);
 
 
-//router.put('/edit/:id', controller.post_edit_institution);
+router.delete('/', controller.edit_instruction);
 
 
 //// disable user
