@@ -1,0 +1,119 @@
+{% extends "../layout.html" %} 
+{% block content %}
+<!-- BEGIN THEME STYLES -->
+
+<link rel="stylesheet" type="text/css" href="{{getVersionedPath('/stylesheets/dataTables.bootstrap.js')}}"/>
+
+{% block css %}
+<style>
+    label.error {
+        color: red;
+    }
+    .form-actions {
+        padding-top: 20px;
+        text-align: center;
+    }
+    .content {
+        overflow-y: auto;    /* Trigger vertical scroll    */
+        overflow-x: hidden; 
+    };
+    .pt-3-half {
+        padding-top: 1.4rem;
+    }
+    textarea.md-textarea-scroll{
+        overflow-y: visible;
+    }
+    textarea.md-textarea {
+        padding: 0;
+        resize: none;
+        min-height: 2rem;
+        width:100%
+    }
+</style>
+{% endblock %}
+<div class="page-content">
+    <div class="row margin-top-12">
+        <div class="col-md-12">
+            {% include "../flashMessage_Success.html" %}
+            <!-- BEGIN BORDERED TABLE PORTLET-->
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="glyphicon glyphicon-plus"></i>{{title}}
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <table class="table table-responsive-md">
+                        {% set index = 1 %}
+                        {% for data in instructions %}
+                        <tr>
+                            <td class="col-md-1">{{index}}<input type="hidden" value="{{data}}"></td>
+                            <td class="col-md-8 content" editabl ="true">{{data}}</td>
+                            <td class = "col-md-2">
+                                <span class="table-remove">
+                                    <button type="button" class="btn btn-icon-only yellow edit"><i class="fa fa-edit"></i></button>
+                                    <button type="button" class="btn btn-icon-only red delete"><i class="fa fa-trash"></i></button>
+                                </span>
+                            </td>
+                        </tr>
+                        {% set index=index+1 %}
+                        {% endfor %}
+                        <!-- This is our clonable table line -->
+                    </table>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn blue pull-left add">Add New</button>
+                        </div>
+                    </div>
+                    <!-- Editable table -->
+
+                </div>
+                <!-- Editable table -->
+
+            </div>
+        </div>                            
+    </div>      
+</div>
+
+
+{% endblock %} 
+{% block js %}
+<script src="{{getVersionedPath('/javascripts/institutes.js')}}" type="text/javascript"></script>
+<script type="text/javascript">
+let date = new Date();
+let year = parseInt(date.getFullYear() + 5);
+jQuery(document).ready(function () {
+//    var $textarea = $('#textarea');
+//    $textarea.on('keyup', function (evt) {
+//        var $this = $(this);
+//        var height = $this.height();
+//        evt.which === 13 && height < 200 ? $this.height(height += 25) : $this.addClass("md-textarea-scroll");
+//    });
+    var $TABLE = $('#table');
+    $('.table-add').click(function () {
+        var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
+        $TABLE.find('table').append($clone);
+    });
+    $('.edit').click(function () {
+//        $(this).parents('tr').detach();
+        console.log("edit");
+    });
+    $('.delete').click(function () {
+//        $(this).parents('tr').detach();
+        console.log("delete")
+        console.log($(this).parents("td").siblings(':first').children().val());
+    });
+//    $('.table-up').click(function () {
+//        var $row = $(this).parents('tr');
+//        if ($row.index() === 1)
+//            return; // Don't go above the header
+//        $row.prev().before($row.get(0));
+//    });
+//    $('.table-down').click(function () {
+//        var $row = $(this).parents('tr');
+//        $row.next().after($row.get(0));
+//    });
+});
+</script>
+{% endblock %}

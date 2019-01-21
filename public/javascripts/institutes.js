@@ -1,17 +1,26 @@
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
+    $("input[type=file]").on('change', function (event) {
+        if (event.target.files.length > 0) {
+            $("#batch").attr("required", true);
+        } else {
+            $("#batch").attr("required", false);
+            $("#batch").next("label").remove();
+        }
+    });
+
     $('.institute-form').validate({
         focusInvalid: false,
         ignore: [],
-        invalidHandler: function(form, validator) {
+        invalidHandler: function (form, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 validator.errorList[0].element.focus();
             }
         },
         rules: {
-            batch: {
-                required: true
-            },
+//            batch: {
+//                required: true
+//            },
             name: {
                 required: true,
                 minlength: 2,
@@ -24,7 +33,7 @@ jQuery(document).ready(function() {
             },
             po_email: {
                 required: {
-                    depends: function() {
+                    depends: function () {
                         $(this).val($.trim($(this).val()));
                         return true;
                     }
@@ -37,11 +46,11 @@ jQuery(document).ready(function() {
             }
         },
         messages: {
-            batch: {
-                required: "Please select Batch.",
-                minlength: "Please enter 4 characters.",
-                maxlength: "Please enter 4 characters."
-            },
+//            batch: {
+//                required: "Please select Batch.",
+//                minlength: "Please enter 4 characters.",
+//                maxlength: "Please enter 4 characters."
+//            },
             name: {
                 required: "Please enter name of Institute.",
                 minlength: "Please enter atleast 3 characters.",
@@ -62,7 +71,7 @@ jQuery(document).ready(function() {
             }
 
         },
-        errorPlacement: function(error, element) {
+        errorPlacement: function (error, element) {
             if (element.attr("name") == "po_email") {
                 error.insertAfter(element.parent("div"));
             } else {

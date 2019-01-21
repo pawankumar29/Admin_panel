@@ -27,7 +27,7 @@
                     </li>
                     <!-- BEGIN NOTIFICATION DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                    <li class="dropdown dropdown-extended dropdown-notification dropdown-dark" id="header_notification_bar">
+                    <li class="dropdown dropdown-extended dropdown-notification dropdown" id="header_notification_bar">
                         <a class="dropdown-toggle" id="notifications" data-close-others="true" data-toggle="dropdown" href="javascript;">
                             <i class="icon-bell"></i>
                             <span class="badge badge-default" id="notification_count">0</span>
@@ -48,7 +48,7 @@
                     </li>
                     <!-- BEGIN INBOX DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                    <li class="dropdown dropdown-extended dropdown-tasks dropdown_dark" id="header_task_bar">
+                    <li class="dropdown dropdown-extended dropdown-tasks dropdown" id="header_task_bar">
                         <a id="contact_notifications"  class="dropdown-toggle" data-toggle="dropdown" data-close-others="true" href="javascript;">
                             <i class="icon-users"></i>
                             <span class="badge badge-default" id="contact_request_count">0</span>
@@ -71,7 +71,7 @@
 
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                    <li class="dropdown dropdown-user dropdown-dark">
+                    <li class="dropdown dropdown-user dropdown">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <span class="username username-hide-on-mobile">
                                 {{user.name}} </span>
@@ -88,11 +88,15 @@
                                 <a href="/dashboard/changePassword">
                                     <i class="icon-settings"></i>Change Password</a>
                             </li>
+                            <li>
+                                <a href="" class="change_theme">
+                                    <i class="glyphicon glyphicon-eye-open"></i>Change Theme</a>
+                            </li>
+
                             <!--                        <li>
                                                         <a href="/dashboard/settings">
                                                             <i class="glyphicon glyphicon-cog"></i>Settings</a>
                                                     </li>-->
-                            <hr>
                             <li>
                                 <a href="/logout">
                                     <i class="icon-key"></i> Log Out </a>

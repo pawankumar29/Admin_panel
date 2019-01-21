@@ -11,6 +11,13 @@ router.get('/add', controller.add_institutions);
 // get institution
 router.post('/add', controller.add_new_institutions);
 
+// get edit page
+router.get('/edit/:id', controller.get_edit_institution);
+
+
+router.post('/edit/:id', controller.post_edit_institution);
+
+
 //// disable user
 //router.post('/disable_user', controller.post_disable_user);
 //

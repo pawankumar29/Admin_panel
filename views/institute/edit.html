@@ -34,23 +34,18 @@
                 </div>
                 <div class="portlet-body">
                     <!-- Begin Form -->
-                    <form class="institute-form" action="/institutes/add" method="post" enctype="multipart/form-data">
+                    <form class="institute-form" action="/institutes/edit/{{institute._id | safe}}" method="post">
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <label class="control-label"><b>Batch</b></label>
-                                    <span class="star"></span>
-                                    <input type="text" id="batch" name="batch" class="form-control" placeholder="Batch" value="" readonly>
-                                </div>
-                                <div class="form-group">
                                     <label class="control-label"><b>Name Of Institute</b></label>
                                     <span class="star">*</span>
-                                    <input type="text" name="name" class="form-control" placeholder="Institute Name" value="">
+                                    <input type="text" name="name" class="form-control" placeholder="Institute Name" value="{{institute.name}}">
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label"><b>Name Of P.O.</b></label>
                                     <span class="star">*</span>
-                                    <input type="text" name="po_name" class="form-control" placeholder="P.O. Name" value="">
+                                    <input type="text" name="po_name" class="form-control" placeholder="P.O. Name" value="{{institute.po_name}}">
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label"><b>P.O. E-mail</b></label>
@@ -59,7 +54,18 @@
                                         <span class="input-group-addon">
                                             <i class="fa fa-envelope"></i>
                                         </span>
-                                        <input type="text" name="po_email" class="form-control" placeholder="abc@gmail.com" value="">
+                                        <input type="text" name="po_email" class="form-control" placeholder="abc@gmail.com" value="{{institute.po_email}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label"><b>Number Of students</b></label>
+                                    <span class="star">*</span>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-envelope"></i>
+                                        </span>
+                                        <input type="text" name="no_of_students" class="form-control" value="{{institute.no_of_students}}">
                                     </div>
                                 </div>
 
@@ -68,13 +74,12 @@
                                     <span class="star">*</span>
                                     <div class="input-group">
                                         <label class="radio-inline">
-                                            <div class="radio" id="uniform-optionsRadios25"><span class="checked"><input
-                                                        type="radio" name="resume" id="optionsRadios25" value="0"
-                                                        checked=""></span></div> Optional
+                                            <div class="radio" id="uniform-optionsRadios25"><span {% if institute.resume == 0 %} class="checked" {% endif %}><input
+                                                        type="radio" name="resume" id="optionsRadios25" value="0" 
+                                                        {% if institute.resume == 0 %} checked ="" {% endif %}></span></div> Optional
                                         </label>
                                         <label class="radio-inline">
-                                            <div class="radio" id="uniform-optionsRadios26"><span><input type="radio"
-                                                                                                         name="resume" id="optionsRadios26" value="1" checked=""></span></div>
+                                            <div class="radio" id="uniform-optionsRadios26"><span {% if institute.resume == 1 %} class="checked" {% endif %} ><input type="radio" name="resume" id="optionsRadios26" value="1" {% if institute.resume == 1 %} checked ="" {% endif %}></span></div>
                                             Required
                                         </label>
                                     </div>
@@ -84,18 +89,16 @@
                                     <label class="control-label"><b>Qualification</b></label>
                                     <select id="qualification" name="qualification" class="form-control select2 select2-offscreen" multiple="" tabindex="-1">
                                         {% for data in qualification %}
-                                        <option>{{data}}</option>
+                                        {% if data.match == 1 %}
+                                        <option selected="">{{data.text}}</option>
+                                        {% else %}
+                                        <option>{{data.text}}</option>
+                                        {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
-
-                                <div class="form-group">
-                                    <label class="control-label"><b>Students CSV</b></label>
-                                    <input type="file" class="form-control" name="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-                                </div>
-
                                 <div class="form-actions">
-                                    <input type="submit" class="btn btn-success" value="Add Institute">
+                                    <input type="submit" class="btn btn-success" value="Edit Institute">
                                     <a class="btn default" href="/institutes/">Cancel</a><br><br>
                                 </div>
                             </div>
@@ -130,7 +133,8 @@ jQuery(document).ready(function () {
         endDate: year.toString()
     }).on("changeDate", function (e) {
         $(this).next("label").remove();
-    });;
+    });
+    ;
 });
 </script>
 <script src="{{getVersionedPath('/javascripts/institutes.js')}}" type="text/javascript"></script>

@@ -37,3 +37,25 @@ exports.save = (data) => {
         });
     });
 };
+exports.findOne = (query, projection) => {
+    return new Promise((resolve, reject) => {
+        institutes.findOne(query, projection, (error, data) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(data);
+            }
+        });
+    });
+};
+exports.update = (query, updatedata) => {
+    return new Promise((resolve, reject) => {
+        institutes.updateOne(query, updatedata, (error, data) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(data);
+            }
+        });
+    });
+};

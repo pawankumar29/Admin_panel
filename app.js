@@ -67,7 +67,7 @@ module.exports.appPromise = startTheAsyncOperation().then(() => {
      * static assets in your public directory will be cached for 30 days!
      * Visitors won’t have to re-download your CSS, images, or any other static assets in /public.
      */
-    app.use(function(req, res, next) {
+    app.use(function (req, res, next) {
         req.url = req.url.replace(/\/([^\/]+)\.[0-9a-f]+\.(css|js|jpg|png|gif|svg)$/, '/$1.$2');
         next();
     });
@@ -78,7 +78,7 @@ module.exports.appPromise = startTheAsyncOperation().then(() => {
     app.use('/email_verification', require('./routes/email_verification'));
     app.use('/', require('./routes/index'));
 
-    app.use('/', function(req, res, next) {
+    app.use('/', function (req, res, next) {
         if (req.user) {
             res.locals.user = {
                 _id: req.user._id,
@@ -101,16 +101,17 @@ module.exports.appPromise = startTheAsyncOperation().then(() => {
 
     app.use('/dashboard', require('./routes/dashboard'));
     app.use('/institutes', require('./routes/institutes'));
+    app.use('/instructions', require('./routes/instructions'));
     app.use('/otp_verification', require('./routes/otp_verification'));
 
     // middleware for logout
-    app.get('/logout', function(req, res) {
+    app.get('/logout', function (req, res) {
         req.logout();
         res.redirect('/');
     });
 
     /// catch 404 and forwarding to error handler
-    app.use(function(req, res, next) {
+    app.use(function (req, res, next) {
         var err = new Error('Not Found');
         err.status = 404;
         res.render('error', {
@@ -124,7 +125,7 @@ module.exports.appPromise = startTheAsyncOperation().then(() => {
     // development error handler
     // will print stacktrace
     if (app.get('env') === 'development') {
-        app.use(function(err, req, res, next) {
+        app.use(function (err, req, res, next) {
             res.status(err.status || 500);
             res.render('error', {
                 message: err.message,
@@ -135,7 +136,7 @@ module.exports.appPromise = startTheAsyncOperation().then(() => {
 
     // production error handler
     // no stacktraces leaked to user
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,

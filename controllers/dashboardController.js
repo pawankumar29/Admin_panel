@@ -27,17 +27,17 @@ exports.dashboard_get = (req, res, next) => {
 //
 ///*dashboard get profile */
 exports.get_profile = (req, res, next) => {
-
+    
     try {
         // find user by id that exists in user session       
-        users.findOne({_id: req.session.passport.user}, {name: 1, email: 1, profile_pic: 1}).then((result) => {
-
+        users.findOne({_id: req.session.passport.user}, {name: 1, email: 1, profile_pic: 1, theme: 1}).then((result) => {
+            console.log(req.user.theme);
             res.render('profile', {id: req.session.passport.user, title: 'Edit Profile', user: result.data, message: req.flash()});
-
+            
         }).catch((error) => {
             res.render('error', {error: error});
         })
-
+        
     } catch (err) {
         res.render('error', {error: err});
     }
@@ -59,7 +59,7 @@ exports.post_profile = (req, res, next) => {
             req.flash('error', error);
             res.redirect('/dashboard/profile');
         });
-
+        
     } catch (err) {
         res.render('error', {error: err});
     }
@@ -87,15 +87,15 @@ exports.change_password_post = (req, res, next) => {
                 // update user password
                 users.update({_id: req.user.id}, {password: req.body.newPassword}).then((result) => {
                     resolve(1)
-
+                    
                 }).catch((error) => {
                     reject(error);
-
+                    
                 })
-
+                
             } else {
                 reject({success: 0, message: 'Current password is wrong.Try again'})
-
+                
             }
         } else {
             reject({success: 0, message: 'New password and confirm password must be same'})
@@ -111,9 +111,9 @@ exports.change_password_post = (req, res, next) => {
         } else {
             res.render('error', {error: error});
         }
-
+        
     });
-
+    
 }
 
 //setting get
@@ -130,12 +130,12 @@ exports.setting_get = (req, res, next) => {
         console.log(err);
         res.render('error', {error: err.message});
     });
-
+    
 }
 
 /**check setting post*/
 exports.setting_post = (req, res, next) => {
-
+    
     new Promise(() => {
         settings.update({}, req.body).then(settingUpdate => {
             if (settingUpdate.status !== 1) {
@@ -151,7 +151,7 @@ exports.setting_post = (req, res, next) => {
     }).catch(err => {
         res.render('error', {error: err});
     });
-
+    
 }
 
 /** send otp on email */
@@ -171,7 +171,7 @@ exports.send_otp_post = (req, res, next) => {
                 return reject(Error('Email already exist.'));
             }
         }).then((template) => {
-
+            
             if (template.status === 1) {
                 var otp_code = otp_generate.makeCode();
                 var otp_expiry = new Date();
@@ -182,14 +182,14 @@ exports.send_otp_post = (req, res, next) => {
                 content = content.replace('@project_name@', global.config.project_name);
                 content = content.replace('@name@', req.user.name);
                 content = content.replace('@otp@', otp_code);
-
+                
                 mails.send(req.user.email, subject, content);
                 return users.update({_id: req.user._id, status: 1, is_deleted: 0}, {otp_code: otp_code, otp_expiry: otp_expiry, temp_email: req.body.temp_email});
             } else {
                 return reject(Error(template.message));
             }
         }).then((user_update) => {
-
+            
             if (user_update.status === 1) {
                 res.send({message: 'OTP sent successfully.', status: 1}); //check
             } else {
@@ -201,12 +201,12 @@ exports.send_otp_post = (req, res, next) => {
     }).catch((err) => {
         res.send({message: err.message, status: 0});
     });
-
+    
 }
 
 /** Resend otp  */
 exports.resend_otp_get = (req, res, next) => {
-
+    
     new Promise((resolve, reject) => {
         // to generate random verification code
         let otp_code = otp_generate.makeCode();
@@ -238,6 +238,31 @@ exports.resend_otp_get = (req, res, next) => {
     }).catch(err => {
         res.send({message: err.message, status: 0});
     });
+};
 
 
+exports.setting_theme = (req, res, next) => {
+    new Promise((resolve, reject) => {
+        let theme;
+        console.log("user theme");
+        console.log(req.user.theme);
+        if (req.user.theme == 1) {
+            theme = 2;
+        } else {
+            theme = 1;
+        }
+        console.log("theme selected");
+        console.log(theme);
+        users.update({_id: req.user.id}, {theme: theme}).then(data => {
+            console.log("data updated");
+            console.log(data);
+            req.user.theme = theme;
+            console.log(req.user.theme)
+            res.status(200).send({message: "success", status: 1});
+        }).catch(err => {
+            reject(err);
+        });
+    }).catch(err => {
+        res.status(400).send({message: err.message, status: 0});
+    });
 }

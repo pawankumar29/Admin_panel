@@ -65,8 +65,6 @@
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 
                         <img alt="no-image" class="img-circle" src="{{user.profile_pic}}" onerror="this.src = '{{image}}'" height="30px" width="30px" id="admin_image"/>
-
-
                         <span class="username username-hide-on-mobile">
                             {{user.name}} </span>
                         <i class="fa fa-angle-down"></i>
@@ -80,11 +78,14 @@
                             <a href="/dashboard/changePassword">
                                 <i class="icon-settings"></i>Change Password</a>
                         </li>
+                        <li>
+                            <a href= "" class="change_theme">
+                                <i class="glyphicon glyphicon-eye-open"></i>Change Theme</a>
+                        </li>
                         <!--                        <li>
                                                     <a href="/dashboard/settings">
                                                         <i class="glyphicon glyphicon-cog"></i>Settings</a>
                                                 </li>-->
-                        <hr>
                         <li>
                             <a href="/logout">
                                 <i class="icon-key"></i> Log Out </a>

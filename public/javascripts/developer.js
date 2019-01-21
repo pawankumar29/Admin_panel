@@ -1,18 +1,18 @@
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     // set local timezone offset in cookies
     var time_zone_offset = -(new Date().getTimezoneOffset());
     $.cookie("time_zone_offset", moment.tz.guess());
     // add methods for validation
-    $.validator.addMethod('filesize', function(value, element, param) {
+    $.validator.addMethod('filesize', function (value, element, param) {
         return this.optional(element) || (element.files[0].size <= param)
     }, "Invalid file Size");
-    $.validator.addMethod('min_filesize', function(value, element, param) {
+    $.validator.addMethod('min_filesize', function (value, element, param) {
         return this.optional(element) || (element.files[0].size >= param)
     }, "Invalid file Size");
-    $.validator.addMethod("match", function(value, element, param) {
+    $.validator.addMethod("match", function (value, element, param) {
         return this.optional(element) || param.test(value);
     }, "This field must contain only letters, numbers, space or dashes");
-    $.validator.addMethod("regex", function(value, element, regexpr) {
+    $.validator.addMethod("regex", function (value, element, regexpr) {
         return regexpr.test(value);
     }, "Enter a valid");
     $("#email").focus();
@@ -22,7 +22,7 @@ jQuery(document).ready(function() {
     $('#getEmail-form').validate({
         focusInvalid: false,
         onkeyup: false,
-        invalidHandler: function(form, validator) {
+        invalidHandler: function (form, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 validator.errorList[0].element.focus();
@@ -31,14 +31,14 @@ jQuery(document).ready(function() {
         rules: {
             email: {
                 required: {
-                    depends: function() {
+                    depends: function () {
                         $(this).val($.trim($(this).val()));
                         return true;
                     }
                 },
                 maxlength: 50,
                 match: /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
-                    //                match: /^[a-z0-9_\-]+(\.[_a-z0-9\-]+)*@([_a-z0-9\-]+\.)+([a-z]{2}|biz|com|edu|gov|info|net|org)$/
+                        //                match: /^[a-z0-9_\-]+(\.[_a-z0-9\-]+)*@([_a-z0-9\-]+\.)+([a-z]{2}|biz|com|edu|gov|info|net|org)$/
             }
         },
         messages: {
@@ -52,7 +52,7 @@ jQuery(document).ready(function() {
     $('.login-form').validate({
         focusInvalid: false,
         onkeyup: false,
-        invalidHandler: function(form, validator) {
+        invalidHandler: function (form, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 validator.errorList[0].element.focus();
@@ -61,14 +61,14 @@ jQuery(document).ready(function() {
         rules: {
             email: {
                 required: {
-                    depends: function() {
+                    depends: function () {
                         $(this).val($.trim($(this).val()));
                         return true;
                     }
                 },
                 maxlength: 50,
                 match: /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
-                    //                match: /^[a-z0-9_\-]+(\.[_a-z0-9\-]+)*@([_a-z0-9\-]+\.)+([a-z]{2}|biz|com|edu|gov|info|net|org)$/
+                        //                match: /^[a-z0-9_\-]+(\.[_a-z0-9\-]+)*@([_a-z0-9\-]+\.)+([a-z]{2}|biz|com|edu|gov|info|net|org)$/
             },
             password: {
                 required: true
@@ -93,7 +93,7 @@ jQuery(document).ready(function() {
     });
     $(".forgot-form").validate({
         focusInvalid: false,
-        invalidHandler: function(form, validator) {
+        invalidHandler: function (form, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 validator.errorList[0].element.focus();
@@ -102,7 +102,7 @@ jQuery(document).ready(function() {
         rules: {
             email: {
                 required: {
-                    depends: function() {
+                    depends: function () {
                         $(this).val($.trim($(this).val()));
                         return true;
                     }
@@ -121,7 +121,7 @@ jQuery(document).ready(function() {
     });
     $('.changePassword-form').validate({
         focusInvalid: false,
-        invalidHandler: function(form, validator) {
+        invalidHandler: function (form, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 validator.errorList[0].element.focus();
@@ -159,7 +159,7 @@ jQuery(document).ready(function() {
 
     $('.resetPwd-form').validate({
         focusInvalid: false,
-        invalidHandler: function(form, validator) {
+        invalidHandler: function (form, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 validator.errorList[0].element.focus();
@@ -189,10 +189,12 @@ jQuery(document).ready(function() {
         }
     });
 
+   
+    
     //form validation for category-add-Edit
     $(".category-form").validate({
         focusInvalid: false,
-        invalidHandler: function(form, validator) {
+        invalidHandler: function (form, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 validator.errorList[0].element.focus();
@@ -216,7 +218,7 @@ jQuery(document).ready(function() {
     });
     $(".profile-form").validate({
         focusInvalid: false,
-        invalidHandler: function(form, validator) {
+        invalidHandler: function (form, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 validator.errorList[0].element.focus();
@@ -248,7 +250,7 @@ jQuery(document).ready(function() {
     //form validation for disable user
     $("#disableUser-form").validate({
         focusInvalid: false,
-        invalidHandler: function(form, validator) {
+        invalidHandler: function (form, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 validator.errorList[0].element.focus();
@@ -272,7 +274,7 @@ jQuery(document).ready(function() {
     //form validation for settings
     $("#settings-form").validate({
         focusInvalid: false,
-        invalidHandler: function(form, validator) {
+        invalidHandler: function (form, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 validator.errorList[0].element.focus();
@@ -348,14 +350,14 @@ jQuery(document).ready(function() {
     //         }
     //     }
     // });
-    $(document).on("click", "#checkAll", function() {
+    $(document).on("click", "#checkAll", function () {
         $(".check").prop('checked', $(this).prop('checked'));
         if ($(this).prop('checked'))
             $(".check").parent().prop('class', 'checked');
         else
             $(".check").parent().prop('class', '');
     });
-    $(document).on("click", ".delete", function() {
+    $(document).on("click", ".delete", function () {
         var message = "Are you sure you want to delete?";
         if ($("#url").val() === "/faqs/") {
             message = "Are you sure you want to delete the FAQ?";
@@ -386,17 +388,17 @@ jQuery(document).ready(function() {
         }
 
         var deleteLink = $(this).attr('deleteLink');
-        bootbox.confirm(message, function(result) {
+        bootbox.confirm(message, function (result) {
             if (result) {
                 window.location = deleteLink;
             }
         });
     });
-    $('#deleteSelected').click(function() {
+    $('#deleteSelected').click(function () {
         if ($('.check:checked').length == 0)
             bootbox.alert("Select Atleast One!");
         else {
-            bootbox.confirm("Are you sure you want to delete?", function(result) {
+            bootbox.confirm("Are you sure you want to delete?", function (result) {
                 if (result) {
                     $("#action").val("delete");
                     $("#frm").submit();
@@ -404,7 +406,7 @@ jQuery(document).ready(function() {
             });
         }
     });
-    $(document).on("click", ".change_status", function() {
+    $(document).on("click", ".change_status", function () {
         var id = $(this).attr("val");
         var status = $(this).attr("value");
         var obj = $(this);
@@ -432,15 +434,15 @@ jQuery(document).ready(function() {
             msg = "Are you sure you want to inactivate this " + user_type + "?";
         else
             msg = "Are you sure you want to activate this " + user_type + "?";
-        bootbox.confirm(msg, function(result) {
+        bootbox.confirm(msg, function (result) {
             if (result) {
 
                 $.ajax({
                     url: url,
                     type: "POST",
-                    data: { id: id, status: status },
+                    data: {id: id, status: status},
                     dataType: 'JSON',
-                    success: function(result) {
+                    success: function (result) {
 
                         if (result == 'unauthorised') {
                             window.location = "/login";
@@ -464,7 +466,7 @@ jQuery(document).ready(function() {
         });
     });
 
-    $('#update').click(function() {
+    $('#update').click(function () {
         if ($('.check:checked').length == 0)
             bootbox.alert("Select Atleast One!");
         else {
@@ -475,7 +477,7 @@ jQuery(document).ready(function() {
                     success: {
                         label: "Active",
                         className: "green",
-                        callback: function() {
+                        callback: function () {
                             $("#action").val(1);
                             $("#frm").submit();
                         }
@@ -483,7 +485,7 @@ jQuery(document).ready(function() {
                     main: {
                         label: "Inactive",
                         className: "red",
-                        callback: function() {
+                        callback: function () {
                             $("#action").val(0);
                             $("#frm").submit();
                         }
@@ -496,7 +498,7 @@ jQuery(document).ready(function() {
             });
         }
     });
-    $(document).on("click", "#filter", function() {
+    $(document).on("click", "#filter", function () {
         var flag = 1;
 
         if ($("#filterUrl").val() == "/users/") {
@@ -563,8 +565,8 @@ jQuery(document).ready(function() {
             $.ajax({
                 url: url + '?' + str,
                 type: "GET",
-                data: { search: 1 },
-                success: function(result) {
+                data: {search: 1},
+                success: function (result) {
 
                     if (result == 'unauthorised')
                         window.location = "/login";
@@ -577,7 +579,7 @@ jQuery(document).ready(function() {
     });
 
 
-    $("#clear").click(function() {
+    $("#clear").click(function () {
         $("#filter_form")[0].reset();
         $('#sort_type').val('');
         $("#search_by_error").hide();
@@ -585,8 +587,8 @@ jQuery(document).ready(function() {
         $.ajax({
             url: url,
             type: "GET",
-            data: { search: 1 },
-            success: function(result) {
+            data: {search: 1},
+            success: function (result) {
 
                 if (result == 'unauthorised')
                     window.location = "/login";
@@ -597,6 +599,8 @@ jQuery(document).ready(function() {
             }
         });
     });
+
+
 
     function isFloat(n) {
         return Number(n) === n && n % 1 !== 0;
@@ -610,7 +614,7 @@ jQuery(document).ready(function() {
         var a = document.createElement("a");
         a.setAttribute('style', 'display:none;');
         document.body.appendChild(a);
-        var blob = new Blob([csvData], { type: 'text/csv' });
+        var blob = new Blob([csvData], {type: 'text/csv'});
         var url = window.URL.createObjectURL(blob);
         a.href = url;
         var timestamp = Math.floor(Date.now() / 1000);
@@ -642,7 +646,7 @@ jQuery(document).ready(function() {
         return str;
     }
 
-    $(document).on("click", ".view", function() {
+    $(document).on("click", ".view", function () {
         /***********user ajax view *******/
         var url_for_user_view = '';
         if ($("#url").val() == "/users/") {
@@ -664,9 +668,9 @@ jQuery(document).ready(function() {
         $.ajax({
             url: url_for_user_view,
             type: "POST",
-            data: { id: user_id },
+            data: {id: user_id},
             dataType: "JSON",
-            success: function(result) {
+            success: function (result) {
 
                 if (result == 'unauthorised')
                     window.location = "/login";
@@ -694,10 +698,10 @@ jQuery(document).ready(function() {
                         var addr = '';
                         for (var i = 0; i < result.data.customer_address.length; i++) {
                             addr += '<b>' + result.data.customer_address[i].address_name + '</b>, ' +
-                                result.data.customer_address[i].unit_number + ', ' +
-                                result.data.customer_address[i].street_name + ', ' +
-                                result.data.customer_address[i].sublocation_id.area_name + ', ' +
-                                result.data.customer_address[i].location_id.name + '<br>'
+                                    result.data.customer_address[i].unit_number + ', ' +
+                                    result.data.customer_address[i].street_name + ', ' +
+                                    result.data.customer_address[i].sublocation_id.area_name + ', ' +
+                                    result.data.customer_address[i].location_id.name + '<br>'
                         }
                         $('#address1').html(addr || "Not Available");
                     }
@@ -712,7 +716,7 @@ jQuery(document).ready(function() {
         });
         /***********user ajax view ends here*******/
     });
-    $(document).on("click", ".disable_user", function() {
+    $(document).on("click", ".disable_user", function () {
         $('#sub_error_getEmail').text("");
         $('.error').text("");
         $('#disableUser-form').trigger("reset");
@@ -727,7 +731,7 @@ jQuery(document).ready(function() {
             $('.disable_reason_popup').html('Add your comment why you want to want to mark this user as inactive?');
     });
     //disable user or block bottle drive
-    $(document).on("click", "#disable_user_btn", function() {
+    $(document).on("click", "#disable_user_btn", function () {
         var url_for_user_disable = "";
         var disable_reason = $('#disableUserID').val();
         var userId = $(this).attr('userid');
@@ -740,9 +744,9 @@ jQuery(document).ready(function() {
             $.ajax({
                 url: url_for_user_disable,
                 type: "POST",
-                data: { userId: userId, disable_reason: disable_reason, status: status },
+                data: {userId: userId, disable_reason: disable_reason, status: status},
                 dataType: "JSON",
-                success: function(result) {
+                success: function (result) {
 
                     if (result == 'unauthorised')
                         window.location = "/login";
@@ -770,7 +774,7 @@ jQuery(document).ready(function() {
             });
         }
     });
-    $(document).on("change", "#sort_field", function() {
+    $(document).on("change", "#sort_field", function () {
         if ($('#sort_field').val()) {
             $('#sort_type').prop('disabled', false);
         } else {
@@ -778,9 +782,9 @@ jQuery(document).ready(function() {
         }
 
         if ($('#sort_field').val() === "status") {
-            var values = [{ status: -1, name: "Active" }, { status: 1, name: "Inactive" }];
+            var values = [{status: -1, name: "Active"}, {status: 1, name: "Inactive"}];
         } else {
-            var values = [{ status: 1, name: "Ascending" }, { status: -1, name: "Descending" }];
+            var values = [{status: 1, name: "Ascending"}, {status: -1, name: "Descending"}];
         }
         var options = '<option value="">--Select--</option>';
         for (var i = 0; i < values.length; i++) {
@@ -788,14 +792,14 @@ jQuery(document).ready(function() {
         }
         $('#sort_type').html(options);
     });
-    $(document).on("change", "#state", function() {
+    $(document).on("change", "#state", function () {
         if ($('#state').val()) {
 
             $.ajax({
                 url: "/pricing_zone/cities/" + $(this).val(),
                 type: "GET",
                 dataType: "JSON",
-                success: function(result) {
+                success: function (result) {
 
                     if (result == 'unauthorised')
                         window.location = "/login";
@@ -814,19 +818,19 @@ jQuery(document).ready(function() {
             $('#city').prop('disabled', true);
         }
     });
-    $(document).on("click", "#start_date, input[name='start_date']", function(e) {
-        $("#start_date_picker").datepicker('show').on('changeDate', function(selected) {
+    $(document).on("click", "#start_date, input[name='start_date']", function (e) {
+        $("#start_date_picker").datepicker('show').on('changeDate', function (selected) {
             var minDate = new Date(selected.date.valueOf());
             $('#end_date_picker').datepicker('setDate', "");
             $('#end_date_picker').datepicker('setStartDate', minDate);
         });
     });
 
-    $(document).on("click", "#end_date, input[name='end_date']", function(e) {
+    $(document).on("click", "#end_date, input[name='end_date']", function (e) {
         $("#end_date_picker").datepicker('show');
     });
 
-    $(document).keydown(function(e) {
+    $(document).keydown(function (e) {
         // ESCAPE key pressed
         if (e.keyCode === 27) {
             $('.modal').modal('hide');
@@ -836,14 +840,14 @@ jQuery(document).ready(function() {
 
 
     //view user details
-    $(document).on("click", ".view-user", function(e) {
+    $(document).on("click", ".view-user", function (e) {
         var href = $(this).attr("link");
 
         $.ajax({
             url: href,
             type: "GET",
             dataType: "JSON",
-            success: function(result) {
+            success: function (result) {
 
                 if (result == 'unauthorised')
                     window.location = "/login";
@@ -922,14 +926,14 @@ jQuery(document).ready(function() {
 
 
     //view reported reviews details
-    $(document).on("click", ".view-contact-us", function(e) {
+    $(document).on("click", ".view-contact-us", function (e) {
         var href = $(this).attr("link");
 
         $.ajax({
             url: href,
             type: "GET",
             dataType: "JSON",
-            success: function(result) {
+            success: function (result) {
 
 
                 if (result == 'unauthorised')
@@ -960,7 +964,7 @@ jQuery(document).ready(function() {
 
     //onclick checkbox of contact_us details  href of deleted routed get triggered
 
-    $(document).on("click", "#checkbox_switch", function(e) {
+    $(document).on("click", "#checkbox_switch", function (e) {
 
         let href = $("#my_anchor").attr("linkdata");
         $(this).parents('#resolve_container').empty();
@@ -970,7 +974,7 @@ jQuery(document).ready(function() {
 
 
     //stop enter working on search field
-    $("#search_by").keydown(function(event) {
+    $("#search_by").keydown(function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
             return false;

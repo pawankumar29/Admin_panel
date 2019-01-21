@@ -119,7 +119,6 @@ exports.save = (user_data) => {
 exports.update = (query, update_data) => {
     return new Promise((resolve, reject) => {
         user.update(query, update_data, {multi: true}, (error, data) => {
-            console.log(data);
             if (!error) {
                 if (data) {
                     resolve({status: 1, message: "success"});
