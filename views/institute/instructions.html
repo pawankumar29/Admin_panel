@@ -6,27 +6,30 @@
     label.error {
         color: red;
     }
-    
+    table {
+        table-layout: fixed; 
+
+    }
     .form-actions {
         padding-top: 20px;
         text-align: center;
     }
-    
+
     .content {
         overflow-y: auto;
         /* Trigger vertical scroll    */
         overflow-x: hidden;
     }
-    
+
     ;
     .pt-3-half {
         padding-top: 1.4rem;
     }
-    
+
     textarea.md-textarea-scroll {
         overflow-y: visible;
     }
-    
+
     textarea.md-textarea {
         padding: 0;
         resize: none;
@@ -47,32 +50,32 @@
                     </div>
                 </div>
                 <div class="portlet-body">
-                    <table class="table table-responsive-md">
-                        <input type="hidden" id="institute_id" value="{{id}}"> {% set index = 1 %} {% for data in instructions %}
-                        <tr>
-                            <td class="col-md-1">{{index}}<input type="hidden" value="{{data}}"></td>
-                            <td class="col-md-8 content" editabl="true">{{data}}</td>
-                            <td class="col-md-2">
-                                <span class="table-remove">
-                                    <button type="button" class="btn btn-icon-only yellow edit"><i class="fa fa-edit"></i></button>
-                                    <button type="button" class="btn btn-icon-only red delete"><i class="fa fa-trash"></i></button>
-                                </span>
-                            </td>
-                        </tr>
-                        {% set index=index+1 %} {% endfor %}
-                        <!-- This is our clonable table line -->
-                    </table>
-
+                    <div class ="dynamic_table">
+                        <table class="table table-responsive-md">
+                            <input type="hidden" id="institute_id" value="{{id}}"> 
+                            {% set index = 1 %} 
+                            {% for data in instructions %}
+                            <tr>
+                                <td class="col-md-1"><span>{{index}}</span><input type="hidden" value="{{data}}"></td>
+                                <td class="col-md-8 content">{{data}}</td>
+                                <td class="col-md-2">
+                                    <span class="table-remove">
+                                        <button type="button" class="btn btn-icon-only yellow edit"><i class="fa fa-edit"></i></button>
+                                        <button type="button" class="btn btn-icon-only red delete"><i class="fa fa-trash"></i></button>
+                                    </span>
+                                </td>
+                            </tr>
+                            {% set index=index+1 %} {% endfor %}
+                            <!-- This is our clonable table line -->
+                        </table>
+                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <button class="btn btn blue pull-left add">Add New</button>
                         </div>
                     </div>
                     <!-- Editable table -->
-
                 </div>
-                <!-- Editable table -->
-
             </div>
         </div>
     </div>
@@ -82,62 +85,137 @@
 {% endblock %} {% block js %}
 <script src="{{getVersionedPath('/javascripts/institutes.js')}}" type="text/javascript"></script>
 <script type="text/javascript">
-    let date = new Date();
-    let year = parseInt(date.getFullYear() + 5);
-    jQuery(document).ready(function() {
-        //    var $textarea = $('#textarea');
-        //    $textarea.on('keyup', function (evt) {
-        //        var $this = $(this);
-        //        var height = $this.height();
-        //        evt.which === 13 && height < 200 ? $this.height(height += 25) : $this.addClass("md-textarea-scroll");
-        //    });
-        var $TABLE = $('#table');
-        $('.table-add').click(function() {
-            var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
-            $TABLE.find('table').append($clone);
-        });
-        $('.edit').click(function() {
-            //        $(this).parents('tr').detach();
-            console.log("edit");
-            let old_instruction = $(this).parents("td").siblings(':first').children().val();
-            console.log(old_instruction);
-            let id = $("institute_id").val();
-        });
+let date = new Date();
+let year = parseInt(date.getFullYear() + 5);
+function setEndOfContenteditable(contentEditableElement)
+{
+    var range, selection;
+    if (document.createRange)//Firefox, Chrome, Opera, Safari, IE 9+
+    {
+        range = document.createRange(); //Create a range (a range is a like the selection but invisible)
+        range.selectNodeContents(contentEditableElement); //Select the entire contents of the element with the range
+        range.collapse(false); //collapse the range to the end point. false means collapse to end rather than the start
+        selection = window.getSelection(); //get the selection object (allows you to change selection)
+        selection.removeAllRanges(); //remove any selections already made
+        selection.addRange(range); //make the range you have just created the visible selection
+    } else if (document.selection)//IE 8 and lower
+    {
+        range = document.body.createTextRange(); //Create a range (a range is a like the selection but invisible)
+        range.moveToElementText(contentEditableElement); //Select the entire contents of the element with the range
+        range.collapse(false); //collapse the range to the end point. false means collapse to end rather than the start
+        range.select(); //Select the range (make it the visible selection
+    }
+}
 
-        $('.delete').click(function() {
-            //        $(this).parents('tr').detach();
-            console.log("delete")
-            let old_instruction = $(this).parents("td").siblings(':first').children().val();
-            console.log(old_instruction);
-            let id = $("#institute_id").val();
-            console.log(id);
-            $.ajax({
-                url: "/instructions",
-                type: "DELETE",
-                data: {
-                    id: id,
-                    instruction: old_instruction
-                },
-                dataType: 'JSON',
-                success: function(result) {
-                    console.log(result);
-                    if (result == 'unauthorised') {
-                        window.location = "/login";
-                    } else {}
+
+jQuery(document).ready(function () {
+
+    $(document).on("click", ".add", function () {
+        let lastIndex = $("table").find("tr:last").children("td").children("span").text();
+        if (parseInt(lastIndex.toString())) {
+           lastIndex = parseInt(lastIndex.toString()) + 1;
+        } else {
+            lastIndex = 1;
+        }
+        let text = '<tr><td class="col-md-1"><span>' + lastIndex.toString() + '</span></td><td class="col-md-8 addcontent" contenteditable=true></td><td class="col-md-2"><span class="table-remove"><button type="button" class="btn btn-info btn-icon-only create"><i class="fa fa-check"></i></button><button type="button" class="btn btn-warning btn-icon-only  remove"><i class="fa fa-remove"></i></button></span></td></tr>';
+        $(this).attr("disabled", true);
+        $("table").append(text);
+        $(".addcontent").focus();
+    });
+    $(document).on("click", ".remove", function () {
+        $(this).parents("tr").remove();
+        $(".add").attr("disabled", false);
+    })
+
+    $(document).on("click", ".create", function () {
+        let id = $("#institute_id").val();
+        let instruction = $(this).parents("td").prev(".addcontent").text();
+        $.ajax({
+            url: "/instructions",
+            type: "POST",
+            data: {
+                id: id,
+                instruction: instruction
+            },
+            dataType: 'JSON',
+            success: function (result) {
+                if (result == 'unauthorised') {
+                    window.location = "/login";
+                } else {
+                    $(".dynamic_table").html(result.data);
+                    $(".add").attr("disabled", false);
                 }
-            });
+            }
         });
+    })
+
+    $('td.content').keydown(function (e) {
+        if (e.keyCode === 13) {
+            $(this).next("td").children().children("button.save").trigger("click");
+        }
     });
 
-    //    $('.table-up').click(function () {
-    //        var $row = $(this).parents('tr');
-    //        if ($row.index() === 1)
-    //            return; // Don't go above the header
-    //        $row.prev().before($row.get(0));
-    //    });
-    //    $('.table-down').click(function () {
-    //        var $row = $(this).parents('tr');
-    //        $row.next().after($row.get(0));
-    //    });
+    $('td.addcontent').keydown(function (e) {
+        if (e.keyCode === 13) {
+            $(this).next("td").children().children("button.save").trigger("click");
+        }
+    });
+
+    $(document).on("click", ".edit", function () {
+        let elem = $(this).parents("td").prev();
+        elem.attr("contenteditable", 'true').focus();
+        setEndOfContenteditable(elem.get(0));
+        $(this).removeClass("edit yellow").addClass("save green").html('<i class="fa fa-check"></i>');
+    });
+    $(document).on("click", ".save", function () {
+        let button = $(this);
+        let id = $("#institute_id").val();
+        let contentElem = button.parents("td").prev(".content");
+        let newcontent = contentElem.text();
+        let oldcontent = button.parents("td").siblings(':first').children("input").val();
+        $.ajax({
+            url: "/instructions",
+            type: "PUT",
+            data: {
+                id: id,
+                previousInstruction: oldcontent,
+                newInstruction: newcontent
+            },
+            dataType: 'JSON',
+            success: function (result) {
+                if (result == 'unauthorised') {
+                    window.location = "/login";
+                } else if (result["status"] == 1) {
+                    contentElem.attr("contenteditable", 'false');
+                    button.removeClass("save green").addClass("edit yellow").html('<i class="fa fa-edit"></i>');
+                    button.parents("td").siblings(':first').children("input").val(newcontent);
+                    button.parents("td").prev(".content").text(newcontent);
+                }
+            }
+        });
+    });
+    $(document).on("click", ".delete", function () {
+        let old_instruction = $(this).parents("td").siblings(':first').find("input").val();
+        let id = $("#institute_id").val();
+        $.ajax({
+            url: "/instructions",
+            type: "DELETE",
+            data: {
+                id: id,
+                instruction: old_instruction
+            },
+            dataType: 'JSON',
+            success: function (result) {
+                if (result == 'unauthorised') {
+                    window.location = "/login";
+                } else {
+                    $(".dynamic_table").html(result.data);
+                    $(".add").attr("disabled", false);
+                }
+            }
+        });
+    });
+});
+
 </script>
 {% endblock %}

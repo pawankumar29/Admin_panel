@@ -5,15 +5,14 @@ const controller = require("../controllers/instructionsController");
 /* GET method for list and search Users  */
 router.get('/:id', controller.get_instructions);
 
+//delete any instruction
+router.delete('/', controller.delete_instruction);
 
-router.delete('/', controller.edit_instruction);
+//update any instruction
+router.put('/', controller.edit_instruction);
 
+router.post('/', controller.add_instruction);
 
-//// disable user
-//router.post('/disable_user', controller.post_disable_user);
-//
-//// Get method for delete users
-//router.get('/delete/:id',controller.delete_user );
 
 //predictive search
 // router.post('/search_by',controller.predictive_search);

@@ -18,6 +18,9 @@ router.get('/edit/:id', controller.get_edit_institution);
 router.post('/edit/:id', controller.post_edit_institution);
 
 
+// download sample csv file
+router.get('/sampeCSV', controller.csvDowload);
+
 //// disable user
 //router.post('/disable_user', controller.post_disable_user);
 //

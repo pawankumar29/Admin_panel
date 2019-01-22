@@ -6,7 +6,8 @@ const email_templates = require('../models/email_template.js')
 const mongoose = require('mongoose')
 const settings = require('../models/settings')
 var multer = require('multer')
-
+var fs = require("fs");
+var csv = require("fast-csv");
 function fileFilter(req, file, cb) {
     if (
             file.mimetype == 'text/csv' ||
@@ -32,6 +33,42 @@ var upload = multer({
     fileFilter: fileFilter
 }).single('file')
 
+function dataUpload(path) {
+    let invalidArray = [];
+    let validArray = [];
+    let completePath = process.cwd() + "/" + path;
+    console.log(completePath);
+    var stream = fs.createReadStream(completePath);
+    csv.fromStream(stream, {headers: true}).validate(function (data) {
+//        if (data.name && data.roll_no && data.father_name && data.phone_no && data.dob && data.qualification && data.branch && data.email_id)
+//        {
+//            return
+//        } else {
+//
+//        }
+        if (data.name) {
+            return
+        } else {
+
+        }
+    }).on("data-invalid", function (data) {
+        //do something with invalid row
+        invalidArray.push(data);
+    }).on("data", function (data) {
+        validArray.push(data);
+    }).on("end", function (count) {
+        console.log("done");
+        console.log(count);
+        console.log("invalid array");
+        console.log(invalidArray);
+        console.log("valid array");
+        console.log(validArray);
+    });
+
+
+}
+
+dataUpload("public/csv_files/student_data.csv");
 exports.get_institutions = (req, res, next) => {
     new Promise((resolve, reject) => {
         // make global variable options for paginate method parameter
@@ -284,44 +321,45 @@ exports.add_new_institutions = (req, res, next) => {
                 new Promise((resolve, reject) => {
                     var errors = addNewInstituteValidator(req, res, next)
                     if (!errors) {
-                        settings
-                                .findOnePromise({}, {
-                                    instruction: 1
-                                })
-                                .then(data => {
-                                    if (
-                                            parseInt(req.body.resume) == 1 ||
-                                            parseInt(req.body.resume) == 0
-                                            ) {
-                                        let insertData = {
-                                            name: req.body.name.trim(),
-                                            po_name: req.body.po_name.trim(),
-                                            po_email: req.body.po_email.trim(),
-                                            qualification: req.body.qualification,
-                                            is_walkin: 0,
-                                            resume: parseInt(req.body.resume),
-                                            instruction: JSON.parse(JSON.stringify(data))[
-                                                    'instruction'
-                                            ],
-                                            organisation_id: req.user.organisation_id
-                                        }
-                                        institutes
-                                                .save(insertData)
-                                                .then(ressult => {
-                                                    req.flash('success', 'Institution added successfully!!')
-                                                    res.redirect('/institutes')
-                                                })
-                                                .catch(err => {
-                                                    reject(err)
-                                                })
+                        settings.findOnePromise({}, {
+                            instruction: 1}).then(data => {
+                            if (
+                                    parseInt(req.body.resume) == 1 ||
+                                    parseInt(req.body.resume) == 0
+                                    ) {
+                                let insertData = {
+                                    name: req.body.name.trim(),
+                                    po_name: req.body.po_name.trim(),
+                                    po_email: req.body.po_email.trim(),
+                                    qualification: req.body.qualification,
+                                    is_walkin: 0,
+                                    resume: parseInt(req.body.resume),
+                                    instruction: JSON.parse(JSON.stringify(data))['instruction'],
+                                    organisation_id: req.user.organisation_id
+                                }
+                                institutes.save(insertData).then(ressult => {
+                                    if (req.file) {
+                                        console.log("file path");
+                                        console.log(req.file);
+
+
                                     } else {
-                                        req.flash('error', 'invalid value for resume.')
-                                        res.redirect('/institutes/add')
+                                        console.log("institute addede without batch");
+                                        req.flash('success', 'Institution added successfully!!')
+                                        res.redirect('/institutes')
                                     }
+                                    req.flash('success', 'Institution added successfully!!')
+                                    res.redirect('/institutes')
+                                }).catch(err => {
+                                    reject(err)
                                 })
-                                .catch(error => {
-                                    reject(error)
-                                })
+                            } else {
+                                req.flash('error', 'invalid value for resume.')
+                                res.redirect('/institutes/add')
+                            }
+                        }).catch(error => {
+                            reject(error)
+                        })
                     } else {
                         req.flash('error', Object.values(errors)[0].msg)
                         res.redirect('/institutes/add')
@@ -393,7 +431,7 @@ var editInstituteValidator = function (req, res, next) {
 }
 exports.post_edit_institution = (req, res, next) => {
     new Promise((resolve, reject) => {
-        console.log(req.body);
+//        console.log(req.body);
         var errors = editInstituteValidator(req, res, next)
         if (!errors) {
             if (parseInt(req.body.resume) == 1 || parseInt(req.body.resume) == 0) {
@@ -420,6 +458,16 @@ exports.post_edit_institution = (req, res, next) => {
             req.flash('error', Object.values(errors)[0].msg)
             res.redirect('/institutes/edit/' + req.param.id.toString());
         }
+    }).catch(err => {
+        res.render('error', {
+            error: err
+        })
+    })
+};
+
+exports.csvDowload = (req, res, next) => {
+    new Promise((resolve, reject) => {
+        res.download("./public/csv_sample/user_csv_sample.csv");
     }).catch(err => {
         res.render('error', {
             error: err
