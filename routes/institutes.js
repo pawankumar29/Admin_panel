@@ -24,8 +24,8 @@ router.get('/sampeCSV', controller.csvDowload);
 //// disable user
 //router.post('/disable_user', controller.post_disable_user);
 //
-//// Get method for delete users
-//router.get('/delete/:id',controller.delete_user );
+// Get method for delete institution
+router.get('/delete/:id', controller.delete_institute);
 
 //predictive search
 // router.post('/search_by',controller.predictive_search);

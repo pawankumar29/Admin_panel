@@ -189,33 +189,33 @@ jQuery(document).ready(function () {
         }
     });
 
-   
-    
-    //form validation for category-add-Edit
-    $(".category-form").validate({
-        focusInvalid: false,
-        invalidHandler: function (form, validator) {
-            var errors = validator.numberOfInvalids();
-            if (errors) {
-                validator.errorList[0].element.focus();
-            }
-        },
-        rules: {
-            name: {
-                required: true,
-                rangelength: [3, 100],
-                match: /^[a-zA-Z ]*$/,
-            }
-        },
-        messages: {
-            name: {
-                required: "Enter category name.",
-                rangelength: "Enter category name between 3 to 100 characters.",
-                match: "Enter only letters."
-            }
 
-        }
-    });
+
+    //form validation for category-add-Edit
+//    $(".category-form").validate({
+//        focusInvalid: false,
+//        invalidHandler: function (form, validator) {
+//            var errors = validator.numberOfInvalids();
+//            if (errors) {
+//                validator.errorList[0].element.focus();
+//            }
+//        },
+//        rules: {
+//            name: {
+//                required: true,
+//                rangelength: [3, 100],
+//                match: /^[a-zA-Z ]*$/,
+//            }
+//        },
+//        messages: {
+//            name: {
+//                required: "Enter category name.",
+//                rangelength: "Enter category name between 3 to 100 characters.",
+//                match: "Enter only letters."
+//            }
+//
+//        }
+//    });
     $(".profile-form").validate({
         focusInvalid: false,
         invalidHandler: function (form, validator) {
@@ -248,65 +248,65 @@ jQuery(document).ready(function () {
         }
     });
     //form validation for disable user
-    $("#disableUser-form").validate({
-        focusInvalid: false,
-        invalidHandler: function (form, validator) {
-            var errors = validator.numberOfInvalids();
-            if (errors) {
-                validator.errorList[0].element.focus();
-            }
-        },
-        rules: {
-            reason: {
-                required: true,
-                minlength: 10,
-                maxlength: 500
-            }
-        },
-        messages: {
-            reason: {
-                required: "Enter reason.",
-                maxlength: "Please enter a valid reason between 10-500 chracters.",
-                maxlength: "Enter reason of max 500 characters only."
-            }
-        }
-    });
-    //form validation for settings
-    $("#settings-form").validate({
-        focusInvalid: false,
-        invalidHandler: function (form, validator) {
-            var errors = validator.numberOfInvalids();
-            if (errors) {
-                validator.errorList[0].element.focus();
-            }
-        },
-        rules: {
-            android_version: {
-                required: true,
-                number: true,
-                max: 5
-            },
-            ios_version: {
-                required: true,
-                number: true,
-                max: 5
-            }
-
-        },
-        messages: {
-            android_version: {
-                required: "Android version is required.",
-                number: "Please enter number.",
-                max: "You can enter max 5 numbers."
-            },
-            ios_version: {
-                required: "IOS version is required.",
-                number: "Please enter number.",
-                max: "You can enter max 5 numbers."
-            }
-
-        }
-    });
+//    $("#disableUser-form").validate({
+//        focusInvalid: false,
+//        invalidHandler: function (form, validator) {
+//            var errors = validator.numberOfInvalids();
+//            if (errors) {
+//                validator.errorList[0].element.focus();
+//            }
+//        },
+//        rules: {
+//            reason: {
+//                required: true,
+//                minlength: 10,
+//                maxlength: 500
+//            }
+//        },
+//        messages: {
+//            reason: {
+//                required: "Enter reason.",
+//                maxlength: "Please enter a valid reason between 10-500 chracters.",
+//                maxlength: "Enter reason of max 500 characters only."
+//            }
+//        }
+//    });
+//    //form validation for settings
+//    $("#settings-form").validate({
+//        focusInvalid: false,
+//        invalidHandler: function (form, validator) {
+//            var errors = validator.numberOfInvalids();
+//            if (errors) {
+//                validator.errorList[0].element.focus();
+//            }
+//        },
+//        rules: {
+//            android_version: {
+//                required: true,
+//                number: true,
+//                max: 5
+//            },
+//            ios_version: {
+//                required: true,
+//                number: true,
+//                max: 5
+//            }
+//
+//        },
+//        messages: {
+//            android_version: {
+//                required: "Android version is required.",
+//                number: "Please enter number.",
+//                max: "You can enter max 5 numbers."
+//            },
+//            ios_version: {
+//                required: "IOS version is required.",
+//                number: "Please enter number.",
+//                max: "You can enter max 5 numbers."
+//            }
+//
+//        }
+//    });
     // $("#settings-form").validate({
     //     focusInvalid: false,
     //     invalidHandler: function (form, validator) {
@@ -357,35 +357,36 @@ jQuery(document).ready(function () {
         else
             $(".check").parent().prop('class', '');
     });
+
     $(document).on("click", ".delete", function () {
         var message = "Are you sure you want to delete?";
-        if ($("#url").val() === "/faqs/") {
-            message = "Are you sure you want to delete the FAQ?";
+        if ($("#url").val() === "/institutes/") {
+            message = "Are you sure you want to delete this Institution?";
         }
-        if ($("#url").val() === "/contact_us/") {
-            message = "Are you sure you want to delete the query?";
-        }
-        if ($("#url").val() === "/category/") {
-            message = "Are you sure you want to delete the queries category?";
-        }
-        if ($("#url").val() === "/drive_image/") {
-            message = "Are you sure you want to delete the image?";
-        }
-        if ($("#url").val() === "/pricing_zone/") {
-            message = "Are you sure you want to delete the price of zone?";
-        }
-        if ($("#url").val() === "/states") {
-            message = "Are you sure you want to delete the province?";
-        }
-        if ($("#url").val() === "/cities/") {
-            message = "Are you sure you want to delete the zone?";
-        }
-        if ($("#url").val() === "/pages") {
-            message = "Are you sure you want to delete the cms page?";
-        }
-        if ($("#url").val() === "/reviews") {
-            message = "Are you sure you want to delete?";
-        }
+//        if ($("#url").val() === "/contact_us/") {
+//            message = "Are you sure you want to delete the query?";
+//        }
+//        if ($("#url").val() === "/category/") {
+//            message = "Are you sure you want to delete the queries category?";
+//        }
+//        if ($("#url").val() === "/drive_image/") {
+//            message = "Are you sure you want to delete the image?";
+//        }
+//        if ($("#url").val() === "/pricing_zone/") {
+//            message = "Are you sure you want to delete the price of zone?";
+//        }
+//        if ($("#url").val() === "/states") {
+//            message = "Are you sure you want to delete the province?";
+//        }
+//        if ($("#url").val() === "/cities/") {
+//            message = "Are you sure you want to delete the zone?";
+//        }
+//        if ($("#url").val() === "/pages") {
+//            message = "Are you sure you want to delete the cms page?";
+//        }
+//        if ($("#url").val() === "/reviews") {
+//            message = "Are you sure you want to delete?";
+//        }
 
         var deleteLink = $(this).attr('deleteLink');
         bootbox.confirm(message, function (result) {
@@ -394,211 +395,198 @@ jQuery(document).ready(function () {
             }
         });
     });
-    $('#deleteSelected').click(function () {
-        if ($('.check:checked').length == 0)
-            bootbox.alert("Select Atleast One!");
-        else {
-            bootbox.confirm("Are you sure you want to delete?", function (result) {
-                if (result) {
-                    $("#action").val("delete");
-                    $("#frm").submit();
-                }
+
+//    $('#deleteSelected').click(function () {
+//        if ($('.check:checked').length == 0)
+//            bootbox.alert("Select Atleast One!");
+//        else {
+//            bootbox.confirm("Are you sure you want to delete?", function (result) {
+//                if (result) {
+//                    $("#action").val("delete");
+//                    $("#frm").submit();
+//                }
+//            });
+//        }
+//    });
+//    $(document).on("click", ".change_status", function () {
+//        var id = $(this).attr("val");
+//        var status = $(this).attr("value");
+//        var obj = $(this);
+//        var user_type = "";
+//        var url = "";
+//        if ($("#url").val() == "/users/") {
+//            user_type = "user";
+//            url = "/users/changeStatus";
+//        }
+//        if ($("#url").val() == "/faqs/") {
+//            user_type = "FAQ";
+//            url = "/faqs/changeStatus";
+//        }
+//        if ($("#url").val() == "/category/") {
+//            user_type = "Category";
+//            url = "/category/changeStatus";
+//        }
+//        if ($("#url").val() == "/drive_image/") {
+//            user_type = "Image";
+//            url = "/drive_image/changeStatus";
+//        }
+//
+//        var msg = "";
+//        if (status == 0)
+//            msg = "Are you sure you want to inactivate this " + user_type + "?";
+//        else
+//            msg = "Are you sure you want to activate this " + user_type + "?";
+//        bootbox.confirm(msg, function (result) {
+//            if (result) {
+//
+//                $.ajax({
+//                    url: url,
+//                    type: "POST",
+//                    data: {id: id, status: status},
+//                    dataType: 'JSON',
+//                    success: function (result) {
+//
+//                        if (result == 'unauthorised') {
+//                            window.location = "/login";
+//                        } else {
+//                            if ($("#url").val() == "/users/") {
+//                                window.location = "/users";
+//                            }
+//                            if ($("#url").val() == "/faqs/") {
+//                                window.location = "/faqs";
+//                            }
+//                            if ($("#url").val() == "/category/") {
+//                                window.location = "/category";
+//                            }
+//                            if ($("#url").val() == "/drive_image/") {
+//                                window.location = "/drive_image";
+//                            }
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//    });
+
+    $('#enable_test').click(function () {
+        if ($('.check:checked').length == 0) {
+            bootbox.alert("Select atleast One institute to enable the test!");
+        } else {
+            console.log($('.check:checked').serializeArray())
+            let checkedData = $('.check:checked').serializeArray()
+            let valueArray = [];
+            let text = "";
+            console.log(checkedData);
+            checkedData.forEach(function (obj) {
+                valueArray.push(obj.value);
+                text = text + "<span class='chip'>" + obj.name + "</span>"
             });
-        }
-    });
-    $(document).on("click", ".change_status", function () {
-        var id = $(this).attr("val");
-        var status = $(this).attr("value");
-        var obj = $(this);
-        var user_type = "";
-        var url = "";
-        if ($("#url").val() == "/users/") {
-            user_type = "user";
-            url = "/users/changeStatus";
-        }
-        if ($("#url").val() == "/faqs/") {
-            user_type = "FAQ";
-            url = "/faqs/changeStatus";
-        }
-        if ($("#url").val() == "/category/") {
-            user_type = "Category";
-            url = "/category/changeStatus";
-        }
-        if ($("#url").val() == "/drive_image/") {
-            user_type = "Image";
-            url = "/drive_image/changeStatus";
-        }
-
-        var msg = "";
-        if (status == 0)
-            msg = "Are you sure you want to inactivate this " + user_type + "?";
-        else
-            msg = "Are you sure you want to activate this " + user_type + "?";
-        bootbox.confirm(msg, function (result) {
-            if (result) {
-
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: {id: id, status: status},
-                    dataType: 'JSON',
-                    success: function (result) {
-
-                        if (result == 'unauthorised') {
-                            window.location = "/login";
-                        } else {
-                            if ($("#url").val() == "/users/") {
-                                window.location = "/users";
-                            }
-                            if ($("#url").val() == "/faqs/") {
-                                window.location = "/faqs";
-                            }
-                            if ($("#url").val() == "/category/") {
-                                window.location = "/category";
-                            }
-                            if ($("#url").val() == "/drive_image/") {
-                                window.location = "/drive_image";
-                            }
-                        }
-                    }
-                });
-            }
-        });
-    });
-
-    $('#update').click(function () {
-        if ($('.check:checked').length == 0)
-            bootbox.alert("Select Atleast One!");
-        else {
-            bootbox.dialog({
-                message: "Click on Active or Inactive button!",
-                title: "Update Status",
-                buttons: {
-                    success: {
-                        label: "Active",
-                        className: "green",
-                        callback: function () {
-                            $("#action").val(1);
-                            $("#frm").submit();
-                        }
-                    },
-                    main: {
-                        label: "Inactive",
-                        className: "red",
-                        callback: function () {
-                            $("#action").val(0);
-                            $("#frm").submit();
-                        }
-                    },
-                    buttons: {
-                        label: "CANCEL",
-                        className: "blue",
-                    }
-                }
-            });
-        }
-    });
-    $(document).on("click", "#filter", function () {
-        var flag = 1;
-
-        if ($("#filterUrl").val() == "/users/") {
-            if (!$("#search_by").val() && !$("#filter_gender").val() && !$("#filter_status").val()) {
-                flag = 0;
-                bootbox.alert('Select any filter.');
-            }
-        }
-
-        if ($("#filterUrl").val() == "/reviews/") {
-            if (!$("#search_by").val() && !$("#sort_type").val()) {
-                flag = 0;
-                bootbox.alert('Select any filter.');
-            }
-        }
-        if ($("#filterUrl").val() == "/contact_us/") {
-            if (!$("#search_by").val() && !$("#selected_date").val() && !$("#filter_status").val()) {
-                flag = 0;
-                bootbox.alert('Select any filter.');
-            }
-        }
-        if ($("#filterUrl").val() == "/faqs/") {
-            if (!$("#search_by").val() && !$("#filter_status").val()) {
-                flag = 0;
-                bootbox.alert('Select any filter.');
-            }
-        }
-
-        if ($("#filterUrl").val() == "/pages/") {
-            if (!$("#search_by").val() && !$("#sort_type").val() && !$("#sort_field").val()) {
-                flag = 0;
-                bootbox.alert('Select any filter.');
-            }
-        }
-        if ($("#filterUrl").val() == "/emailTemplate/") {
-            if (!$("#search_by").val() && !$("#sort_type").val() && !$("#sort_field").val()) {
-                flag = 0;
-                bootbox.alert('Select any filter.');
-            }
-        }
-
-
-
-        var check_regx = /[`^~<>"')(?*%$]/;
-        if ($("#search_by").val() && check_regx.test($("#search_by").val())) {
-            flag = 0;
-            //            bootbox.alert('Enter only letters or numbers.');
-            $("#search_by_error").text("Enter only letters or numbers.").show();
-        }
-        if ($("#sort_field").val() != "") {
-            if ($("#sort_field").val() && $("#sort_type").val() == '') {
-                flag = 0;
-                bootbox.alert('Select Sort Type.');
-            }
-        }
-
-
-        if (flag === 1) {
-            $("#search_by_error").hide();
-            var str = $("form").serialize();
-            var search;
-            var url = $("#filterUrl").val();
-
-            $.ajax({
-                url: url + '?' + str,
-                type: "GET",
-                data: {search: 1},
-                success: function (result) {
-
-                    if (result == 'unauthorised')
-                        window.location = "/login";
-                    else
-                        $("#ajaxResponce").html(result);
-                    Metronic.init(); // init metronic core components
-                }
-            });
+            $(".chipcontainer").html(text);
+            $("#enable_test_modal").modal("show");
         }
     });
 
+//    $(document).on("click", "#filter", function () {
+//        var flag = 1;
+//
+//        if ($("#filterUrl").val() == "/users/") {
+//            if (!$("#search_by").val() && !$("#filter_gender").val() && !$("#filter_status").val()) {
+//                flag = 0;
+//                bootbox.alert('Select any filter.');
+//            }
+//        }
+//
+//        if ($("#filterUrl").val() == "/reviews/") {
+//            if (!$("#search_by").val() && !$("#sort_type").val()) {
+//                flag = 0;
+//                bootbox.alert('Select any filter.');
+//            }
+//        }
+//        if ($("#filterUrl").val() == "/contact_us/") {
+//            if (!$("#search_by").val() && !$("#selected_date").val() && !$("#filter_status").val()) {
+//                flag = 0;
+//                bootbox.alert('Select any filter.');
+//            }
+//        }
+//        if ($("#filterUrl").val() == "/faqs/") {
+//            if (!$("#search_by").val() && !$("#filter_status").val()) {
+//                flag = 0;
+//                bootbox.alert('Select any filter.');
+//            }
+//        }
+//
+//        if ($("#filterUrl").val() == "/pages/") {
+//            if (!$("#search_by").val() && !$("#sort_type").val() && !$("#sort_field").val()) {
+//                flag = 0;
+//                bootbox.alert('Select any filter.');
+//            }
+//        }
+//        if ($("#filterUrl").val() == "/emailTemplate/") {
+//            if (!$("#search_by").val() && !$("#sort_type").val() && !$("#sort_field").val()) {
+//                flag = 0;
+//                bootbox.alert('Select any filter.');
+//            }
+//        }
+//
+//
+//
+//        var check_regx = /[`^~<>"')(?*%$]/;
+//        if ($("#search_by").val() && check_regx.test($("#search_by").val())) {
+//            flag = 0;
+//            //            bootbox.alert('Enter only letters or numbers.');
+//            $("#search_by_error").text("Enter only letters or numbers.").show();
+//        }
+//        if ($("#sort_field").val() != "") {
+//            if ($("#sort_field").val() && $("#sort_type").val() == '') {
+//                flag = 0;
+//                bootbox.alert('Select Sort Type.');
+//            }
+//        }
+//
+//
+//        if (flag === 1) {
+//            $("#search_by_error").hide();
+//            var str = $("form").serialize();
+//            var search;
+//            var url = $("#filterUrl").val();
+//
+//            $.ajax({
+//                url: url + '?' + str,
+//                type: "GET",
+//                data: {search: 1},
+//                success: function (result) {
+//
+//                    if (result == 'unauthorised')
+//                        window.location = "/login";
+//                    else
+//                        $("#ajaxResponce").html(result);
+//                    Metronic.init(); // init metronic core components
+//                }
+//            });
+//        }
+//    });
 
-    $("#clear").click(function () {
-        $("#filter_form")[0].reset();
-        $('#sort_type').val('');
-        $("#search_by_error").hide();
-        var url = $("#filterUrl").val();
-        $.ajax({
-            url: url,
-            type: "GET",
-            data: {search: 1},
-            success: function (result) {
 
-                if (result == 'unauthorised')
-                    window.location = "/login";
-                else {
-                    $("#ajaxResponce").html(result);
-                    Metronic.init(); // init metronic core components
-                }
-            }
-        });
-    });
+//    $("#clear").click(function () {
+//        $("#filter_form")[0].reset();
+//        $('#sort_type').val('');
+//        $("#search_by_error").hide();
+//        var url = $("#filterUrl").val();
+//        $.ajax({
+//            url: url,
+//            type: "GET",
+//            data: {search: 1},
+//            success: function (result) {
+//
+//                if (result == 'unauthorised')
+//                    window.location = "/login";
+//                else {
+//                    $("#ajaxResponce").html(result);
+//                    Metronic.init(); // init metronic core components
+//                }
+//            }
+//        });
+//    });
 
 
 
@@ -646,178 +634,179 @@ jQuery(document).ready(function () {
         return str;
     }
 
-    $(document).on("click", ".view", function () {
-        /***********user ajax view *******/
-        var url_for_user_view = '';
-        if ($("#url").val() == "/users/") {
-            url_for_user_view = "/users/view";
-        }
+//    $(document).on("click", ".view", function () {
+//        /***********user ajax view *******/
+//        var url_for_user_view = '';
+//        if ($("#url").val() == "/users/") {
+//            url_for_user_view = "/users/view";
+//        }
+//
+//        if ($("#url").val() == "/faqs/") {
+//            url_for_user_view = "/faqs/view";
+//        }
+//        if ($("#url").val() == "/category/") {
+//            url_for_user_view = "/category/view";
+//        }
+//        if ($("#url").val() == "/reviews/") {
+//            url_for_user_view = "/reviews/view";
+//        }
+//
+//        var user_id = $(this).attr("user_id");
+//
+//        $.ajax({
+//            url: url_for_user_view,
+//            type: "POST",
+//            data: {id: user_id},
+//            dataType: "JSON",
+//            success: function (result) {
+//
+//                if (result == 'unauthorised')
+//                    window.location = "/login";
+//                else if (result.status == 'error') {
+//                    if ($("#url").val() == "/users/") {
+//                        window.location = "/users";
+//                    }
+//                    if ($("#url").val() == "/faqs/") {
+//                        window.location = "/faqs";
+//                    }
+//                    if ($("#url").val() == "/category/") {
+//                        window.location = "/category";
+//                    }
+//                } else {
+//                    if ($("#url").val() == "/users/") {
+//                        var status = "Active";
+//                        $('#name').text(result.data.firstName + " " + result.data.lastName);
+//                        $('#email').text(result.data.email || "--");
+//                        $('#country_code').text(result.data.country_code || "--");
+//                        $('#phone').text(result.data.phone || "--");
+//                        if (result.data.status == 3)
+//                            status = "Blocked";
+//                        $('#status').text(status);
+//                        $('#unique_id').text(result.data.unique_id || "--");
+//                        var addr = '';
+//                        for (var i = 0; i < result.data.customer_address.length; i++) {
+//                            addr += '<b>' + result.data.customer_address[i].address_name + '</b>, ' +
+//                                    result.data.customer_address[i].unit_number + ', ' +
+//                                    result.data.customer_address[i].street_name + ', ' +
+//                                    result.data.customer_address[i].sublocation_id.area_name + ', ' +
+//                                    result.data.customer_address[i].location_id.name + '<br>'
+//                        }
+//                        $('#address1').html(addr || "Not Available");
+//                    }
+//
+//                    if ($("#url").val() == "/faqs/") {
+//                        $('#question').text(result.data.heading);
+//                        $('#answer').text(result.data.description);
+//                    }
+//                    $('#myModal').modal('show');
+//                }
+//            }
+//        });
+//        /***********user ajax view ends here*******/
+//    });
+//    $(document).on("click", ".disable_user", function () {
+//        $('#sub_error_getEmail').text("");
+//        $('.error').text("");
+//        $('#disableUser-form').trigger("reset");
+//        var userId = $(this).attr('userid');
+//        var status = $(this).attr('status');
+//        $('#disable_user_btn').attr('userid', userId);
+//        $('#disable_user_btn').attr('status', status);
+//
+//        if (status == 1)
+//            $('.disable_reason_popup').html('Add your comment why you want to want to mark this user as active?');
+//        else
+//            $('.disable_reason_popup').html('Add your comment why you want to want to mark this user as inactive?');
+//    });
+//    //disable user or block bottle drive
+//    $(document).on("click", "#disable_user_btn", function () {
+//        var url_for_user_disable = "";
+//        var disable_reason = $('#disableUserID').val();
+//        var userId = $(this).attr('userid');
+//        var status = $(this).attr("status");
+//        if ($('#disableUser-form').valid()) {
+//            if ($("#url").val() == "/users/") {
+//                url_for_user_disable = "/users/disable_user";
+//            }
+//
+//            $.ajax({
+//                url: url_for_user_disable,
+//                type: "POST",
+//                data: {userId: userId, disable_reason: disable_reason, status: status},
+//                dataType: "JSON",
+//                success: function (result) {
+//
+//                    if (result == 'unauthorised')
+//                        window.location = "/login";
+//                    else if (result.status == 1) {
+//                        $("#sub_error_getEmail").text("");
+//                        $('#disableUserModal').modal('hide');
+//                        if ($("#url").val() == "/users/") {
+//                            if (status == 1) {
+//                                $('#disable_user_btn').attr("status", 1);
+//                            } else {
+//                                $('#disable_user_btn').attr("status", 0);
+//                            }
+//                            window.location = "/users";
+//                        } else if ($("#url").val() == "/bottle_drives/") {
+//                            window.location = "/bottle_drives";
+//                        } else if ($("#url").val() == "/reported_bottle_drives/") {
+//                            window.location = "/reported_bottle_drives";
+//                        } else if ($("#url").val() == "/bottle_drive_details/") {
+//                            window.location = $("#back_url").val();
+//                        }
+//                    } else {
+//                        $("#sub_error_getEmail").text(result.message);
+//                    }
+//                }
+//            });
+//        }
+//    });
+//    $(document).on("change", "#sort_field", function () {
+//        if ($('#sort_field').val()) {
+//            $('#sort_type').prop('disabled', false);
+//        } else {
+//            $('#sort_type').prop('disabled', true);
+//        }
+//
+//        if ($('#sort_field').val() === "status") {
+//            var values = [{status: -1, name: "Active"}, {status: 1, name: "Inactive"}];
+//        } else {
+//            var values = [{status: 1, name: "Ascending"}, {status: -1, name: "Descending"}];
+//        }
+//        var options = '<option value="">--Select--</option>';
+//        for (var i = 0; i < values.length; i++) {
+//            options += '<option value="' + values[i].status + '">' + values[i].name + '</option>';
+//        }
+//        $('#sort_type').html(options);
+//    });
+//    $(document).on("change", "#state", function () {
+//        if ($('#state').val()) {
+//
+//            $.ajax({
+//                url: "/pricing_zone/cities/" + $(this).val(),
+//                type: "GET",
+//                dataType: "JSON",
+//                success: function (result) {
+//
+//                    if (result == 'unauthorised')
+//                        window.location = "/login";
+//                    else if (result.status == 1) {
+//                        var cities = '<option value="">--Select--</option>';
+//                        for (var i = 0; i < result.cities.length; i++) {
+//                            cities += '<option value="' + result.cities[i]._id + '">' + result.cities[i].name + '</option>'
+//                        }
+//                        $('#city').html(cities);
+//                    }
+//                }
+//            });
+//            $('#city').prop('disabled', false);
+//        } else {
+//            $('#city').val("");
+//            $('#city').prop('disabled', true);
+//        }
+//    });
 
-        if ($("#url").val() == "/faqs/") {
-            url_for_user_view = "/faqs/view";
-        }
-        if ($("#url").val() == "/category/") {
-            url_for_user_view = "/category/view";
-        }
-        if ($("#url").val() == "/reviews/") {
-            url_for_user_view = "/reviews/view";
-        }
-
-        var user_id = $(this).attr("user_id");
-
-        $.ajax({
-            url: url_for_user_view,
-            type: "POST",
-            data: {id: user_id},
-            dataType: "JSON",
-            success: function (result) {
-
-                if (result == 'unauthorised')
-                    window.location = "/login";
-                else if (result.status == 'error') {
-                    if ($("#url").val() == "/users/") {
-                        window.location = "/users";
-                    }
-                    if ($("#url").val() == "/faqs/") {
-                        window.location = "/faqs";
-                    }
-                    if ($("#url").val() == "/category/") {
-                        window.location = "/category";
-                    }
-                } else {
-                    if ($("#url").val() == "/users/") {
-                        var status = "Active";
-                        $('#name').text(result.data.firstName + " " + result.data.lastName);
-                        $('#email').text(result.data.email || "--");
-                        $('#country_code').text(result.data.country_code || "--");
-                        $('#phone').text(result.data.phone || "--");
-                        if (result.data.status == 3)
-                            status = "Blocked";
-                        $('#status').text(status);
-                        $('#unique_id').text(result.data.unique_id || "--");
-                        var addr = '';
-                        for (var i = 0; i < result.data.customer_address.length; i++) {
-                            addr += '<b>' + result.data.customer_address[i].address_name + '</b>, ' +
-                                    result.data.customer_address[i].unit_number + ', ' +
-                                    result.data.customer_address[i].street_name + ', ' +
-                                    result.data.customer_address[i].sublocation_id.area_name + ', ' +
-                                    result.data.customer_address[i].location_id.name + '<br>'
-                        }
-                        $('#address1').html(addr || "Not Available");
-                    }
-
-                    if ($("#url").val() == "/faqs/") {
-                        $('#question').text(result.data.heading);
-                        $('#answer').text(result.data.description);
-                    }
-                    $('#myModal').modal('show');
-                }
-            }
-        });
-        /***********user ajax view ends here*******/
-    });
-    $(document).on("click", ".disable_user", function () {
-        $('#sub_error_getEmail').text("");
-        $('.error').text("");
-        $('#disableUser-form').trigger("reset");
-        var userId = $(this).attr('userid');
-        var status = $(this).attr('status');
-        $('#disable_user_btn').attr('userid', userId);
-        $('#disable_user_btn').attr('status', status);
-
-        if (status == 1)
-            $('.disable_reason_popup').html('Add your comment why you want to want to mark this user as active?');
-        else
-            $('.disable_reason_popup').html('Add your comment why you want to want to mark this user as inactive?');
-    });
-    //disable user or block bottle drive
-    $(document).on("click", "#disable_user_btn", function () {
-        var url_for_user_disable = "";
-        var disable_reason = $('#disableUserID').val();
-        var userId = $(this).attr('userid');
-        var status = $(this).attr("status");
-        if ($('#disableUser-form').valid()) {
-            if ($("#url").val() == "/users/") {
-                url_for_user_disable = "/users/disable_user";
-            }
-
-            $.ajax({
-                url: url_for_user_disable,
-                type: "POST",
-                data: {userId: userId, disable_reason: disable_reason, status: status},
-                dataType: "JSON",
-                success: function (result) {
-
-                    if (result == 'unauthorised')
-                        window.location = "/login";
-                    else if (result.status == 1) {
-                        $("#sub_error_getEmail").text("");
-                        $('#disableUserModal').modal('hide');
-                        if ($("#url").val() == "/users/") {
-                            if (status == 1) {
-                                $('#disable_user_btn').attr("status", 1);
-                            } else {
-                                $('#disable_user_btn').attr("status", 0);
-                            }
-                            window.location = "/users";
-                        } else if ($("#url").val() == "/bottle_drives/") {
-                            window.location = "/bottle_drives";
-                        } else if ($("#url").val() == "/reported_bottle_drives/") {
-                            window.location = "/reported_bottle_drives";
-                        } else if ($("#url").val() == "/bottle_drive_details/") {
-                            window.location = $("#back_url").val();
-                        }
-                    } else {
-                        $("#sub_error_getEmail").text(result.message);
-                    }
-                }
-            });
-        }
-    });
-    $(document).on("change", "#sort_field", function () {
-        if ($('#sort_field').val()) {
-            $('#sort_type').prop('disabled', false);
-        } else {
-            $('#sort_type').prop('disabled', true);
-        }
-
-        if ($('#sort_field').val() === "status") {
-            var values = [{status: -1, name: "Active"}, {status: 1, name: "Inactive"}];
-        } else {
-            var values = [{status: 1, name: "Ascending"}, {status: -1, name: "Descending"}];
-        }
-        var options = '<option value="">--Select--</option>';
-        for (var i = 0; i < values.length; i++) {
-            options += '<option value="' + values[i].status + '">' + values[i].name + '</option>';
-        }
-        $('#sort_type').html(options);
-    });
-    $(document).on("change", "#state", function () {
-        if ($('#state').val()) {
-
-            $.ajax({
-                url: "/pricing_zone/cities/" + $(this).val(),
-                type: "GET",
-                dataType: "JSON",
-                success: function (result) {
-
-                    if (result == 'unauthorised')
-                        window.location = "/login";
-                    else if (result.status == 1) {
-                        var cities = '<option value="">--Select--</option>';
-                        for (var i = 0; i < result.cities.length; i++) {
-                            cities += '<option value="' + result.cities[i]._id + '">' + result.cities[i].name + '</option>'
-                        }
-                        $('#city').html(cities);
-                    }
-                }
-            });
-            $('#city').prop('disabled', false);
-        } else {
-            $('#city').val("");
-            $('#city').prop('disabled', true);
-        }
-    });
     $(document).on("click", "#start_date, input[name='start_date']", function (e) {
         $("#start_date_picker").datepicker('show').on('changeDate', function (selected) {
             var minDate = new Date(selected.date.valueOf());

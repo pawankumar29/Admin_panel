@@ -59,3 +59,14 @@ exports.update = (query, updatedata) => {
         });
     });
 };
+exports.updateMany = (query, updatedata) => {
+    return new Promise((resolve, reject) => {
+        institutes.update(query, updatedata, {multi: true}, (error, data) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(data);
+            }
+        });
+    });
+};

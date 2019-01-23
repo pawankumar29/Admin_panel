@@ -1,7 +1,9 @@
 <div class="table-responsive">
+    <input type="hidden" id="url" value="/institutes/">
     <table class="table table-bordered table-hover" role="grid">
         <thead>
             <tr>
+                <th width="2%"><input type="checkbox" id="checkAll"/></th>
                 <th>S.No.</th>
                 <th>Name</th>
                 <th>P.O Name</th>
@@ -18,8 +20,10 @@
             {% if response.length > 0 %}
             {% for institute in response %}	 
             <tr>
+                <td width="2%"><span class="checked"><input type="checkbox" class="check" name="{{institute.name}}" value="{{institute._id | safe}}"></span></td>
+                
                 <td>{{index}}</td>
-
+                
                 {% if !institute.name  %}
                 <td>--</td>
                 {% else %} 
@@ -101,7 +105,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a>
+                                <a deleteLink="/institutes/delete/{{institute._id | safe}}" class="delete">
                                     <i class="glyphicon glyphicon-trash"></i>
                                     <span>Delete Institution</span>
                                 </a>

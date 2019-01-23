@@ -9,6 +9,10 @@ const settings = require('../models/settings')
 var multer = require('multer')
 var fs = require('fs')
 var csv = require('fast-csv')
+const roles = require("../helper/roles");
+const quizzes = require("../models/quiz")
+const quiz_results = require("../models/quiz_result")
+const institute_categories = require("../models/institute_categories")
 
 function fileFilter(req, file, cb) {
     if (
@@ -42,14 +46,14 @@ var upload = multer({
 
 function dataUpload(organisation_id, institute_id, batch, path) {
     // let organisation_id = req.user.organisation_id
-    organisation_id = mongoose.Types.ObjectId(organisation_id)
+    organisation_id = mongoose.Types.ObjectId(organisation_id);
     let invalidArray = [];
     let validArray = [];
     let csvDataArray = [];
     let emailArray = [];
     let updateBatchArray = [];
     let completePath = process.cwd() + '/' + path;
-    console.log(completePath);
+//    console.log(completePath);
     var stream = fs.createReadStream(completePath)
     csv.fromStream(stream, {
         headers: true
@@ -75,8 +79,6 @@ function dataUpload(organisation_id, institute_id, batch, path) {
                     let matchedData = {};
                     for (index = 0; index < csvDataArray.length; index++) {
                         let obj = csvDataArray[index];
-                        console.log("object to test");
-                        console.log(obj);
                         let alreadyExist = 0;
                         if (obj["email"] && obj["name"] && obj["qualification"] && obj["branch"] && obj["roll_no"] && obj["phone_no"] && obj["father_name"] && obj["dob"]) {
                             if (moment(obj["dob"], "MM/DD/YYYY", true).isValid()) {
@@ -121,7 +123,23 @@ function dataUpload(organisation_id, institute_id, batch, path) {
                                         continue;
                                     }
                                 } else {
-                                    validArray.push(obj);
+                                    validArray.push({
+                                        "institute_id": institute_id,
+                                        "organisation_id": organisation_id,
+                                        "is_walkin_user": 0,
+                                        "role": roles.app_user,
+                                        "batch": batch,
+                                        "name": obj["name"],
+                                        "roll_no": obj["roll_no"],
+                                        "phone_no": obj["phone_no"],
+                                        "father_name": obj["father_name"],
+                                        "dob": obj["dob"],
+                                        "email": obj["email"],
+                                        "qualification": obj["qualification"],
+                                        "branch": obj["branch"]
+                                    });
+
+
                                 }
                             } else {
                                 obj["message"] = "dob format is not correct.";
@@ -151,11 +169,9 @@ function dataUpload(organisation_id, institute_id, batch, path) {
                     if (updateBatchArray.length > 0) {
                         users.update({_id: {$in: updateBatchArray}, is_deleted: 0, organisation_id: organisation_id}, {batch: batch})
                     }
-                    Promise.all(promiseArray).then(([insert, update]) => {
-                        console.log("update array res");
-                        console.log(update);
-                        console.log("insert array response");
-                        console.log(insert);
+                    let no_of_students = validArray.length + updateBatchArray.length;
+                    promiseArray.push(institutes.update({_id: mongoose.Types.ObjectId(institute_id), is_deleted: 0}, {no_of_students: no_of_students}));
+                    Promise.all(promiseArray).then(([insert, update, updatecount]) => {
                         return {message: "success", status: 1, errorData: invalidArray};
                     }).catch(err => {
                         return {message: err.message, status: 0}
@@ -327,7 +343,7 @@ exports.get_institutions = (req, res, next) => {
                         $cond: ['$quiz.status', '$quiz.status', 0]
                     }
                 }
-            }
+            },
         ]
         let p1 = institutes.count({
             organisation_id: req.user.organisation_id,
@@ -452,20 +468,20 @@ exports.add_new_institutions = (req, res, next) => {
                                                 .save(insertData)
                                                 .then(result => {
                                                     if (req.file) {
-                                                        console.log('file path')
-                                                        console.log(req.file.path)
+//                                                        console.log('file path')
+//                                                        console.log(req.file.path)
                                                         let response = dataUpload(req.user.organisation_id.toString(), result._id.toString(), req.body.batch.toString(), req.file.path);
-                                                        console.log(response);
-                                                        console.log('institute added with  batch')
+//                                                        console.log(response);
+//                                                        console.log('institute added with  batch')
                                                         req.flash('success', 'Institution added successfully!!')
                                                         res.redirect('/institutes')
                                                     } else {
-                                                        console.log('institute addede without batch')
+//                                                        console.log('institute addede without batch')
                                                         req.flash('success', 'Institution added successfully!!')
                                                         res.redirect('/institutes')
                                                     }
-                                                    req.flash('success', 'Institution added successfully!!')
-                                                    res.redirect('/institutes')
+//                                                    req.flash('success', 'Institution added successfully!!')
+//                                                    res.redirect('/institutes')
                                                 })
                                                 .catch(err => {
                                                     reject(err)
@@ -608,6 +624,40 @@ exports.post_edit_institution = (req, res, next) => {
         })
     })
 }
+
+exports.delete_institute = (req, res, next) => {
+    new Promise((resolve, reject) => {
+        let institute_id = mongoose.Types.ObjectId(req.params.id);
+        console.log("institute_id");
+        console.log(institute_id);
+        let p1 = institutes.update({_id: institute_id, is_deleted: 0}, {is_deleted: 1});
+        let p2 = users.update({institute_id: institute_id, is_deleted: 0}, {is_deleted: 1});
+        let p3 = quiz_results.update({institute_id: institute_id, is_deleted: 0}, {is_deleted: 1});
+        let p4 = quizzes.update({institute_id: institute_id, is_deleted: 0}, {is_deleted: 1});
+        let p5 = institute_categories.update({institute_id: institute_id, is_deleted: 0}, {is_deleted: 1});
+
+        Promise.all([p1, p2, p3, p4, p5]).then(([p1res, p2res, p3res, p4res, p5res]) => {
+            console.log("institute update");
+            console.log(p1res);
+            console.log("user update");
+            console.log(p2res);
+            console.log("quizres update");
+            console.log(p3res);
+            console.log("quiz update");
+            console.log(p4res);
+            console.log("institute categories update");
+            console.log(p5res);
+            req.flash('success', "Institute deleted successfully.");
+            res.redirect('/institutes')
+        }).catch(err => {
+            req.flash('error', err.message)
+            res.redirect('/institutes')
+        });
+    }).catch(err => {
+        req.flash('error', err.message)
+        res.redirect('/institutes')
+    })
+};
 
 exports.csvDowload = (req, res, next) => {
     new Promise((resolve, reject) => {

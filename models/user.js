@@ -174,7 +174,7 @@ exports.save = (user_data) => {
 };
 exports.insertMany = (user_data) => {
     return new Promise((resolve, reject) => {
-        user.insertMany((error, data) => {
+        user.insertMany(user_data, (error, data) => {
             if (!error) {
                 data = JSON.parse(JSON.stringify(data));
                 resolve({
