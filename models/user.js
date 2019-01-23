@@ -172,7 +172,52 @@ exports.save = (user_data) => {
         });
     });
 };
+exports.insertMany = (user_data) => {
+    return new Promise((resolve, reject) => {
+        user.insertMany((error, data) => {
+            if (!error) {
+                data = JSON.parse(JSON.stringify(data));
+                resolve({
+                    status: 1,
+                    message: "success",
+                    data: data
+                });
+            } else {
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
+            }
+        });
+    });
+};
 
+//exports.updateMany = (query, update_data) => {
+//    return new Promise((resolve, reject) => {
+//        user.update(query, update_data, {
+//            multi: true
+//        }, (error, data) => {
+//            if (!error) {
+//                if (data) {
+//                    resolve({
+//                        status: 1,
+//                        message: "success"
+//                    });
+//                } else {
+//                    resolve({
+//                        status: 0,
+//                        message: "Users data could not update"
+//                    });
+//                }
+//            } else {
+//                resolve({
+//                    status: 0,
+//                    message: error.message
+//                });
+//            }
+//        });
+//    });
+//};
 exports.update = (query, update_data) => {
     return new Promise((resolve, reject) => {
         user.update(query, update_data, {
@@ -203,7 +248,7 @@ exports.update = (query, update_data) => {
 exports.findOneAndUpdate = (query, update_data) => {
     return new Promise((resolve, reject) => {
         user.findOneAndUpdate(query, update_data, {
-            new: true
+            new : true
         }, (error, data) => {
             if (!error) {
                 if (data !== null) {
@@ -296,29 +341,29 @@ exports.find_count = (query) => {
 exports.find_with_pagination_projection = (query, projection, population, sort_condition, skip, limit, options) => {
     return new Promise((resolve, reject) => {
         user.find(query, projection).sort(sort_condition)
-            .populate(population)
-            .skip(skip).limit(limit).paginate(options, (error, data) => {
-                if (!error) {
-                    if (data.length !== 0) {
-                        data = JSON.parse(JSON.stringify(data));
-                        resolve({
-                            status: 1,
-                            message: 'success',
-                            data: data
-                        });
-                    } else {
-                        resolve({
-                            status: 2,
-                            message: 'Users not found'
-                        });
-                    }
+                .populate(population)
+                .skip(skip).limit(limit).paginate(options, (error, data) => {
+            if (!error) {
+                if (data.length !== 0) {
+                    data = JSON.parse(JSON.stringify(data));
+                    resolve({
+                        status: 1,
+                        message: 'success',
+                        data: data
+                    });
                 } else {
                     resolve({
-                        status: 0,
-                        message: error.message
+                        status: 2,
+                        message: 'Users not found'
                     });
                 }
-            });
+            } else {
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
+            }
+        });
     });
 };
 
