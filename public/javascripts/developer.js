@@ -189,8 +189,64 @@ jQuery(document).ready(function () {
         }
     });
 
+    $(document).on("click", "#checkAll", function () {
+        $(".check").prop('checked', $(this).prop('checked'));
+        if ($(this).prop('checked'))
+            $(".check").parent().prop('class', 'checked');
+        else
+            $(".check").parent().prop('class', '');
+    });
 
-
+    $(document).on("click", ".custom_close", function () {
+        console.log("clicked");
+        $(this).parent("span.chip").remove();
+        console.log($(".custom_close").length);
+        $(".collegeContainer").html("<h1 style='color:red'><b>PLease select atleast one college</b></h1>")
+        $(".save").attr("disabled", true)
+    });
+    $('#enable_test').click(function () {
+        if ($('.check:checked').length == 0) {
+            bootbox.alert("Select atleast One institute to enable the test!");
+        } else {
+            let checkedData = $('.check:checked').serializeArray()
+            let text = "";
+            checkedData.forEach(function (obj) {
+                text = text + "<span class='chip' data-value='" + obj.value + "'>" + obj.name + "<span class='custom_close'><i class='fa fa-remove' aria-hidden='true'></i></span></span>"
+            });
+            $(".chipcontainer").html(text);
+            $("#enable_test_modal").modal("show");
+        }
+    });
+    $('.save').click(function (e) {
+        e.preventDefault();
+        console.log($(".chip"));
+        $(".chip").get(0).data("")
+    });
+    $(".enable_quiz_form").validate({
+        rules: {
+            date: {
+                required: true
+            },
+            time: {
+                required: true,
+            }
+        },
+        focusInvalid: false,
+        invalidHandler: function (form, validator) {
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+                validator.errorList[0].element.focus();
+            }
+        },
+        messages: {
+            date: {
+                required: "PLase select the test date."
+            },
+            time: {
+                required: "PLase select the test time."
+            }
+        }
+    });
     //form validation for category-add-Edit
 //    $(".category-form").validate({
 //        focusInvalid: false,
@@ -468,23 +524,7 @@ jQuery(document).ready(function () {
 //        });
 //    });
 
-    $('#enable_test').click(function () {
-        if ($('.check:checked').length == 0) {
-            bootbox.alert("Select atleast One institute to enable the test!");
-        } else {
-            console.log($('.check:checked').serializeArray())
-            let checkedData = $('.check:checked').serializeArray()
-            let valueArray = [];
-            let text = "";
-            console.log(checkedData);
-            checkedData.forEach(function (obj) {
-                valueArray.push(obj.value);
-                text = text + "<span class='chip'>" + obj.name + "</span>"
-            });
-            $(".chipcontainer").html(text);
-            $("#enable_test_modal").modal("show");
-        }
-    });
+
 
 //    $(document).on("click", "#filter", function () {
 //        var flag = 1;

@@ -7,7 +7,7 @@ jQuery(document).ready(function () {
             $("#batch").next("label").remove();
         }
     });
-
+    
     $('.institute-form').validate({
         focusInvalid: false,
         ignore: [],
