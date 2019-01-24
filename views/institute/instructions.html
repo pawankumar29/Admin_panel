@@ -1,0 +1,90 @@
+{% extends "../layout.html" %} {% block content %}
+<!-- BEGIN THEME STYLES -->
+
+<link rel="stylesheet" type="text/css" href="{{getVersionedPath('/stylesheets/dataTables.bootstrap.js')}}" /> {% block css %}
+<style>
+    label.error {
+        color: red;
+    }
+    table {
+        table-layout: fixed; 
+
+    }
+    .form-actions {
+        padding-top: 20px;
+        text-align: center;
+    }
+
+    .content {
+        overflow-y: auto;
+        /* Trigger vertical scroll    */
+        overflow-x: hidden;
+    }
+
+    ;
+    .pt-3-half {
+        padding-top: 1.4rem;
+    }
+
+    textarea.md-textarea-scroll {
+        overflow-y: visible;
+    }
+
+    textarea.md-textarea {
+        padding: 0;
+        resize: none;
+        min-height: 2rem;
+        width: 100%
+    }
+</style>
+{% endblock %}
+<div class="page-content">
+    <div class="row margin-top-12">
+        <div class="col-md-12">
+            {% include "../flashMessage_Success.html" %}
+            <!-- BEGIN BORDERED TABLE PORTLET-->
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="glyphicon glyphicon-plus"></i>{{title}}
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class ="dynamic_table">
+                        <table class="table table-responsive-md">
+                            <input type="hidden" id="institute_id" value="{{id}}"> 
+                            {% set index = 1 %} 
+                            {% for data in instructions %}
+                            <tr>
+                                <td class="col-md-1"><span>{{index}}</span><input type="hidden" value="{{data}}"></td>
+                                <td class="col-md-8 content">{{data}}</td>
+                                <td class="col-md-2">
+                                    <span class="table-remove">
+                                        <button type="button" class="btn btn-icon-only yellow edit"><i class="fa fa-edit"></i></button>
+                                        <button type="button" class="btn btn-icon-only red delete"><i class="fa fa-trash"></i></button>
+                                    </span>
+                                </td>
+                            </tr>
+                            {% set index=index+1 %} {% endfor %}
+                            <!-- This is our clonable table line -->
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn blue pull-left add">Add New</button>
+                        </div>
+                    </div>
+                    <!-- Editable table -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %} {% block js %}
+<script src="{{getVersionedPath('/javascripts/institutes.js')}}" type="text/javascript"></script>
+<script type="text/javascript">
+
+</script>
+{% endblock %}

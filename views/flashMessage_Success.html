@@ -1,20 +1,13 @@
 {% if message.success %}
 <div class="alert alert-success">
-    <strong>Success!</strong>
-    {{message.success}}.
+    <strong>Success!</strong> {{message.success}}.
 </div>
-{% endif %}
-
-{% if message.warning %}
+{% endif %} {% if message.warning %}
 <div class="alert alert-warning">
-    <strong>Warning!</strong>
-    {{message.warning}}.
+    <strong>Warning!</strong> {{message.warning}}.
 </div>
-{% endif %}
-
-{% if message.error %}
+{% endif %} {% if message.error %}
 <div class="alert alert-danger">
-    <strong>Error!</strong>
-    {{message.error}}.
+    <strong>Error!</strong> {{message.error}}.
 </div>
 {% endif %}

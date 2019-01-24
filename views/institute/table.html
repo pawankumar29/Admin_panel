@@ -1,0 +1,125 @@
+<div class="table-responsive">
+    <input type="hidden" id="url" value="/institutes/">
+    <table class="table table-bordered table-hover" role="grid">
+        <thead>
+            <tr>
+                <th width="2%"><input type="checkbox" id="checkAll"/></th>
+                <th>S.No.</th>
+                <th>Name</th>
+                <th>P.O Name</th>
+                <th>Number of students</th>
+                <th>Candidate selected</th>
+                <th>Qualification</th>
+                <th width="5%">Test status</th>
+                <th width="5%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set curr = current-1  %}
+            {% set index = curr* options.perPage +1  %}
+            {% if response.length > 0 %}
+            {% for institute in response %}	 
+            <tr>
+                <td width="2%"><span class="checked"><input type="checkbox" class="check" name="{{institute.name}}" value="{{institute._id | safe}}"></span></td>
+                
+                <td>{{index}}</td>
+                
+                {% if !institute.name  %}
+                <td>--</td>
+                {% else %} 
+                <td>{{institute.name}} </td>
+                {% endif %}
+
+                {% if !institute.po_name %}
+                <td>--</td>
+                {% else %}
+                <td>{{institute.po_name}}</td>
+                {% endif %}
+
+                {% if !institute.no_of_students %}
+                <td>-NA-</td>  
+                {% else %}                                   
+                <td>{{institute.no_of_students}}</td> 
+                {% endif %}
+
+                {% if !institute.candidate_selected %}
+                <td>-NA-</td>  
+                {% else %}                                   
+                <td>{{institute.candidate_selected}}</td> 
+                {% endif %}
+
+                {% if institute.qualification.length > 0 %}
+                <td>{{institute.qualification | join(', ')}}</td> 
+                {% else %}                                   
+                <td>--</td>  
+                {% endif %}
+
+                <td>
+                    {% if institute.test_status == 0  %}
+                    <a class="btn btn-circle btn-icon-only btn-default" title="No test scheduled" instiutute_id="{{institute._id}}" status="0" data-toggle="modal" data-target="#disableUserModal" val="{{institute._id}}"><i class="fa fa-circle" style="color:#428bca"></i></a>
+                    {% elseif institute.test_status == 1  %}
+                    <a class="btn btn-circle btn-icon-only btn-default" title="Test scheduled" instiutute_id="{{institute._id}}" status="0" data-toggle="modal" data-target="#disableUserModal" val="{{institute._id}}"><i class="fa fa-circle" style="color:green"></i></a>
+                    {% elseif institute.test_status == 2 %}
+                    <a class="btn btn-circle btn-icon-only btn-default" title="Test Started" instiutute_id="{{institute._id}}" status="1" data-toggle="modal" data-target="#disableUserModal"  val="{{intitute._id}}"><i class="fa fa-circle" style="color:#dfba49"></i></a>
+                    {% else %}
+                    <a class="btn btn-circle btn-icon-only btn-default" title="Test completed" instiutute_id="{{institute._id}}" status="1" data-toggle="modal" data-target="#disableUserModal"  val="{{intitute._id}}"><i class="fa fa-circle" style="color:red"></i></a>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class=" dropdown dropleft button-group">
+                        <button type="button" class="btn btn-default btn-circle btn-icon-only  action_dropdown dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-chevron-down"></i></button>
+                        <ul class="dropdown-menu dropdown-left-manual" role="menu" aria-labelledby="dropdownMenuButton">
+                            <li><a href="/institutes/edit/{{institute._id | safe}}">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                    <span>Edit Details</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <i class="fa fa-users"></i>
+                                    <span>Manage Students</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <i class="glyphicon glyphicon-th-large"></i>
+                                    <span>Add quiz Categories</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/instructions/{{institute._id | safe}}">
+                                    <i class="fa fa-info"></i>
+                                    <span>Manage Instructions</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    <span>Add new Batch</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <i class="fa fa-history"></i>
+                                    <span>View History</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a deleteLink="/institutes/delete/{{institute._id | safe}}" class="delete">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                    <span>Delete Institution</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            {% set index=index+1 %}
+            {% endfor %}					
+            {% else %}
+            <tr><td colspan="12"><p class="text-center">No records to display</p></td></tr>
+            {% endif %}				
+        </tbody>
+    </table>
+</div>
+<div class="text-center">{% include "../paginate.html" %}</div><br><br>

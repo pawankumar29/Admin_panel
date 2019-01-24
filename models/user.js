@@ -1,4 +1,3 @@
-
 "use strict";
 const mongoose = require("mongoose");
 const user = mongoose.model("users");
@@ -10,16 +9,26 @@ exports.findOne = (query, projection) => {
             if (!error) {
                 if (data !== null) {
                     data = JSON.parse(JSON.stringify(data));
-                    resolve({status: 1, message: "success", data: data});
+                    resolve({
+                        status: 1,
+                        message: "success",
+                        data: data
+                    });
                 } else {
-                    resolve({status: 0, message: "User not found"});
+                    resolve({
+                        status: 0,
+                        message: "User not found"
+                    });
                 }
             } else {
-                resolve({status: 0, message: error.message});
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
             }
         });
     })
-    
+
 };
 exports.findOne_population = (query, populate_data) => {
     return new Promise((resolve, reject) => {
@@ -27,17 +36,27 @@ exports.findOne_population = (query, populate_data) => {
             if (!error) {
                 if (data.length !== 0) {
                     data = JSON.parse(JSON.stringify(data));
-                    resolve({status: 1, message: "success", data: data});
+                    resolve({
+                        status: 1,
+                        message: "success",
+                        data: data
+                    });
                 } else {
-                    resolve({status: 2, message: "Users not found"});
+                    resolve({
+                        status: 2,
+                        message: "Users not found"
+                    });
                 }
             } else {
-                resolve({status: 0, message: error.message});
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
             }
         });
-        
+
     })
-    
+
 };
 
 exports.aggregate = (aggregate_query) => {
@@ -45,10 +64,17 @@ exports.aggregate = (aggregate_query) => {
         user.aggregate(aggregate_query, (error, data) => {
             if (!error) {
                 data = JSON.parse(JSON.stringify(data));
-                resolve({status: 1, message: "success", data: data});
-                
+                resolve({
+                    status: 1,
+                    message: "success",
+                    data: data
+                });
+
             } else {
-                resolve({status: 0, message: error.message});
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
             }
         });
     });
@@ -58,13 +84,17 @@ exports.find = (query, projection) => {
     return new Promise((resolve, reject) => {
         user.find(query, projection, (error, data) => {
             if (!error) {
-                if (data) {
-                    resolve({status: 1, message: "success", data: data});
-                } else {
-                    resolve({status: 0, message: "Users not found"});
-                }
+
+                resolve({
+                    status: 1,
+                    message: "success",
+                    data: data
+                });
             } else {
-                resolve({status: 0, message: error.message});
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
             }
         });
     });
@@ -76,12 +106,22 @@ exports.find_pagination = (query, projection, skip, limit) => {
         user.find(query, projection).skip(skip).limit(limit).exec((error, data) => {
             if (!error) {
                 if (data) {
-                    resolve({status: 1, message: "success", data: data});
+                    resolve({
+                        status: 1,
+                        message: "success",
+                        data: data
+                    });
                 } else {
-                    resolve({status: 0, message: "Users not found"});
+                    resolve({
+                        status: 0,
+                        message: "Users not found"
+                    });
                 }
             } else {
-                resolve({status: 0, message: error.message});
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
             }
         });
     });
@@ -92,12 +132,22 @@ exports.find_pagination_sort = (query, projection, skip, limit, sort) => {
         user.find(query, projection).skip(skip).limit(limit).sort(sort).exec((error, data) => {
             if (!error) {
                 if (data) {
-                    resolve({status: 1, message: "success", data: data});
+                    resolve({
+                        status: 1,
+                        message: "success",
+                        data: data
+                    });
                 } else {
-                    resolve({status: 0, message: "Users not found"});
+                    resolve({
+                        status: 0,
+                        message: "Users not found"
+                    });
                 }
             } else {
-                resolve({status: 0, message: error.message});
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
             }
         });
     });
@@ -108,26 +158,88 @@ exports.save = (user_data) => {
         new_user.save((error, data) => {
             if (!error) {
                 data = JSON.parse(JSON.stringify(data));
-                resolve({status: 1, message: "success", data: data});
+                resolve({
+                    status: 1,
+                    message: "success",
+                    data: data
+                });
             } else {
-                resolve({status: 0, message: error.message});
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
+            }
+        });
+    });
+};
+exports.insertMany = (user_data) => {
+    return new Promise((resolve, reject) => {
+        user.insertMany(user_data, (error, data) => {
+            if (!error) {
+                data = JSON.parse(JSON.stringify(data));
+                resolve({
+                    status: 1,
+                    message: "success",
+                    data: data
+                });
+            } else {
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
             }
         });
     });
 };
 
+//exports.updateMany = (query, update_data) => {
+//    return new Promise((resolve, reject) => {
+//        user.update(query, update_data, {
+//            multi: true
+//        }, (error, data) => {
+//            if (!error) {
+//                if (data) {
+//                    resolve({
+//                        status: 1,
+//                        message: "success"
+//                    });
+//                } else {
+//                    resolve({
+//                        status: 0,
+//                        message: "Users data could not update"
+//                    });
+//                }
+//            } else {
+//                resolve({
+//                    status: 0,
+//                    message: error.message
+//                });
+//            }
+//        });
+//    });
+//};
 exports.update = (query, update_data) => {
     return new Promise((resolve, reject) => {
-        user.update(query, update_data, {multi: true}, (error, data) => {
-            console.log(data);
+        user.update(query, update_data, {
+            multi: true
+        }, (error, data) => {
             if (!error) {
                 if (data) {
-                    resolve({status: 1, message: "success"});
+                    resolve({
+                        status: 1,
+                        message: "success"
+                    });
                 } else {
-                    resolve({status: 0, message: "Users data could not update"});
+                    resolve({
+                        status: 0,
+                        message: "Users data could not update"
+                    });
                 }
             } else {
-                resolve({status: 0, message: error.message});
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
             }
         });
     });
@@ -135,15 +247,27 @@ exports.update = (query, update_data) => {
 
 exports.findOneAndUpdate = (query, update_data) => {
     return new Promise((resolve, reject) => {
-        user.findOneAndUpdate(query, update_data, {new : true}, (error, data) => {
+        user.findOneAndUpdate(query, update_data, {
+            new : true
+        }, (error, data) => {
             if (!error) {
                 if (data !== null) {
-                    resolve({status: 1, message: "success", data: data});
+                    resolve({
+                        status: 1,
+                        message: "success",
+                        data: data
+                    });
                 } else {
-                    resolve({status: 0, message: "Users data could not update"});
+                    resolve({
+                        status: 0,
+                        message: "Users data could not update"
+                    });
                 }
             } else {
-                resolve({status: 0, message: error.message});
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
             }
         });
     });
@@ -154,9 +278,15 @@ exports.remove = (query) => {
     return new Promise((resolve, reject) => {
         user.remove(query, (error, data) => {
             if (!error) {
-                resolve({status: 1, message: "success"});
+                resolve({
+                    status: 1,
+                    message: "success"
+                });
             } else {
-                resolve({status: 0, message: error.message});
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
             }
         });
     });
@@ -167,25 +297,42 @@ exports.count = (query) => {
         user.count(query, (error, data) => {
             if (!error) {
                 if (data[0] !== null) {
-                    resolve({status: 1, message: "success", data: data});
+                    resolve({
+                        status: 1,
+                        message: "success",
+                        data: data
+                    });
                 } else {
-                    resolve({status: 0, message: "Match not found"});
+                    resolve({
+                        status: 0,
+                        message: "Match not found"
+                    });
                 }
             } else {
-                resolve({status: 0, message: error.message});
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
             }
         });
     });
 };
 
 exports.find_count = (query) => {
-    return new Promise((resolve, reject) => { 
+    return new Promise((resolve, reject) => {
         // query.is_deleted = 0;
         user.find(query).count().exec((error, data) => {
             if (!error) {
-                resolve({status: 1, message: 'success', data: data});
+                resolve({
+                    status: 1,
+                    message: 'success',
+                    data: data
+                });
             } else {
-                resolve({status: 0, message: error.message});
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
             }
         }).catch(err => reject(err));
     });
@@ -199,12 +346,22 @@ exports.find_with_pagination_projection = (query, projection, population, sort_c
             if (!error) {
                 if (data.length !== 0) {
                     data = JSON.parse(JSON.stringify(data));
-                    resolve({status: 1, message: 'success', data: data});
+                    resolve({
+                        status: 1,
+                        message: 'success',
+                        data: data
+                    });
                 } else {
-                    resolve({status: 2, message: 'Users not found'});
+                    resolve({
+                        status: 2,
+                        message: 'Users not found'
+                    });
                 }
             } else {
-                resolve({status: 0, message: error.message});
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
             }
         });
     });
@@ -218,17 +375,28 @@ exports.find_with_projection = (query, projection) => {
             if (!error) {
                 if (data.length !== 0) {
                     data = JSON.parse(JSON.stringify(data));
-                    resolve({status: 1, message: 'success', data: data});
+                    resolve({
+                        status: 1,
+                        message: 'success',
+                        data: data
+                    });
                 } else {
-                    resolve({status: 2, message: 'Users not found'});
+                    resolve({
+                        status: 2,
+                        message: 'Users not found'
+                    });
                 }
             } else {
-                resolve({status: 0, message: error.message});
+                resolve({
+                    status: 0,
+                    message: error.message
+                });
             }
         });
     }).catch(err => { // catch errors
-        return Promise.resolve({status: 0, message: err.message});
+        return Promise.resolve({
+            status: 0,
+            message: err.message
+        });
     });
 };
-
-

@@ -1,70 +1,75 @@
 <div class="table-responsive">
-    <table class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover" role="grid">
         <thead>
             <tr>
                 <th>S.No.</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Gender</th>
-                <th>E-mail</th>
-                <th>Phone number</th>
-                <th>Status</th>
-                <th width="10%">Action</th>
+                <th>Name</th>
+                <th>P.O Name</th>
+                <th>Number of students</th>
+                <th>Candidate selected</th>
+                <th>Qualification</th>
+                <th>Test status</th>
+                <th width="5%">Action</th>
             </tr>
         </thead>
         <tbody>
             {% set curr = response.current-1  %}
             {% set index = curr*response.options.perPage+1  %}
             {% if response.results != "" %}
-            {% for user in response.results %}	 
+            {% for institute in response.results %}	 
             <tr>
                 <td>{{index}}</td>
-                {% if !user.firstName  %}
+
+                {% if !institute.name  %}
                 <td>--</td>
                 {% else %} 
-                <td>{{user.firstName}} </td>
-                {% endif %}
-                {% if !user.lastName %}
-                <td>--</td>
-                {% else %}
-                <td>{{user.lastName}}</td>
-                {% endif %}
-                {% if user.gender == 1 %}
-                <td>Male</td>
-                {% elseif  user.gender == 2 %}
-                <td>Female</td>
-                {% elseif  !user.gender  %}
-                <td>--</td>
-                {% else %}
-                <td>Others</td>
-                {% endif %}
-                {% if !user.email  %}
-                <td>--</td>  
-                {% else %}                                   
-                <td>{{user.email}}</td> 
+                <td>{{institute.name}} </td>
                 {% endif %}
 
-                {% if user.country_code  %}
-                {% if user.phone  %}
-                <td>{{user.country_code}}-{{user.phone}} </td>
-                {% else %} 
+                {% if !institute.po_name %}
                 <td>--</td>
+                {% else %}
+                <td>{{institute.po_name}}</td>
                 {% endif %}
-                {% else %} 
-                <td>--</td>
+
+                {% if !institute.no_of_students %}
+                <td>--</td>  
+                {% else %}                                   
+                <td>{{institute.no_of_students}}</td> 
+                {% endif %}
+
+                {% if !institute.candidate_selected %}
+                <td>--</td>  
+                {% else %}                                   
+                <td>{{institute.candidate_selected}}</td> 
+                {% endif %}
+
+                {% if institute.qualification|length > 0 %}
+                <td>--</td>  
+                {% else %}                                   
+                <td>{{institute.qualification|join(', ')}}</td> 
                 {% endif %}
 
                 <td>
-                    {% if user.status === 1  %}
-                    <a class="disable_user btn btn-circle btn-icon-only btn-default" title="Click to Inactive" userid="{{user._id}}" status="0" data-toggle="modal" data-target="#disableUserModal" val="{{user._id}}"><i class="fa fa-circle" style="color:green"></i></a>
+                    {% if institute.test_status == 1  %}
+                    <a class="disable_user btn btn-circle btn-icon-only btn-default" title="Click to Cancel" userid="{{institute._id}}" status="0" data-toggle="modal" data-target="#disableUserModal" val="{{institute._id}}"><i class="fa fa-circle" style="color:green"></i></a>
+                    {% elseif institute.test_status == 2 %}
+                    <a class="disable_user btn btn-circle btn-icon-only btn-default" title="Test Already Started" userid="{{institute._id}}" status="1" data-toggle="modal" data-target="#disableUserModal"  val="{{intitute._id}}"><i class="fa fa-circle" style="color:#dfba49"></i></a>
                     {% else %}
-                    <a class="disable_user btn btn-circle btn-icon-only btn-default" title="Click to Active" userid="{{user._id}}" status="1" data-toggle="modal" data-target="#disableUserModal"  val="{{user._id}}"><i class="fa fa-circle" style="color:red"></i></a>
-
+                    <a class="disable_user btn btn-circle btn-icon-only btn-default" title="Click to Start" userid="{{institute._id}}" status="1" data-toggle="modal" data-target="#disableUserModal"  val="{{intitute._id}}"><i class="fa fa-circle" style="color:red"></i></a>
                     {% endif %}
                 </td>
                 <td>
-                    <a link = "/users/user_detail/{{user._id}}?refer=/users"  class="anchor_username view-user btn btn-circle btn-icon-only btn-default" title="View detail" ><i style="color:green" class="fa fa-eye"></i></a>
-                    <a class="delete btn btn-circle btn-icon-only btn-default" title="Delete" deletelink="/users/delete/{{user._id}}" ><i class="fa fa-times" style="color:red"></i></a> 
+                    <!--                    <a link = "/users/user_detail/{{user._id}}?refer=/users"  class="anchor_username view-user btn btn-circle btn-icon-only btn-default" title="View detail" ><i style="color:green" class="fa fa-eye"></i></a>
+                                        <a class="delete btn btn-circle btn-icon-only btn-default" title="Delete" deletelink="/users/delete/{{user._id}}" ><i class="fa fa-times" style="color:red"></i></a> -->
+                    <button type="button" class="btn btn-default btn-circle btn-icon-only dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-angle-down"></i></button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <i class="fa fa-home"></i>
+                            <span class="title">Edit Details</span>
+                        </li>
+                    </ul>
+                    </div>              
                 </td>
             </tr>
             {% set index=index+1 %}

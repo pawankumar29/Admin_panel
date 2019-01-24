@@ -1,0 +1,195 @@
+<!--admin userList.html-->
+
+{% block css %}
+
+<style>
+    th,
+    td {
+        text-align: left !important;
+        padding: 15px
+    }
+
+    .action_dropdown {
+        height: 30px;
+        width: 30px;
+        background-color: white;
+    }
+
+    .action_dropdown>i {
+        color: black;
+    }
+
+    .dropdown-left-manual {
+        right: 0;
+        left: auto;
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+
+    .dropdown>.dropdown-menu:after,
+    .dropdown-toggle>.dropdown-menu:after,
+    .btn-group>.dropdown-menu:after {
+        position: absolute;
+        top: -7px;
+        left: auto;
+        right: 20px;
+        display: inline-block !important;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #fff;
+        border-left: 7px solid transparent;
+        content: '';
+    }
+
+    .dropdown>.dropdown-menu:before,
+    .dropdown-toggle>.dropdown-menu:before,
+    .btn-group>.dropdown-menu:before {
+        position: absolute;
+        top: -7px;
+        left: auto;
+        right: 20px;
+        display: inline-block !important;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #fff;
+        border-left: 7px solid transparent;
+        content: '';
+    }
+
+    .table-responsive {
+        min-height: .01%;
+        overflow-x: initial;
+    }
+
+    #add_new_institute {
+        margin-left: 2%;
+    }
+
+    h1 {
+        font-size: 15px
+    }
+    .collegeContainer{
+        text-align: center; 
+    }
+    .dateTimeContainer{
+        text-align: center; 
+    }
+    .chip {
+        display: inline-block;
+        height: 32px;
+        font-size: 13px;
+        font-weight: 500;
+        color: black;
+        line-height: 25px;
+        padding: 0 12px;
+        border-radius: 16px;
+        background-color: white;
+        margin-bottom: 5px;
+        margin-right: 5px;
+        border: 2px solid black;
+    }
+
+</style>
+
+{% endblock %} {% extends "../layout.html" %} {% block content %}
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include "../flashMessage_Success.html" %}
+            <!-- BEGIN BORDERED TABLE PORTLET-->
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-user"></i>{{title}}
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="btn btn green pull-right" id="add_new_institute" href="/institutes/add">Add new Institute</a>
+                            <button class="btn btn green pull-right" id="enable_test">Enable Test</button>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <br/>
+                    </div>
+                    <div class="">
+                        <input type="hidden" id="url" name="url" value="/institutes/">
+                        <!--<input type="hidden" id="filterUrl" name="filterUrl" value="/users/">-->
+                        <!-- <input type="text" id="export_csv_url" name="export_csv_url" value="/users/getcsv" hidden> -->
+                        <div class="row">
+                            <br/>
+                        </div>
+                        <form id="frm" action="/institutionss/multipleChangeStatus" method="post">
+                            <input type="hidden" id="action" name="action">
+                            <div id="ajaxResponce">
+                                <!-- To show Ajax Responce -->
+                                {% include "./table.html" %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- END BORDERED TABLE PORTLET-->
+        </div>
+    </div>
+</div>
+
+
+<div id="enable_test_modal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header text-left">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h3 class="modal-title center">Enable Test</h3>
+            </div>
+            <div class="modal-body text-center">
+                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible1="1">
+                    <div class="row">
+                        <div class="col-md-12"> 
+                            <div class="collegeContainer">
+                                <h1>Select Collage(s)</h1>
+                                <div class="line"></div> 
+                                <div class="chipcontainer">
+
+                                </div>
+                                <div class="dateTimeContainer">
+                                    <h1>Select date and time</h1>
+                                    <div class="line"></div> 
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="text-align: center">
+                    <button type="button" data-dismiss="modal" class="btn default ">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %} {% block js %}
+
+
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- include developer js file -->
+    <script src="{{getVersionedPath('/javascripts/developer.js')}}" type="text/javascript"></script>
+    <!-- <script src="{{getVersionedPath('/javascripts/bootstrap-typeahead.min.js')}}" type="text/javascript"></script> -->
+    <!-- <script src="{{getVersionedPath('/javascripts/typeahead.js')}}" type="text/javascript"></script> -->
+    <script src="{{getVersionedPath('/javascripts/bootbox.min.js')}}" type="text/javascript"></script>
+    <!-- include pagination js file -->
+    <script src="{{getVersionedPath('/javascripts/pagination.js')}}"></script>
+    <!-- <script src="/javascripts/bootstrap-hover-dropdown.min.js" type="text/javascript"></script> -->
+
+    <script>
+$(function () {
+    //    $('.pop').on('click', function () {
+    //        $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+    //        $('#imagemodal').modal('show');
+    //    });
+});
+    </script>
+    {% endblock %}

@@ -1,63 +1,29 @@
-<!-- BEGIN SIDEBAR -->
+
 <div class="page-sidebar-wrapper">
+    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
     <div class="page-sidebar navbar-collapse collapse">
-        <ul class="page-sidebar-menu page-sidebar-menu-light " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-            <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
-            <li class="sidebar-toggler-wrapper">
-                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-                <div class="sidebar-toggler">
-                </div>
-                <!-- END SIDEBAR TOGGLER BUTTON -->
-            </li>
-            <div class="row"><br/></div>
+        <!-- BEGIN SIDEBAR MENU -->
+        <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+        <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+        <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+        <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+        <ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             <li {% if active == "dashboardpage" %} class="active" {% endif %}>
                 <a href="/dashboard" class="selected">
                     <i class="fa fa-home"></i>
                     <span class="title">Dashboard</span>
                 </a>
             </li>
-
-<!--            <li {% if active == "user_page" %} class="active" {% endif %}>
-                <a href="/users">
-                    <i class="fa fa-users"></i>
-                    <span class="title">Manage Users</span>
-                </a>
-            </li>-->
-<!--            <li {% if active == "contact_us" %} class="active" {% endif %}>
-                <a href="/contact_us">
-                    <i class="fa fa-question"></i>
-                    <span class="title">Manage Queries</span>
+             <li {% if active == "manage_institutions_page" %} class="active" {% endif %}>
+                <a href="/institutes">
+                    <i class="fa fa-university"></i>
+                    <span class="title">Manage Institutions</span>
                 </a>
             </li>
-            <li {% if active == "Faqspage" %} class="active" {% endif %}>
-                <a href="/faqs">
-                    <i class="glyphicon glyphicon-cog"></i>
-                    <span class="title">Manage FAQs</span>
-                </a>
-            </li>-->
-<!--            <li {%if active == "cmspage" || active == "templatepage" %} class="active" {% endif %}>
-                <a href="javascript:;">
-                    <i class="glyphicon glyphicon-cog"></i>
-                    <span class="title">Settings</span>
-                    <span {%if active == "cmspage" || active == "templatepage" %} class="arrow open" {% else %} class="arrow" {% endif %}></span>
-                </a>
-                <ul class="sub-menu">
-                    <li {% if active == "cmspage" %} class="active" {% endif %}>
-                        <a href="/pages">
-                            <i class="fa fa-file-text-o"></i>
-                            <span class="title">Manage CMS Pages</span>
-                        </a>
-                    </li>
-                    <li {% if active == "templatepage" %} class="active" {% endif %}>
-                        <a href="/emailTemplate">
-                            <i class="icon-envelope"></i>
-                            <span class="title">Manage E-Mail Templates</span>
-                        </a>
-                    </li>
-                </ul>	
-            </li> -->
         </ul>
         <!-- END SIDEBAR MENU -->
     </div>
 </div>
-<!-- END SIDEBAR -->

@@ -86,6 +86,7 @@ router.post('/login', controller.post_login, passport.authenticate('local', {
         res.cookie('campus_recruiter', req.body.email, {httpOnly: true, maxAge: 28800000});
         req.session.image = 'logo.png';
         res.redirect('/dashboard');
+
     } catch (err) {
         console.log(err);
         res.render('error', {error: err});
