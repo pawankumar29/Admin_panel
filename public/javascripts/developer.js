@@ -200,11 +200,13 @@ jQuery(document).ready(function () {
     $(document).on("click", ".custom_close", function () {
         console.log("clicked");
         $(this).parent("span.chip").remove();
-        console.log($(".custom_close").length);
-        $(".collegeContainer").html("<h1 style='color:red'><b>PLease select atleast one college</b></h1>")
+        if ($(".custom_close").length == 0) {
+            $(".chipcontainer").html("<h1 style='color:red'><b>PLease select atleast one college</b></h1>")
+        }
         $(".save").attr("disabled", true)
     });
     $('#enable_test').click(function () {
+        $(".save").attr("disabled", false)
         if ($('.check:checked').length == 0) {
             bootbox.alert("Select atleast One institute to enable the test!");
         } else {
@@ -219,8 +221,11 @@ jQuery(document).ready(function () {
     });
     $('.save').click(function (e) {
         e.preventDefault();
-        console.log($(".chip"));
-        $(".chip").get(0).data("")
+        let arrayIds = [];
+        $(".chip").each(function (index) {
+            arrayIds.push($(this).data("value"));
+        });
+        $(".enable_quiz_form").submit();
     });
     $(".enable_quiz_form").validate({
         rules: {
@@ -240,10 +245,10 @@ jQuery(document).ready(function () {
         },
         messages: {
             date: {
-                required: "PLase select the test date."
+                required: "Please select the test date."
             },
             time: {
-                required: "PLase select the test time."
+                required: "Please select the test time."
             }
         }
     });
