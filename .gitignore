@@ -6,6 +6,7 @@
 /node_modules
 /nbproject
 /config.js
+/env.js
 
 # IDEs and editors
 /.idea
