@@ -73,9 +73,6 @@
         text-align: center; 
         min-height: 85px;
     }
-    .dateTimeContainer{
-        text-align: center; 
-    }
     .chip {
         display: inline-block;
         height: 32px;
@@ -100,6 +97,9 @@
     .form-control[disabled], .form-control[readonly]{
         background-color: #fff;
         cursor: default;
+    }
+    label.error{
+        color:red;
     }
 </style>
 
@@ -154,11 +154,11 @@
 <div id="enable_test_modal" class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <div class="modal-header text-left">
+            <div class="modal-header text-center">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 <h3 class="modal-title center">Enable Test</h3>
             </div>
-            <div class="modal-body text-center">
+            <div class="modal-body">
                 <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible1="1">
                     <div class="row">
                         <div class="col-md-12"> 
@@ -168,42 +168,44 @@
                                 <div class="chipcontainer"></div>
                             </div>
                             <div class="dateTimeContainer">
-                                <h1>Set Date and Time</h1>
+                                <h1 class="text-center">Set Date and Time</h1>
                                 <div class="line"></div> 
-                                <form action="/quiz" method="POST" class="enable_quiz_form">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">Choose Date</label>
+                                <!--                                <form action="/quiz" method="POST" class="enable_quiz_form">-->
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Choose Date</label>
 
-                                        <div class="input-group date date-picker"  data-date-format="mm/dd/yyyy" data-date-start-date="+1d">
-                                            <input type="text" class="form-control date" readonly="" name="date" >
+                                    <div class="input-group date date-picker"  data-date-format="mm/dd/yyyy" data-date-start-date="+1d">
+                                        <input type="text" class="form-control date" readonly="" name="date" >
+                                        <span class="input-group-btn">
+                                            <button class="btn green" type="button"><i class="fa fa-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                    <label class="error date-error"></label>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">Set Time</label>
+
+                                        <div class="input-group">
+                                            <input type="text" class="form-control timepicker timepicker-no-seconds time" readonly="" name="time">
                                             <span class="input-group-btn">
-                                                <button class="btn green" type="button"><i class="fa fa-calendar"></i></button>
+                                                <button class="btn green" type="button"><i class="fa fa-clock-o"></i></button>
                                             </span>
                                         </div>
-
+                                        <div class="col-md-3"></div>
+                                        <label class="error time-error"></label>
                                     </div>
-
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">Set Time</label>
-
-                                            <div class="input-group">
-                                                <input type="text" class="form-control timepicker timepicker-no-seconds time" readonly="" name="time">
-                                                <span class="input-group-btn">
-                                                    <button class="btn green" type="button"><i class="fa fa-clock-o"></i></button>
-                                                </span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </form>
+                                </div>
+                                <!--</form>-->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer" style="text-align: center">
-                <button type="button" data-dismiss="modal" class="btn btn-success save">Save</button>
+                <button type="button" class="btn btn-success save">Save</button>
                 <button type="button" data-dismiss="modal" class="btn default ">Close</button>
             </div>
         </div>
@@ -227,6 +229,15 @@
 $(function () {
     jQuery(document).ready(function () {
         ComponentsPickers.init();
+        $(".date").datepicker({
+            autoclose: true,
+            format: "mm/dd/yyyy",
+            startDate: new Date(),
+        }).on("changeDate", function (e) {
+            $(".date").attr("data-value", e.dates)
+            console.log("Date changed: ", e);
+            $(".date-error").html("");
+        });
     });
 });
 </script>

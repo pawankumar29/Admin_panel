@@ -100,6 +100,7 @@ module.exports.appPromise = startTheAsyncOperation().then(() => {
 
 
     app.use('/dashboard', require('./routes/dashboard'));
+    app.use('/categories', require('./routes/categories'));
     app.use('/institutes', require('./routes/institutes'));
     app.use('/instructions', require('./routes/instructions'));
     app.use('/otp_verification', require('./routes/otp_verification'));

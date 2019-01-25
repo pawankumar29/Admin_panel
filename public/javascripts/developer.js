@@ -19,6 +19,14 @@ jQuery(document).ready(function () {
     $("#password").focus();
 
     $(".alert").fadeOut(10000);
+
+    function dateConvert(str) {
+        var date = new Date(str),
+                mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+                day = ("0" + date.getDate()).slice(-2);
+        return [mnth, day, date.getFullYear()].join("/");
+    }
+
     $('#getEmail-form').validate({
         focusInvalid: false,
         onkeyup: false,
@@ -221,37 +229,97 @@ jQuery(document).ready(function () {
     });
     $('.save').click(function (e) {
         e.preventDefault();
+//        $(".date").removeAttr("readonly");
+//        $(".time").removeAttr("readonly");
         let arrayIds = [];
         $(".chip").each(function (index) {
             arrayIds.push($(this).data("value"));
         });
-        $(".enable_quiz_form").submit();
-    });
-    $(".enable_quiz_form").validate({
-        rules: {
-            date: {
-                required: true
-            },
-            time: {
-                required: true,
-            }
-        },
-        focusInvalid: false,
-        invalidHandler: function (form, validator) {
-            var errors = validator.numberOfInvalids();
-            if (errors) {
-                validator.errorList[0].element.focus();
-            }
-        },
-        messages: {
-            date: {
-                required: "Please select the test date."
-            },
-            time: {
-                required: "Please select the test time."
-            }
+        let date = $(".date").data("value");
+        date = dateConvert(date);
+        let time = $(".time").val();
+//        $(".enable_quiz_form").submit();
+        let dateMessage = '';
+        let timeMessage = '';
+        if (date == null) {
+            dateMessage = "Please select the date for the test."
+        } else if (!moment(date, "MM/DD/YYYY").isValid()) {
+            dateMessage = 'Please enter the date in valid format.';
         }
+
+        if (time == null) {
+            timeMessage = "Please select the time for the test.";
+        } else if (!moment(time, "h:mm a").isValid()) {
+            timeMessage = "Please enter time in valid format";
+        }
+
+        if (dateMessage && timeMessage) {
+            $(".date-error").html(dateMessage);
+            $(".time-error").html(timeMessage);
+        } else if (dateMessage) {
+            $(".date-error").html(dateMessage);
+        } else if (timeMessage) {
+            $(".time-error").html(timeMessage);
+        } else {
+            let datetime = date + " " + time;
+            datetime = moment(datetime, "MM/DD/YYYY h:mm a").toISOString();
+            $.ajax({
+                url: "/quiz",
+                type: "POST",
+                data: {
+                    id: arrayIds,
+                    previousInstruction: datetime,
+                },
+                dataType: 'JSON',
+                success: function (result) {
+                    if (result == 'unauthorised') {
+                        window.location = "/login";
+                    } else if (result["status"] == 1) {
+                        window.location = "/institutes";
+                    }
+                },
+//                error: function (xhr, status, error) {
+////                    window.location = "/institutes";
+//                    alertify.set('notifier', 'delay', 5);
+//                    alertify.set('notifier', 'position', 'top-right');
+//                    if (xhr.responseJSON) {
+//                        alertify.error("Error : " + xhr.responseJSON.error);
+//                    } else {
+//                        if (xhr.status) {
+//                            alertify.error("An error occured: " + xhr.status + " " + xhr.statusText);
+//                        }
+//                    }
+//                },
+            });
+        }
+//        $(".date").attr("readonly", true);
+//        $(".time").attr("readonly", true);
     });
+//    $(".enable_quiz_form").validate({
+//        rules: {
+//            date: {
+//                required: true
+//            },
+//            time: {
+//                required: true,
+//            }
+//        },
+//        focusInvalid: false,
+//        invalidHandler: function (form, validator) {
+//            var errors = validator.numberOfInvalids();
+//            if (errors) {
+//                validator.errorList[0].element.focus();
+//            }
+//        },
+//        messages: {
+//            date: {
+//                required: "Please select the test date."
+//            },
+//            time: {
+//                required: "Please select the test time."
+//            }
+//        }
+//    });
     //form validation for category-add-Edit
 //    $(".category-form").validate({
 //        focusInvalid: false,
