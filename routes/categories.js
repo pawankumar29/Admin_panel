@@ -7,5 +7,7 @@ const controller = require('../controllers/categoriesController');
 /* GET method for dashboard */
 router.get('/:id', controller.get_categories);
 
-module.exports = router;
+router.post('/', controller.get_category_data);
 
+
+module.exports = router;

@@ -5,31 +5,32 @@
     label.error {
         color: red;
     }
-
+    
     .form-actions {
         padding-top: 20px;
         text-align: center;
     }
-
+    
     .form-group {
         width: 100%;
     }
-
+    
     .form-control {
         width: 86%;
     }
-
+    
     .sub-category-row {
         padding: 10px 0px;
     }
-
+    
     .control-label {
         margin-top: 4px;
     }
-
-    label{
+    
+    label {
         font-size: 13px;
     }
+    
     .category-number-label {
         padding-left: 0px;
     }
@@ -47,7 +48,7 @@
                     </div>
                 </div>
                 <div class="portlet-body">
-                    <input type="hidden" value="{{id}}" name="institute_id"> 
+                    <input type="hidden" id="institute_id" value="{{id}}" name="institute_id">
                     <!-- form start for one category -->
                     {% for data in categories %}
 
@@ -93,7 +94,8 @@
                                                     <!--<option value="" disabled selected hidden>Select sub category:</option>-->
                                                     {% for subCategory in sub_category %}
                                                     {% if sub_category_data.sub_category_id == subCategory.id %}
-                                                    {% set sub_category_number = sub_category_data.number_of_question %}
+                                                    {% set sub_category_number = sub_category_data.number_of_question
+                                                    %}
                                                     <option value="{{subCategory._id | safe}}" selected>{{subCategory.name}}</option>
                                                     {% else %}
                                                     <option value="{{subCategory._id | safe}}">{{subCategory.name}}</option>
@@ -116,7 +118,8 @@
                                             <div class="col-md-7">
                                             </div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-success add_more_sub_category"><i class="glyphicon glyphicon-plus"></i> Add More</button>
+                                                <button class="btn btn-success add_more_sub_category"><i class="glyphicon glyphicon-plus"></i>
+                                                    Add More</button>
                                             </div>
                                         </div>
                                     </div>
@@ -147,7 +150,8 @@
                     </form>
                     {% endfor %}
                     <div class="text-center">
-                        <button class="btn blue-hoki add_category"><i class="glyphicon glyphicon-plus"></i> Add More Category</button>
+                        <button class="btn blue-hoki add_category"><i class="glyphicon glyphicon-plus"></i> Add More
+                            Category</button>
                     </div>
                     <div class="form-actions text-center">
                         <input type="submit" id="save-category-btn" class="btn btn-success uppercase" value="Save">
