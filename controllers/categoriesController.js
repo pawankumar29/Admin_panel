@@ -167,51 +167,53 @@ exports.get_categories = (req, res, next) => {
             category: 1,
             name: 1,
             sub_category: 1
-        })
+        });
+
         Promise.all([p1, p2]).then(([data, categoryData]) => {
-                console.log("categories data");
-                console.log(util.inspect(data, {
-                    depth: null
-                }));
-                console.log("raw categories");
-                console.log(util.inspect(categoryData, {
-                    depth: null
-                }));
-                categoryData = categoryData.map(obj => {
-                    for (i = 0; i < data.length; i++) {
-                        if (data[i]["category_id"].toString() === obj["_id"]) {
-                            obj["select"] = 1;
-                            obj["number_of_question"] = data[i]["number_of_question"]
-                            if (obj["sub_category"].length > 0) {
-                                let sub_category = [];
-                                obj["sub_category"].map(subCategory => {
-                                    let number_of_question;
-                                    for (j = 0; j < data[i]["sub_category"]; j++) {
-                                        if (subCategory["_id"].toString() == data[i]["sub_category"]["sub_category_id"].toString()) {
-                                            subCategory["select"] = 1;
-                                            number_of_question = data[i]["sub_category"]["number_of_question"]
-                                        } else {
-                                            subCategory["select"] = 0;
-                                        }
-                                    }
-                                });
-                            }
-                        } else {
-                            obj["select"] = 0;
-                        }
-                    }
-                });
-                res.render('institute/categories', {
-                    title: 'Manage Categories',
-                    active: 'manage_institutions_page',
-                    categories: data,
-                    id: data.id,
-                    message: req.flash()
-                })
-            }).catch(error => {
-                console.log(error);
+            console.log("categories data");
+            console.log(util.inspect(data, {
+                depth: null
+            }));
+            console.log("raw categories");
+            console.log(util.inspect(categoryData, {
+                depth: null
+            }));
+//            categoryData = categoryData.map(obj => {
+//                for (i = 0; i < data.length; i++) {
+//                    if (data[i]["category_id"].toString() === obj["_id"].toString()) {
+//                        obj["select"] = 1;
+//                        obj["number_of_question"] = data[i]["number_of_question"]
+//                        if (obj["sub_category"].length > 0) {
+//                            let sub_category = [];
+//                            obj["sub_category"].map(subCategory => {
+//                                let number_of_question;
+//                                for (j = 0; j < data[i]["sub_category"]; j++) {
+//                                    if (subCategory["_id"].toString() == data[i]["sub_category"]["sub_category_id"].toString()) {
+//                                        subCategory["select"] = 1;
+//                                        number_of_question = data[i]["sub_category"]["number_of_question"]
+//                                    } else {
+//                                        subCategory["select"] = 0;
+//                                    }
+//                                }
+//                            });
+//                        }
+//                    } else {
+//                        obj["select"] = 0;
+//                    }
+//                }
+//            });
+            res.render('institute/categories', {
+                title: 'Manage Categories',
+                active: 'manage_institutions_page',
+                categories: data,
+                id: data.id,
+                message: req.flash(),
+                raw_categories: categoryData
             })
-            // render view add institution page
+        }).catch(error => {
+            console.log(error);
+        })
+        // render view add institution page
     } catch (err) {
         res.render('error', {
             error: err
