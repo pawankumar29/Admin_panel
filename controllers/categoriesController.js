@@ -10,13 +10,13 @@ var util = require("util");
 exports.get_categories = (req, res, next) => {
     try {
         let aggregation = [{
-            $match: {
-                organisation_id: req.user.organisation_id,
-                institute_id: mongoose.Types.ObjectId(req.params.id),
-                status: 1,
-                is_deleted: 0
-            }
-        }];
+                $match: {
+                    organisation_id: req.user.organisation_id,
+                    institute_id: mongoose.Types.ObjectId(req.params.id),
+                    status: 1,
+                    is_deleted: 0
+                }
+            }];
         let p1 = institute_categories.aggregate(aggregation);
         let p2 = question_categories.find({
             organisation_id: req.user.organisation_id,
@@ -27,7 +27,7 @@ exports.get_categories = (req, res, next) => {
             name: 1,
             sub_category: 1
         });
-
+        
         Promise.all([p1, p2]).then(([data, categoryData]) => {
             console.log("categories data");
             console.log(util.inspect(data, {
@@ -41,7 +41,7 @@ exports.get_categories = (req, res, next) => {
                 title: 'Manage Categories',
                 active: 'manage_institutions_page',
                 categories: data,
-                id: data._id,
+                id: req.params.id,
                 message: req.flash(),
                 raw_categories: categoryData
             })
@@ -72,6 +72,31 @@ exports.get_category_data = (req, res, next) => {
             reject(error);
         })
     }).catch(err => {
+        res.status(400).send({
+            status: 0,
+            message: err.message
+        });
+    });
+}
+
+exports.get_category_list = (req, res, next) => {
+    new Promise((resolve, reject) => {
+        console.log(req.body);
+        question_categories.find({
+            organisation_id: req.user.organisation_id,
+            status: 1,
+            is_deleted: 0
+        }, {name: 1}).then(data => {
+            console.log(data);
+            res.status(200).send({
+                status: 1,
+                data: data
+            });
+        }).catch(error => {
+            reject(error);
+        })
+    }).catch(err => {
+        console.log(err);
         res.status(400).send({
             status: 0,
             message: err.message
