@@ -6,7 +6,7 @@
                 <th width="2%"><input type="checkbox" id="checkAll"/></th>
                 <th>S.No.</th>
                 <th>Name</th>
-                <th>P.O Name</th>
+                <th>T.P.O Name</th>
                 <th>Number of students</th>
                 <th>Candidate selected</th>
                 <th>Qualification</th>
@@ -21,9 +21,9 @@
             {% for institute in response %}	 
             <tr>
                 <td width="2%"><span class="checked"><input type="checkbox" class="check" name="{{institute.name}}" value="{{institute._id | safe}}"></span></td>
-                
+
                 <td>{{index}}</td>
-                
+
                 {% if !institute.name  %}
                 <td>--</td>
                 {% else %} 
@@ -81,7 +81,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a>
+                                <a href="/categories/{{institute._id | safe}}">
                                     <i class="glyphicon glyphicon-th-large"></i>
                                     <span>Add quiz Categories</span>
                                 </a>

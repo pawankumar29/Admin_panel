@@ -13,3 +13,14 @@ exports.update = (query, updatedata) => {
         });
     });
 };
+exports.aggregate = (query) => {
+    return new Promise((resolve, reject) => {
+        institute_categories.aggregate(query, (error, data) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(data);
+            }
+        });
+    });
+};

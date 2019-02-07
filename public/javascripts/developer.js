@@ -19,6 +19,14 @@ jQuery(document).ready(function () {
     $("#password").focus();
 
     $(".alert").fadeOut(10000);
+
+    function dateConvert(str) {
+        var date = new Date(str),
+                mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+                day = ("0" + date.getDate()).slice(-2);
+        return [mnth, day, date.getFullYear()].join("/");
+    }
+
     $('#getEmail-form').validate({
         focusInvalid: false,
         onkeyup: false,
@@ -189,8 +197,129 @@ jQuery(document).ready(function () {
         }
     });
 
+    $(document).on("click", "#checkAll", function () {
+        $(".check").prop('checked', $(this).prop('checked'));
+        if ($(this).prop('checked'))
+            $(".check").parent().prop('class', 'checked');
+        else
+            $(".check").parent().prop('class', '');
+    });
 
+    $(document).on("click", ".custom_close", function () {
+        console.log("clicked");
+        $(this).parent("span.chip").remove();
+        if ($(".custom_close").length == 0) {
+            $(".chipcontainer").html("<h1 style='color:red'><b>PLease select atleast one college</b></h1>")
+        }
+        $(".save").attr("disabled", true)
+    });
+    $('#enable_test').click(function () {
+        $(".save").attr("disabled", false)
+        if ($('.check:checked').length == 0) {
+            bootbox.alert("Select atleast One institute to enable the test!");
+        } else {
+            let checkedData = $('.check:checked').serializeArray()
+            let text = "";
+            checkedData.forEach(function (obj) {
+                text = text + "<span class='chip' data-value='" + obj.value + "'>" + obj.name + "<span class='custom_close'><i class='fa fa-remove' aria-hidden='true'></i></span></span>"
+            });
+            $(".chipcontainer").html(text);
+            $("#enable_test_modal").modal("show");
+        }
+    });
+    $('.save').click(function (e) {
+        e.preventDefault();
+//        $(".date").removeAttr("readonly");
+//        $(".time").removeAttr("readonly");
+        let arrayIds = [];
+        $(".chip").each(function (index) {
+            arrayIds.push($(this).data("value"));
+        });
+        let date = $(".date").data("value");
+        date = dateConvert(date);
+        let time = $(".time").val();
+//        $(".enable_quiz_form").submit();
+        let dateMessage = '';
+        let timeMessage = '';
+        if (date == null) {
+            dateMessage = "Please select the date for the test."
+        } else if (!moment(date, "MM/DD/YYYY").isValid()) {
+            dateMessage = 'Please enter the date in valid format.';
+        }
 
+        if (time == null) {
+            timeMessage = "Please select the time for the test.";
+        } else if (!moment(time, "h:mm a").isValid()) {
+            timeMessage = "Please enter time in valid format";
+        }
+
+        if (dateMessage && timeMessage) {
+            $(".date-error").html(dateMessage);
+            $(".time-error").html(timeMessage);
+        } else if (dateMessage) {
+            $(".date-error").html(dateMessage);
+        } else if (timeMessage) {
+            $(".time-error").html(timeMessage);
+        } else {
+            let datetime = date + " " + time;
+            datetime = moment(datetime, "MM/DD/YYYY h:mm a").toISOString();
+            $.ajax({
+                url: "/quiz",
+                type: "POST",
+                data: {
+                    id: arrayIds,
+                    previousInstruction: datetime,
+                },
+                dataType: 'JSON',
+                success: function (result) {
+                    if (result == 'unauthorised') {
+                        window.location = "/login";
+                    } else if (result["status"] == 1) {
+                        window.location = "/institutes";
+                    }
+                },
+//                error: function (xhr, status, error) {
+////                    window.location = "/institutes";
+//                    alertify.set('notifier', 'delay', 5);
+//                    alertify.set('notifier', 'position', 'top-right');
+//                    if (xhr.responseJSON) {
+//                        alertify.error("Error : " + xhr.responseJSON.error);
+//                    } else {
+//                        if (xhr.status) {
+//                            alertify.error("An error occured: " + xhr.status + " " + xhr.statusText);
+//                        }
+//                    }
+//                },
+            });
+        }
+//        $(".date").attr("readonly", true);
+//        $(".time").attr("readonly", true);
+    });
+//    $(".enable_quiz_form").validate({
+//        rules: {
+//            date: {
+//                required: true
+//            },
+//            time: {
+//                required: true,
+//            }
+//        },
+//        focusInvalid: false,
+//        invalidHandler: function (form, validator) {
+//            var errors = validator.numberOfInvalids();
+//            if (errors) {
+//                validator.errorList[0].element.focus();
+//            }
+//        },
+//        messages: {
+//            date: {
+//                required: "Please select the test date."
+//            },
+//            time: {
+//                required: "Please select the test time."
+//            }
+//        }
+//    });
     //form validation for category-add-Edit
 //    $(".category-form").validate({
 //        focusInvalid: false,
@@ -468,23 +597,7 @@ jQuery(document).ready(function () {
 //        });
 //    });
 
-    $('#enable_test').click(function () {
-        if ($('.check:checked').length == 0) {
-            bootbox.alert("Select atleast One institute to enable the test!");
-        } else {
-            console.log($('.check:checked').serializeArray())
-            let checkedData = $('.check:checked').serializeArray()
-            let valueArray = [];
-            let text = "";
-            console.log(checkedData);
-            checkedData.forEach(function (obj) {
-                valueArray.push(obj.value);
-                text = text + "<span class='chip'>" + obj.name + "</span>"
-            });
-            $(".chipcontainer").html(text);
-            $("#enable_test_modal").modal("show");
-        }
-    });
+
 
 //    $(document).on("click", "#filter", function () {
 //        var flag = 1;

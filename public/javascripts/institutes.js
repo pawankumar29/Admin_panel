@@ -1,8 +1,10 @@
-jQuery(document).ready(function () {
-    $("input[type=file]").on('change', function (event) {
+jQuery(document).ready(function() {
+    $("input[type=file]").on('change', function(event) {
         if (event.target.files.length > 0) {
+            $(".batch-div").show(100);
             $("#batch").attr("required", true);
         } else {
+            $(".batch-div").hide(100);
             $("#batch").attr("required", false);
             $("#batch").next("label").remove();
         }
@@ -11,16 +13,16 @@ jQuery(document).ready(function () {
     $('.institute-form').validate({
         focusInvalid: false,
         ignore: [],
-        invalidHandler: function (form, validator) {
+        invalidHandler: function(form, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 validator.errorList[0].element.focus();
             }
         },
         rules: {
-//            batch: {
-//                required: true
-//            },
+            //            batch: {
+            //                required: true
+            //            },
             name: {
                 required: true,
                 minlength: 2,
@@ -33,7 +35,7 @@ jQuery(document).ready(function () {
             },
             po_email: {
                 required: {
-                    depends: function () {
+                    depends: function() {
                         $(this).val($.trim($(this).val()));
                         return true;
                     }
@@ -46,23 +48,23 @@ jQuery(document).ready(function () {
             }
         },
         messages: {
-//            batch: {
-//                required: "Please select Batch.",
-//                minlength: "Please enter 4 characters.",
-//                maxlength: "Please enter 4 characters."
-//            },
+            //            batch: {
+            //                required: "Please select Batch.",
+            //                minlength: "Please enter 4 characters.",
+            //                maxlength: "Please enter 4 characters."
+            //            },
             name: {
                 required: "Please enter name of Institute.",
                 minlength: "Please enter atleast 3 characters.",
                 maxlength: "Please enter maximum 100 characters."
             },
             po_name: {
-                required: "Please enter P.O name.",
+                required: "Please enter T.P.O name.",
                 minlength: "Please enter atleast 3 characters.",
                 maxlength: "Please enter maximum 50 characters."
             },
             po_email: {
-                required: "Please enter P.O. email",
+                required: "Please enter T.P.O. email",
                 maxlength: "Please enter maximum 50 characters.",
                 email: "Please enter a valid email address.",
             },
@@ -71,7 +73,7 @@ jQuery(document).ready(function () {
             }
 
         },
-        errorPlacement: function (error, element) {
+        errorPlacement: function(error, element) {
             if (element.attr("name") == "po_email") {
                 error.insertAfter(element.parent("div"));
             } else {
@@ -82,10 +84,10 @@ jQuery(document).ready(function () {
 
     let date = new Date();
     let year = parseInt(date.getFullYear() + 5);
-    function setEndOfContenteditable(contentEditableElement)
-    {
+
+    function setEndOfContenteditable(contentEditableElement) {
         var range, selection;
-        if (document.createRange)//Firefox, Chrome, Opera, Safari, IE 9+
+        if (document.createRange) //Firefox, Chrome, Opera, Safari, IE 9+
         {
             range = document.createRange(); //Create a range (a range is a like the selection but invisible)
             range.selectNodeContents(contentEditableElement); //Select the entire contents of the element with the range
@@ -93,7 +95,7 @@ jQuery(document).ready(function () {
             selection = window.getSelection(); //get the selection object (allows you to change selection)
             selection.removeAllRanges(); //remove any selections already made
             selection.addRange(range); //make the range you have just created the visible selection
-        } else if (document.selection)//IE 8 and lower
+        } else if (document.selection) //IE 8 and lower
         {
             range = document.body.createTextRange(); //Create a range (a range is a like the selection but invisible)
             range.moveToElementText(contentEditableElement); //Select the entire contents of the element with the range
@@ -101,8 +103,8 @@ jQuery(document).ready(function () {
             range.select(); //Select the range (make it the visible selection
         }
     }
-//javascript code for instruction code
-    $(document).on("click", ".add", function () {
+    //javascript code for instruction code
+    $(document).on("click", ".add", function() {
         let lastIndex = $("table").find("tr:last").children("td").children("span").text();
         if (parseInt(lastIndex.toString())) {
             lastIndex = parseInt(lastIndex.toString()) + 1;
@@ -114,12 +116,12 @@ jQuery(document).ready(function () {
         $("table").append(text);
         $(".addcontent").focus();
     });
-    $(document).on("click", ".remove", function () {
+    $(document).on("click", ".remove", function() {
         $(this).parents("tr").remove();
         $(".add").attr("disabled", false);
     })
 
-    $(document).on("click", ".create", function () {
+    $(document).on("click", ".create", function() {
         let id = $("#institute_id").val();
         let instruction = $(this).parents("td").prev(".addcontent").text();
         $.ajax({
@@ -130,7 +132,7 @@ jQuery(document).ready(function () {
                 instruction: instruction
             },
             dataType: 'JSON',
-            success: function (result) {
+            success: function(result) {
                 if (result == 'unauthorised') {
                     window.location = "/login";
                 } else {
@@ -141,25 +143,25 @@ jQuery(document).ready(function () {
         });
     })
 
-    $('td.content').keydown(function (e) {
+    $('td.content').keydown(function(e) {
         if (e.keyCode === 13) {
             $(this).next("td").children().children("button.save").trigger("click");
         }
     });
 
-    $('td.addcontent').keydown(function (e) {
+    $('td.addcontent').keydown(function(e) {
         if (e.keyCode === 13) {
             $(this).next("td").children().children("button.save").trigger("click");
         }
     });
 
-    $(document).on("click", ".edit", function () {
+    $(document).on("click", ".edit", function() {
         let elem = $(this).parents("td").prev();
         elem.attr("contenteditable", 'true').focus();
         setEndOfContenteditable(elem.get(0));
         $(this).removeClass("edit yellow").addClass("save green").html('<i class="fa fa-check"></i>');
     });
-    $(document).on("click", ".save", function () {
+    $(document).on("click", ".save", function() {
         let button = $(this);
         let id = $("#institute_id").val();
         let contentElem = button.parents("td").prev(".content");
@@ -174,7 +176,7 @@ jQuery(document).ready(function () {
                 newInstruction: newcontent
             },
             dataType: 'JSON',
-            success: function (result) {
+            success: function(result) {
                 if (result == 'unauthorised') {
                     window.location = "/login";
                 } else if (result["status"] == 1) {
@@ -186,7 +188,7 @@ jQuery(document).ready(function () {
             }
         });
     });
-    $(document).on("click", ".delete", function () {
+    $(document).on("click", ".delete", function() {
         let old_instruction = $(this).parents("td").siblings(':first').find("input").val();
         let id = $("#institute_id").val();
         $.ajax({
@@ -197,7 +199,7 @@ jQuery(document).ready(function () {
                 instruction: old_instruction
             },
             dataType: 'JSON',
-            success: function (result) {
+            success: function(result) {
                 if (result == 'unauthorised') {
                     window.location = "/login";
                 } else {
@@ -209,4 +211,3 @@ jQuery(document).ready(function () {
     });
 
 });
-
