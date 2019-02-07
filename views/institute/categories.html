@@ -99,9 +99,9 @@
                                                             {% set sub_category_number = sub_category_data.number_of_question
                                                             %}
                                                             <option value="{{subCategory._id | safe}}" selected>{{subCategory.name}}</option>
-{% else %}
-<option value="{{subCategory._id | safe}}">{{subCategory.name}}</option>
-{% endif %}
+                                                            {% else %}
+                                                            <option value="{{subCategory._id | safe}}">{{subCategory.name}}</option>
+                                                            {% endif %}
                                                             {% endfor %}
                                                         </select>
                                                     </div>
@@ -110,7 +110,7 @@
                                                             <label class="control-label"><b>Number of Questions:</b></label>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <input class="form-control placeholder-no-fix" value="{{sub_category_number}}" type="text" placeholder="Number" name="sub_category_number[{{data.category_id | safe}}]" maxlength="3">
+                                                            <input class="form-control placeholder-no-fix" value="{{sub_category_number}}" type="text" placeholder="Number" name="sub_category_number[{{data.category_id | safe}}][{{sub_category_data.sub_category_id | safe}}]" maxlength="3">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -148,7 +148,7 @@
                                     </div>
                                 </div>
                                 <!--  sub category section end-->
-                               {% endif %}
+                                {% endif %}
                             </div>
                         </form>
                         {% endfor %}
