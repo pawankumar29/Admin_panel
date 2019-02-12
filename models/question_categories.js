@@ -1,10 +1,10 @@
 "use strict";
 const mongoose = require("mongoose");
-const institute_categories = mongoose.model("institute_categories");
+const question_categories = mongoose.model("question_categories");
 
-exports.update = (query, updatedata) => {
+exports.find = (query) => {
     return new Promise((resolve, reject) => {
-        institute_categories.update(query, updatedata, {multi: true}, (error, data) => {
+        question_categories.find(query, (error, data) => {
             if (error) {
                 reject(error)
             } else {
@@ -13,9 +13,9 @@ exports.update = (query, updatedata) => {
         });
     });
 };
-exports.insertMany = (data) => {
+exports.update = (query, updatedata) => {
     return new Promise((resolve, reject) => {
-        institute_categories.insertMany(data, (error, data) => {
+        question_categories.update(query, updatedata, {multi: true}, (error, data) => {
             if (error) {
                 reject(error)
             } else {
@@ -26,7 +26,7 @@ exports.insertMany = (data) => {
 };
 exports.aggregate = (query) => {
     return new Promise((resolve, reject) => {
-        institute_categories.aggregate(query, (error, data) => {
+        question_categories.aggregate(query, (error, data) => {
             if (error) {
                 reject(error)
             } else {

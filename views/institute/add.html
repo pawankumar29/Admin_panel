@@ -6,11 +6,6 @@
 <!-- BEGIN THEME STYLES -->
 {% block css %}
 <style>
-    #batch {
-        background-color: #fff;
-        cursor: default;
-    }
-    
     label.error {
         color: red;
     }
@@ -28,12 +23,7 @@
         width: 70%;
     }
     
-    .sampleCsv {
-        padding-left: 25px;
-        font-size: 15px;
-        padding-bottom: 10px;
-        line-height: 0px;
-    }
+    
 </style>
 {% endblock %}
 <div class="page-content">
@@ -104,21 +94,6 @@
                                         <option>{{data}}</option>
                                         {% endfor %}
                                     </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label"><b>Students CSV</b></label>
-                                    <div class="" input-group>
-                                        <input type="file" class="form-control col-md-5" name="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-                                    </div>
-                                </div>
-                                <span class="sampleCsv">(<a id="download_sample" href="/institutes/sampeCSV">Download
-                                        Sample CSV</a>)</span>
-                                <!-- hidden batch start -->
-                                <div class="form-group batch-div">
-                                    <label class="control-label"><b>Batch</b></label>
-                                    <span class="star"></span>
-                                    <input type="text" id="batch" name="batch" class="form-control" placeholder="Batch" value="" readonly>
                                 </div>
                                 <!-- hidden batch end -->
                                 <div class="form-actions">

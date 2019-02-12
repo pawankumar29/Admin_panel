@@ -385,6 +385,10 @@ var questionCategoriesSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "organisations"
     },
+    default: {
+        type: Number,
+        default: 0
+    },
     name: {
         type: String,
         default: ""

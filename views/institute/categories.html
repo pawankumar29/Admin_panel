@@ -51,10 +51,9 @@
                     <input type="hidden" id="institute_id" value="{{id}}" name="institute_id">
                     <!-- form start for one category -->
                     <div class="form-container">
-                        {% for data in categories %}
-
                         <form class="category_form" action="">
                             <div class="form-body">
+                                {% for data in categories %}
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-3">
@@ -149,9 +148,11 @@
                                 </div>
                                 <!--  sub category section end-->
                                 {% endif %}
+
+
+                                {% endfor %}
                             </div>
                         </form>
-                        {% endfor %}
                     </div>
                     <div class="text-center">
                         <button class="btn blue-hoki add_category"><i class="glyphicon glyphicon-plus"></i> Add More
