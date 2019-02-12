@@ -29,14 +29,14 @@ exports.get_categories = (req, res, next) => {
         });
         
         Promise.all([p1, p2]).then(([data, categoryData]) => {
-            console.log("categories data");
-            console.log(util.inspect(data, {
-                depth: null
-            }));
-            console.log("raw categories");
-            console.log(util.inspect(categoryData, {
-                depth: null
-            }));
+//            console.log("categories data");
+//            console.log(util.inspect(data, {
+//                depth: null
+//            }));
+//            console.log("raw categories");
+//            console.log(util.inspect(categoryData, {
+//                depth: null
+//            }));
             res.render('institute/categories', {
                 title: 'Manage Categories',
                 active: 'manage_institutions_page',
@@ -77,6 +77,30 @@ exports.get_category_data = (req, res, next) => {
             message: err.message
         });
     });
+}
+exports.update_category_data = (req, res, next) => {
+    console.log(req.body);
+//    new Promise((resolve, reject) => {
+//        console.log(req.body);
+//        question_categories.findOne({
+//            _id: mongoose.Types.ObjectId(req.body.category_id),
+//            organisation_id: req.user.organisation_id,
+//            status: 1,
+//            is_deleted: 0
+//        }).then(data => {
+//            res.status(200).send({
+//                status: 1,
+//                data: data
+//            });
+//        }).catch(error => {
+//            reject(error);
+//        })
+//    }).catch(err => {
+//        res.status(400).send({
+//            status: 0,
+//            message: err.message
+//        });
+//    });
 }
 
 exports.get_category_list = (req, res, next) => {

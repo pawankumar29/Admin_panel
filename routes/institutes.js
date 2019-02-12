@@ -15,6 +15,8 @@ router.post('/add', controller.add_new_institutions);
 router.get('/edit/:id', controller.get_edit_institution);
 
 
+router.post('/add_batch', controller.add_batch);
+
 router.post('/edit/:id', controller.post_edit_institution);
 
 

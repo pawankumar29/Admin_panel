@@ -9,6 +9,8 @@ router.get('/:id', controller.get_categories);
 
 router.post('/', controller.get_category_data);
 
+router.put('/', controller.update_category_data);
+
 
 
 module.exports = router;

@@ -130,6 +130,21 @@ jQuery(document).ready(function () {
     });
     $(document).on("click", "#save-category-btn", function (e) {
         console.log("save category");
-        console.log($("form").serializeArray())
+        console.log($("form").serializeArray());
+        $.ajax({
+            url: "/categories",
+            type: "PUT",
+            data: $("form").serializeArray(),
+            dataType: 'JSON',
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (xhr) {
+                return {
+                    status: 0,
+                    message: xhr.responseText
+                };
+            }
+        });
     })
 });
