@@ -23,6 +23,39 @@
                     <span class="title">Manage Institutions</span>
                 </a>
             </li>
+             <li {% if active == "manage_quiz_page" %} class="active" {% endif %}>
+                <a href="/quiz">
+                    <i class="fa fa-university"></i>
+                    <span class="title">Manage Quiz</span>
+                </a>
+            </li>
+            <li {%if active == "cmspage" || active == "Faqspage" || active == "templatepage" %} class="active" {% endif %}>
+                <a href="javascript:;">
+                    <i class="glyphicon glyphicon-cog"></i>
+                    <span class="title">Settings</span>
+                    <span {%if active == "cmspage" || active == "Faqspage" || active == "templatepage" %} class="arrow open" {% else %} class="arrow" {% endif %}></span>
+                </a>
+                <ul class="sub-menu">
+                    <li {% if active == "Faqspage" %} class="active" {% endif %}>
+                        <a href="/faqs">
+                            <i class="glyphicon glyphicon-cog"></i>
+                            <span class="title">Manage FAQs</span>
+                        </a>
+                    </li>
+                    <li {% if active == "cmspage" %} class="active" {% endif %}>
+                        <a href="/pages">
+                            <i class="fa fa-file-text-o"></i>
+                            <span class="title">Manage CMS Pages</span>
+                        </a>
+                    </li>
+                    <li {% if active == "templatepage" %} class="active" {% endif %}>
+                        <a href="/emailTemplate">
+                            <i class="icon-envelope"></i>
+                            <span class="title">Manage E-Mail Templates</span>
+                        </a>
+                    </li>
+                </ul>	
+            </li>
         </ul>
         <!-- END SIDEBAR MENU -->
     </div>
