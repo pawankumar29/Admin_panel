@@ -1,0 +1,78 @@
+{% extends "../layout.html" %} {% block content %}
+<div class="page-content">
+    <div class="row margin-top-12">
+        <!-- Begin Form -->
+        <div class="col-md-12">
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="glyphicon glyphicon-user"></i>User details
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <input type="hidden" id="url" name="url" value="/users/">
+                    <input type="hidden" id="filterUrl" name="filterUrl" value="/users/">
+                    <div class="form-group">
+                        <label class="control-label">
+                            <b>Roll No:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value="{{data.roll_no}} " type="text" maxlength="25"
+                               />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <b>Father's Name:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value=" {{data.father_name}}" type="text" maxlength="25" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <b>DOB:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value=" {{data.dob}}" type="text" maxlength="25" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <b>Institute Name:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value=" {{data.email}}" type="text" readonly maxlength="25" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <b>Qualification:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value=" {{data.qualification}}" type="text"  maxlength="25" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <b>Branch:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value=" {{data.branch}}" type="text" maxlength="25" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <b>Email:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value=" {{data.email}}" type="text" maxlength="25" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <b>Phone number:</b>
+                        </label>
+                        <input class="form-control placeholder-no-fix" value=" {{data.phone_no}}" type="text" maxlength="25" />
+                    </div>
+                    <br>
+                    <div class="form-actions text-left">
+                        {% if back_url !== "" %}
+                        <a class="btn default" href="{{back_url}}">OK</a>
+                        {% else %}
+                        <a class="btn default" href="/users">Ok</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block js %}
+{% endblock %}

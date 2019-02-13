@@ -537,20 +537,20 @@ jQuery(document).ready(function () {
 //            });
 //        }
 //    });
-//    $(document).on("click", ".change_status", function () {
-//        var id = $(this).attr("val");
-//        var status = $(this).attr("value");
-//        var obj = $(this);
-//        var user_type = "";
-//        var url = "";
+    $(document).on("click", ".change_status", function () {
+        var id = $(this).attr("val");
+        var status = $(this).attr("value");
+        var obj = $(this);
+        var user_type = "";
+        var url = "";
 //        if ($("#url").val() == "/users/") {
 //            user_type = "user";
 //            url = "/users/changeStatus";
 //        }
-//        if ($("#url").val() == "/faqs/") {
-//            user_type = "FAQ";
-//            url = "/faqs/changeStatus";
-//        }
+        if ($("#url").val() == "/faqs/") {
+            user_type = "FAQ";
+            url = "/faqs/changeStatus";
+        }
 //        if ($("#url").val() == "/category/") {
 //            user_type = "Category";
 //            url = "/category/changeStatus";
@@ -559,147 +559,134 @@ jQuery(document).ready(function () {
 //            user_type = "Image";
 //            url = "/drive_image/changeStatus";
 //        }
-//
-//        var msg = "";
-//        if (status == 0)
-//            msg = "Are you sure you want to inactivate this " + user_type + "?";
-//        else
-//            msg = "Are you sure you want to activate this " + user_type + "?";
-//        bootbox.confirm(msg, function (result) {
-//            if (result) {
-//
-//                $.ajax({
-//                    url: url,
-//                    type: "POST",
-//                    data: {id: id, status: status},
-//                    dataType: 'JSON',
-//                    success: function (result) {
-//
-//                        if (result == 'unauthorised') {
-//                            window.location = "/login";
-//                        } else {
+
+        var msg = "";
+        if (status == 0)
+            msg = "Are you sure you want to inactivate this " + user_type + "?";
+        else
+            msg = "Are you sure you want to activate this " + user_type + "?";
+        bootbox.confirm(msg, function (result) {
+            if (result) {
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {id: id, status: status},
+                    dataType: 'JSON',
+                    success: function (result) {
+
+                        if (result == 'unauthorised') {
+                            window.location = "/login";
+                        } else {
 //                            if ($("#url").val() == "/users/") {
 //                                window.location = "/users";
 //                            }
-//                            if ($("#url").val() == "/faqs/") {
-//                                window.location = "/faqs";
-//                            }
+                            if ($("#url").val() == "/faqs/") {
+                                window.location = "/faqs";
+                            }
 //                            if ($("#url").val() == "/category/") {
 //                                window.location = "/category";
 //                            }
 //                            if ($("#url").val() == "/drive_image/") {
 //                                window.location = "/drive_image";
 //                            }
-//                        }
-//                    }
-//                });
-//            }
-//        });
-//    });
+                        }
+                    }
+                });
+            }
+        });
+    });
 
 
 
-//    $(document).on("click", "#filter", function () {
-//        var flag = 1;
-//
-//        if ($("#filterUrl").val() == "/users/") {
-//            if (!$("#search_by").val() && !$("#filter_gender").val() && !$("#filter_status").val()) {
-//                flag = 0;
-//                bootbox.alert('Select any filter.');
-//            }
-//        }
-//
-//        if ($("#filterUrl").val() == "/reviews/") {
-//            if (!$("#search_by").val() && !$("#sort_type").val()) {
-//                flag = 0;
-//                bootbox.alert('Select any filter.');
-//            }
-//        }
+    $(document).on("click", "#filter", function () {
+        var flag = 1;
+        
 //        if ($("#filterUrl").val() == "/contact_us/") {
 //            if (!$("#search_by").val() && !$("#selected_date").val() && !$("#filter_status").val()) {
 //                flag = 0;
 //                bootbox.alert('Select any filter.');
 //            }
 //        }
-//        if ($("#filterUrl").val() == "/faqs/") {
-//            if (!$("#search_by").val() && !$("#filter_status").val()) {
-//                flag = 0;
-//                bootbox.alert('Select any filter.');
-//            }
-//        }
-//
-//        if ($("#filterUrl").val() == "/pages/") {
-//            if (!$("#search_by").val() && !$("#sort_type").val() && !$("#sort_field").val()) {
-//                flag = 0;
-//                bootbox.alert('Select any filter.');
-//            }
-//        }
-//        if ($("#filterUrl").val() == "/emailTemplate/") {
-//            if (!$("#search_by").val() && !$("#sort_type").val() && !$("#sort_field").val()) {
-//                flag = 0;
-//                bootbox.alert('Select any filter.');
-//            }
-//        }
-//
-//
-//
-//        var check_regx = /[`^~<>"')(?*%$]/;
-//        if ($("#search_by").val() && check_regx.test($("#search_by").val())) {
-//            flag = 0;
-//            //            bootbox.alert('Enter only letters or numbers.');
-//            $("#search_by_error").text("Enter only letters or numbers.").show();
-//        }
-//        if ($("#sort_field").val() != "") {
-//            if ($("#sort_field").val() && $("#sort_type").val() == '') {
-//                flag = 0;
-//                bootbox.alert('Select Sort Type.');
-//            }
-//        }
-//
-//
-//        if (flag === 1) {
-//            $("#search_by_error").hide();
-//            var str = $("form").serialize();
-//            var search;
-//            var url = $("#filterUrl").val();
-//
-//            $.ajax({
-//                url: url + '?' + str,
-//                type: "GET",
-//                data: {search: 1},
-//                success: function (result) {
-//
-//                    if (result == 'unauthorised')
-//                        window.location = "/login";
-//                    else
-//                        $("#ajaxResponce").html(result);
-//                    Metronic.init(); // init metronic core components
-//                }
-//            });
-//        }
-//    });
+        if ($("#filterUrl").val() == "/faqs/") {
+            if (!$("#search_by").val() && !$("#filter_status").val()) {
+                flag = 0;
+                bootbox.alert('Select any filter.');
+            }
+        }
+
+        if ($("#filterUrl").val() == "/pages/") {
+            if (!$("#search_by").val() && !$("#sort_type").val() && !$("#sort_field").val()) {
+                flag = 0;
+                bootbox.alert('Select any filter.');
+            }
+        }
+        if ($("#filterUrl").val() == "/emailTemplate/") {
+            if (!$("#search_by").val() && !$("#sort_type").val() && !$("#sort_field").val()) {
+                flag = 0;
+                bootbox.alert('Select any filter.');
+            }
+        }
 
 
-//    $("#clear").click(function () {
-//        $("#filter_form")[0].reset();
-//        $('#sort_type').val('');
-//        $("#search_by_error").hide();
-//        var url = $("#filterUrl").val();
-//        $.ajax({
-//            url: url,
-//            type: "GET",
-//            data: {search: 1},
-//            success: function (result) {
-//
-//                if (result == 'unauthorised')
-//                    window.location = "/login";
-//                else {
-//                    $("#ajaxResponce").html(result);
-//                    Metronic.init(); // init metronic core components
-//                }
-//            }
-//        });
-//    });
+
+        var check_regx = /[`^~<>"')(?*%$]/;
+        if ($("#search_by").val() && check_regx.test($("#search_by").val())) {
+            flag = 0;
+            //            bootbox.alert('Enter only letters or numbers.');
+            $("#search_by_error").text("Enter only letters or numbers.").show();
+        }
+        if ($("#sort_field").val() != "") {
+            if ($("#sort_field").val() && $("#sort_type").val() == '') {
+                flag = 0;
+                bootbox.alert('Select Sort Type.');
+            }
+        }
+
+
+        if (flag === 1) {
+            $("#search_by_error").hide();
+            var str = $("form").serialize();
+            var search;
+            var url = $("#filterUrl").val();
+
+            $.ajax({
+                url: url + '?' + str,
+                type: "GET",
+                data: {search: 1},
+                success: function (result) {
+
+                    if (result == 'unauthorised')
+                        window.location = "/login";
+                    else
+                        $("#ajaxResponce").html(result);
+                    Metronic.init(); // init metronic core components
+                }
+            });
+        }
+    });
+
+
+    $("#clear").click(function () {
+        $("#filter_form")[0].reset();
+        $('#sort_type').val('');
+        $("#search_by_error").hide();
+        var url = $("#filterUrl").val();
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: {search: 1},
+            success: function (result) {
+
+                if (result == 'unauthorised')
+                    window.location = "/login";
+                else {
+                    $("#ajaxResponce").html(result);
+                    Metronic.init(); // init metronic core components
+                }
+            }
+        });
+    });
 
 
 

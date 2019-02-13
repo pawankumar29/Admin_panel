@@ -1,0 +1,87 @@
+<div class="table-responsive">
+    <input type="hidden" id="url" value="/institutes/">
+    <table class="table table-bordered table-hover" role="grid">
+        <thead>
+            <tr>
+                <th width="2%"><input type="checkbox" id="checkAll"/></th>
+                <th>S.No.</th>
+                <th>Name</th>
+                <th>Technical Marks</th>
+                <th>Aptitude marks</th>
+                <th>Total Marks</th>
+                <th>Offer Letter</th>
+                <th width="5%">Status</th>
+                <th width="5%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set curr = current-1  %}
+            {% set index = curr* options.perPage +1  %}
+            {% if response.length > 0 %}
+            {% for student in response %}	 
+            <tr>
+                <td width="2%"><span class="checked"><input type="checkbox" class="check" name="{{institute.name}}" value="{{institute._id | safe}}"></span></td>
+
+                <td>{{index}}</td>
+
+                {% if !student.user_detail  %}
+                <td>--</td>
+                {% else %} 
+                <td>{{student.user_detail.name}} </td>
+                {% endif %}
+
+                <td>--</td>
+                <td>--</td>
+                <td>{{student.total_marks}}</td> 
+                {% if student.offer_letter_issued == 1 %}
+                <td>Yes</td>  
+                {% else %}
+                <td>No</td>  
+                {% endif %}
+                <td>
+                    {% if student.status == 0  %}
+                    <a class="btn btn-circle btn-icon-only btn-default" title="Disabled"><i class="fa fa-circle" style="color:#428bca"></i></a>
+                    {% elseif student.status == 1  %}
+                    <a class="btn btn-circle btn-icon-only btn-default" title="Enabled"><i class="fa fa-circle" style="color:green"></i></a>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class=" dropdown dropleft button-group">
+                        <button type="button" class="btn btn-default btn-circle btn-icon-only  action_dropdown dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-chevron-down"></i></button>
+                        <ul class="dropdown-menu dropdown-left-manual" role="menu" aria-labelledby="dropdownMenuButton">
+                            <li><a href="/students/edit/{{student.user_id | safe}}">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                    <span>Edit Details</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/students/view_test/{{student.institute_id | safe}}/{{student.user_id | safe}}">
+                                    <i class="glyphicon glyphicon-th-large"></i>
+                                    <span>View Test</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/students/send_offer_letter/{{student.institute_id | safe}}/{{student.user_id | safe}}">
+                                    <i class="fa fa-info"></i>
+                                    <span>Send Offer Letter</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="show_batch_modal" href="/students/viewCV/{{student.user_id | safe}}">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    <span>View CV</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            {% set index=index+1 %}
+            {% endfor %}					
+            {% else %}
+            <tr><td colspan="12"><p class="text-center">No records to display</p></td></tr>
+            {% endif %}				
+        </tbody>
+    </table>
+</div>
+<div class="text-center">{% include "../paginate.html" %}</div><br><br>

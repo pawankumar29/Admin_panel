@@ -101,8 +101,14 @@ module.exports.appPromise = startTheAsyncOperation().then(() => {
 
     app.use('/dashboard', require('./routes/dashboard'));
     app.use('/categories', require('./routes/categories'));
+    app.use('/students', require('./routes/students'));
     app.use('/institutes', require('./routes/institutes'));
+    app.use('/quiz', require('./routes/quiz'));
     app.use('/instructions', require('./routes/instructions'));
+    app.use('/contact_us', require('./routes/contact_us'));
+    app.use('/pages', require('./routes/pages'));
+    app.use('/faqs', require('./routes/faqs'));
+    app.use('/emailTemplate', require('./routes/emailTemplate'));
     app.use('/otp_verification', require('./routes/otp_verification'));
 
     // middleware for logout

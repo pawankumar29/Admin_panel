@@ -1,0 +1,59 @@
+<div class="table-responsive">
+    <input type="hidden" id="url" value="/institutes/">
+    <table class="table table-bordered table-hover" role="grid">
+        <thead>
+            <tr>
+                <!--<th width="2%"><input type="checkbox" id="checkAll"/></th>-->
+                <th>S.No.</th>
+                <th>Category</th>
+                <th>Category Type</th>
+                <th>Status</th>
+                <th width="15%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set curr = current-1  %}
+            {% set index = curr* options.perPage +1  %}
+            {% if response.length > 0 %}
+            {% for category in response %}	 
+            <tr>
+                <!--<td width="2%"><span class="checked"><input type="checkbox" class="check" name="{{institute.name}}" value="{{institute._id | safe}}"></span></td>-->
+
+                <td>{{index}}</td>
+
+                {% if !category.sub_category  %}
+                <td>--</td>
+                {% else %} 
+                <td>{{category.sub_category.name}} </td>
+                {% endif %}
+
+                {% if !category.name %}
+                <td>--</td>
+                {% else %}
+                <td>{{category.name}}</td>
+                {% endif %}
+                <td>
+                    {% if category.status == 0  %}
+                    <a class="btn btn-circle btn-icon-only btn-default" title="Disabled"><i class="fa fa-circle" style="color:#428bca"></i></a>
+                    {% elseif category.status == 1  %}
+                    <a class="btn btn-circle btn-icon-only btn-default" title="Enabled"><i class="fa fa-circle" style="color:green"></i></a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a class="btn btn-circle btn-icon-only btn-default" href="/quiz/edit/{{category.id}}">
+                        <i class="icon-eye" style="color:blue"></i>
+                    </a>
+                    <a class="btn btn-circle btn-icon-only btn-default" id="disable_category">
+                        <i class="glyphicon glyphicon-ban-circle" style="color:red"></i>
+                    </a> 
+                </td>
+            </tr>
+            {% set index=index+1 %}
+            {% endfor %}					
+            {% else %}
+            <tr><td colspan="12"><p class="text-center">No records to display</p></td></tr>
+            {% endif %}				
+        </tbody>
+    </table>
+</div>
+<div class="text-center">{% include "../paginate.html" %}</div><br><br>
