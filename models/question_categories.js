@@ -13,6 +13,17 @@ exports.count = (query) => {
         });
     });
 };
+exports.findOne = (query) => {
+    return new Promise((resolve, reject) => {
+        question_categories.findOne(query, (error, data) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(data);
+            }
+        });
+    });
+};
 exports.find = (query) => {
     return new Promise((resolve, reject) => {
         question_categories.find(query, (error, data) => {

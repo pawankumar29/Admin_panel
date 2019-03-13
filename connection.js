@@ -1,7 +1,8 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var env = require('./env');
-
+mongoose.Promise = global.Promise;
+var mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 //mongoose.set('debug', true);
 
 
@@ -394,15 +395,15 @@ var questionCategoriesSchema = new Schema({
         default: ""
     },
     sub_category: [{
-        _id: {
-            type: Schema.Types.ObjectId,
-            default: new mongoose.Types.ObjectId
-        },
-        name: {
-            type: String,
-            default: ""
-        }
-    }],
+            _id: {
+                type: Schema.Types.ObjectId,
+                default: new mongoose.Types.ObjectId
+            },
+            name: {
+                type: String,
+                default: ""
+            }
+        }],
     status: {
         type: Number,
         default: 1
@@ -432,15 +433,15 @@ var instituteWiseCategoriesSchema = new Schema({
         ref: 'question_categories'
     },
     sub_category: [{
-        sub_category_id: {
-            type: Schema.Types.ObjectId,
-            ref: 'question_categories'
-        },
-        number_of_question: {
-            type: Number,
-            default: 0
-        }
-    }],
+            sub_category_id: {
+                type: Schema.Types.ObjectId,
+                ref: 'question_categories'
+            },
+            number_of_question: {
+                type: Number,
+                default: 0
+            }
+        }],
     number_of_question: {
         type: Number,
         default: 0
@@ -465,57 +466,21 @@ var instituteWiseCategoriesSchema = new Schema({
 });
 
 var questionSchema = new Schema({
-    organisation_id: {
-        type: Schema.Types.ObjectId,
-        ref: "organisations"
-    },
-    "question": {
-        type: String,
-        default: ""
-    },
-    "category_id": {
-        type: Schema.Types.ObjectId,
-        ref: 'question_categories'
-    },
-    "sub_category_id": {
-        type: Schema.Types.ObjectId,
-        ref: 'question_categories'
-    },
-    "image": {
-        type: String,
-        default: ""
-    },
-    "options": [{
-            "id": {
-                type: Number,
-                default: 0
-            }
-        },
+    organisation_id: {type: Schema.Types.ObjectId, ref: "organisations"},
+    "question": {type: String, default: ""},
+    "category_id": {type: Schema.Types.ObjectId, ref: 'question_categories'},
+    "sub_category_id": {type: Schema.Types.ObjectId, ref: 'question_categories'},
+    "image": {type: String, default: ""},
+    "options": [
         {
-            "option": {
-                type: [String],
-                default: ""
-            }
-        },
-    ],
-    "answer": {
-        type: [Number],
-        default: []
-    },
-    "status": {
-        type: Number,
-        default: 1
-    }, // 0-inactive,1-active     
-    "is_deleted": {
-        type: Number,
-        default: 0
-    }, //1-deleted by admin
-}, {
-    timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at'
-    }
-});
+            "id": {type: String},
+            "is_correct": {type: Number, default: 0},
+            "option": {type: String, default: ""}
+        }],
+    "answer": {type: [String], default: []},
+    "status": {type: Number, default: 1}, // 0-inactive,1-active     
+    "is_deleted": {type: Number, default: 0}, //1-deleted by admin
+}, {timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}});
 
 var quizResultScehma = new Schema({
     organisation_id: {
@@ -532,65 +497,65 @@ var quizResultScehma = new Schema({
         ref: 'users'
     },
     "answers": [{
-        question_id: {
-            type: Schema.Types.ObjectId,
-            ref: 'questions'
-        },
-        category_id: {
-            type: Schema.Types.ObjectId,
-            ref: 'question_categories'
-        },
-        sub_category_id: {
-            type: Schema.Types.ObjectId,
-            ref: 'question_categories'
-        },
-        answer: {
-            type: [Number],
-            default: []
-        },
-        is_correct: {
-            type: Number,
-            default: 0
-        },
-        marked: {
-            type: Number,
-            default: 0
-        }
-    }],
+            question_id: {
+                type: Schema.Types.ObjectId,
+                ref: 'questions'
+            },
+            category_id: {
+                type: Schema.Types.ObjectId,
+                ref: 'question_categories'
+            },
+            sub_category_id: {
+                type: Schema.Types.ObjectId,
+                ref: 'question_categories'
+            },
+            answer: {
+                type: [Number],
+                default: []
+            },
+            is_correct: {
+                type: Number,
+                default: 0
+            },
+            marked: {
+                type: Number,
+                default: 0
+            }
+        }],
     "category_marks": [{
-        category_id: {
-            type: Schema.Types.ObjectId,
-            ref: 'question_categories'
-        },
-        marks: {
-            type: Number,
-            default: 0
-        }
-    }],
+            category_id: {
+                type: Schema.Types.ObjectId,
+                ref: 'question_categories'
+            },
+            marks: {
+                type: Number,
+                default: 0
+            }
+        }],
     "sub_category_marks": [{
-        sub_category_id: {
-            type: Schema.Types.ObjectId,
-            ref: 'question_categories'
-        },
-        marks: {
-            type: Number,
-            default: 0
-        }
-    }],
+            sub_category_id: {
+                type: Schema.Types.ObjectId,
+                ref: 'question_categories'
+            },
+            marks: {
+                type: Number,
+                default: 0
+            }
+        }],
     'interviews': [{
-        name: {
-            type: String,
-            default: ""
-        },
-        comment: {
-            type: String,
-            default: ""
-        },
-        marks: {
-            type: Number,
-            default: 0
-        }
-    }],
+            name: {
+                type: String,
+                default: ""
+            },
+            comment: {
+                type: String,
+                default: ""
+            },
+            marks: {
+                type: Number,
+                default: 0
+            }
+        }],
     "offer_letter_issued": {
         type: Number,
         default: 0
@@ -716,7 +681,7 @@ var contactUsSchema = new Schema({
         updatedAt: 'updated_at'
     }
 });
-
+contactUsSchema.plugin(mongooseAggregatePaginate);
 var password_reset = new Schema({
     email: String,
     reset_token: String,
@@ -780,7 +745,7 @@ mongoose.model('cms_page', cms_page);
 
 
 // mongoose runs only on 27017 port
-mongoose.connect('mongodb://127.0.0.1:27017/' + env.database.name, options, function(err, db) {
+mongoose.connect('mongodb://127.0.0.1:27017/' + env.database.name, options, function (err, db) {
     if (err) {
         console.log('Unable to connect to the mongoDB server. Error:', err);
     } else {
