@@ -7,7 +7,7 @@ jQuery(document).ready(function () {
         if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
 //            processing = true;
 //            var filter_data = $("form[name=filter_handset]").serialize();
-            alert("Next Page");
+            console.log("Next Page");
 
 //            var page = $(this).attr("page");
             var str = $("form").serialize();

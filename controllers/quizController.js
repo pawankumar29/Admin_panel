@@ -11,11 +11,71 @@ const quizzes = require("../models/quiz")
 const quiz_results = require("../models/quiz_result")
 const institute_categories = require("../models/institute_categories")
 const question_categories = require("../models/question_categories")
-
+const  questions = require("../models/questions");
 var multer = require('multer');
 var util = require('util');
 var fs = require('fs')
 var csv = require('fast-csv');
+
+function dataUpload(organisation_id, category_id, sub_category_id, path) {
+    return new Promise((resolve, reject) => {
+        try {
+
+            organisation_id = mongoose.Types.ObjectId(organisation_id);
+            category_id = mongoose.Types.ObjectId(category_id);
+            if (sub_category_id) {
+                sub_category_id = mongoose.Types.ObjectId(sub_category_id);
+            }
+            let csvDataArray = [];
+            let completePath = process.cwd() + '/' + path;
+            let stream = fs.createReadStream(completePath)
+            csv.fromStream(stream, {
+                headers: true
+            }).on('data', function (data) {
+                if ((data.question || data.question != "") && (data.answer || data.answer != "")) {
+                    let length = Object.keys(data).length;
+                    var answer = [];
+                    let obj = {
+                        "question": data.question,
+                        "organisation_id": organisation_id,
+                        "category_id": category_id,
+                        "image": data.image || "",
+                        "status": 1,
+                        "is_deleted": 0,
+                        "options": [],
+                    };
+                    for (let i = 1; i <= length; i++) {
+                        if (data["option" + i]) {
+                            if (data.answer.toString() == ("option" + i).toString()) {
+                                answer.push(String.fromCharCode(64 + i));
+                            }
+                            obj.options.push({
+                                "id": String.fromCharCode(64 + i),
+                                "option": data["option" + i],
+                                "is_correct": data.answer.toString() == ("option" + i).toString() ? 1 : 0
+                            });
+                        }
+                    }
+
+                    if (sub_category_id) {
+                        obj["sub_category_id"] = sub_category_id;
+                    }
+                    obj["answer"] = answer;
+                    csvDataArray.push(obj);
+                }
+            }).on('end', function (count) {
+                console.log("here in return ");
+                resolve(csvDataArray);
+            });
+        } catch (err) {
+            reject(err);
+        }
+    });
+
+
+}
+
+
 
 function fileFilter(req, file, cb) {
     if (
@@ -28,7 +88,6 @@ function fileFilter(req, file, cb) {
         cb(null, false)
     }
 }
-;
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './public/csv_files')
@@ -41,7 +100,6 @@ var upload = multer({
     storage: storage,
     fileFilter: fileFilter
 }).single('file');
-
 exports.get_categoriesList = (req, res, next) => {
     console.log(global.config.pagination_limit);
     new Promise((resolve, reject) => {
@@ -74,7 +132,6 @@ exports.get_categoriesList = (req, res, next) => {
                     preserveNullAndEmptyArrays: true
                 }
             },
-
             {
                 $skip: skipPages * global.config.pagination_limit
             },
@@ -82,7 +139,7 @@ exports.get_categoriesList = (req, res, next) => {
                 $limit: global.config.pagination_limit
             }
         ];
-        console.log(util.inspect(aggregation_query, {depth: null}));
+//        console.log(util.inspect(aggregation_query, {depth: null}));
         let p1 = question_categories.count({
             organisation_id: req.user.organisation_id,
             is_deleted: 0
@@ -241,10 +298,22 @@ exports.importCsvCat = (req, res, next) => {
 }
 exports.addCsv = (req, res, next) => {
     try {
-        upload(req, res, function (err) {
+        upload(req, res, async function (err) {
             if (!err) {
-                console.log(req.body);
-                console.log(req.file);
+
+                let data = await dataUpload(req.user.organisaton_id, req.body.category_id, req.body.sub_category_id, req.file.path);
+                //function call to csv;
+                console.log("data");
+                console.log(data);
+                let questionInsert = questions.insertMany(data).then(insertData => {
+                    res.redirect("/quiz");
+                }).catch(err => {
+                    console.log(err)
+                    res.render('error', {
+                        error: err
+                    })
+                })
+
             } else {
                 console.log(err)
                 res.render('error', {
@@ -285,62 +354,6 @@ exports.importCsvSubCat = (req, res, next) => {
 
     }
 }
-function dataUpload(category_id, path) {
-    // let organisation_id = req.user.organisation_id
-    organisation_id = mongoose.Types.ObjectId(organisation_id);
-    let invalidArray = [];
-    let validArray = [];
-    let csvDataArray = [];
-    let emailArray = [];
-    let updateBatchArray = [];
-    let completePath = process.cwd() + '/' + path;
-    //    console.log(completePath);
-    var stream = fs.createReadStream(completePath)
-    csv.fromStream(stream, {
-        headers: true
-    }).on('data', function (data) {
-        csvDataArray.push(data)
-    }).on('end', function (count) {
-        if (count > 0) {
-            let questiondata = {};
-            let matchedData = {};
-            for (index = 0; index < csvDataArray.length; index++) {
-                let obj = csvDataArray[index];
-                let alreadyExist = 0;
-                if (obj["question"] && obj["image"] && obj["option1"] && obj["option2"] && obj["option3"] && obj["option4"] && obj["answer"]) {
-                    obj["options"] = [];
-                    if (obj["option1"] != "") {
-                        obj["options"].push({id: "A", option: obj["option1"]});
-                    }
-                    if (obj["option2"] != "") {
-                        obj["options"].push({id: "A", option: obj["option2"]});
-                    }
-                    if (obj["option3"] != "") {
-                        obj["options"].push({id: "A", option: obj["option3"]});
-                    }
-                    if (obj["option4"] != "") {
-                        obj["options"].push({id: "A", option: obj["option4"]});
-                    }
-                } else {
-                    obj["message"] = "Fields are missing.";
-                    obj["errorStatus"] = 1; //field missing
-                    obj["index"] = index;
-                    invalidArray.push(obj);
-                    continue;
-                }
-            }
-//            let promiseArray = [];
-//            
-//            
-//            Promise.all(promiseArray).then(([insert, update, updatecount]) => {
-//                return {message: "success", status: 1, errorData: invalidArray};
-//            }).catch(err => {
-//                return {message: err.message, status: 0}
-//            })
 
-
-        }
-    })
-}
 
 
