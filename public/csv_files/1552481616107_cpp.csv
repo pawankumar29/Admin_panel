@@ -1,0 +1,73 @@
+question,image,option1,option2,option3,option4,answer
+The declaration of structure is also called as?,,structure creator,structure signifier,structure specifier,none of the mentioned,C
+What are the predefined exceptions in c++? You can select multiple options also.,,Memory allocation errors,I/O errors,Both A and B,Compile time error,C
+"In c++, how many parameters does the throw expression can have?",,1,2,3,4,A
+Which class is used to design the base class?,,abstract class,derived class,base class,None of the mentioned,A
+Which header file is used to create the pseudo random generator?,,random,cstdlib,rand,both random and cstdlib,D
+What is meant by multiple inheritance?,,Deriving a base class from derived class,Deriving a derived class from base class,Deriving a derived class from more than one base class,None of the mentioned,C
+"What is the output of this program? 
+#include<iostream> 
+#include <fstream> 
+using namespace std; 
+int main .. 
+{ 
+ofstream outfile .""test.txt"".; 
+for .int n = 0; n < 100; n++. 
+{ 
+outfile << n; 
+outfile.flush..; 
+} 
+cout << ""Done""; 
+outfile.close..; 
+return 0; 
+} 
+",,Done,Error,Runtime error,None of the mentioned,A
+What is meant by heap? You can select multiple options if any?,,Used for fast retrieval of elements,Used for organising the elements,User for taking care of constructors,both A and B,D
+Which is used to allocate and deallocate storage for objects during the execution?,,Stack,HEap,Freestore,None of the mentioned,C
+"What is the output of this program?
+#include <iostream> 
+using namespace std; 
+int funcstatic.int. 
+{ 
+int sum = 0; 
+sum = sum + 10; 
+return sum; 
+} 
+int main.voiD. 
+{ 
+int r = 5, s; 
+s = funcstatic.r.; 
+cout << s << endl; 
+return 0; 
+} 
+",,Error,15,10,none of the mentioned,C
+". If a process fails, most operating system write the error information to a",,log file,another running process,new file,none of the mentioned,A
+"For sharable resources, mutual exclusion :",,is required,is not required,Depends on Scheduling,Depends on CPU,B
+What is a long-term scheduler ?,,It selects which process has to be brought into the ready queue,It selects which process has to be executed next and allocates CPU,It selects which process to remove from memory by swapping,None of these,A
+Scheduling is done so as to :,,increase the turnaround time,decrease the turnaround time,keep the turnaround time same,there is no relation between scheduling and turnaround time,B
+In a multi-programming environment :,,the processor executes more than one process at a time,the programs are developed by more than one person,more than one process resides in the memory,a single user can execute many programs at the same time,C
+The declaration of structure is also called as?,,structure creator,structure signifier,structure specifier,none of the mentioned,C
+What are the predefined exceptions in c++? You can select multiple options also.,,Memory allocation errors,I/O errors,Run time errors,both A and B,C
+"In c++, how many parameters does the throw expression can have?",,1,2,3,4,A
+Which class is used to design the base class?,,abstract class,derived class,base class,None of the mentioned,A
+Which header file is used to create the pseudo random generator?,,random,cstdlib,rand,both random and cstdlib,D
+What is meant by multiple inheritance?,,Deriving a base class from derived class,Deriving a derived class from base class,Deriving a derived class from more than one base class,None of the mentioned,C
+"What is the output of this program? 
+#include<iostream> 
+#include <fstream> 
+using namespace std; 
+int main .. 
+{ 
+ofstream outfile .""test.txt"".; 
+for .int n = 0; n < 100; n++. 
+{ 
+outfile << n; 
+outfile.flush..; 
+} 
+cout << ""Done""; 
+outfile.close..; 
+return 0; 
+} 
+",,Done,Error,Runtime error,None of the mentioned,A
+What is meant by heap? You can select multiple options if any?,,Used for fast retrieval of elements,Used for organising the elements,User for taking care of constructors,both A and B,D
+Which is used to allocate and deallocate storage for objects during the execution?,,Stack,HEap,Freestore,None of the mentioned,C

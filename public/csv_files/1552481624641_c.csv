@@ -1,0 +1,42 @@
+question,image,option1,option2,option3,option4,answer
+"What will be the output of the program if the array begins at address 65486?
+#include 
+void main.. 
+{ 
+int arr[] = {12, 14, 15, 23, 45}; 
+printf.""%u, %u"", arr, &arr.; 
+} 
+
+",,"65486, 65488","65486, 65490","65486, 65487","65486, 65486",D
+"What will be the output of the program ?
+#include 
+void main.. 
+{ 
+float arr[] = {12.4, 2.3, 4.5, 6.7}; 
+printf.""%d"", sizeof.arr./sizeof.arr[0]..; 
+} 
+",,5,4,6,7,B
+"Consider the following type definition.
+typedef char x[10]; 
+x myArray[5]; 
+What will sizeof.myArray. be ? .Assume one character occupies 1 byte 
+",,15,10,50,30,C
+"Which of the following correctly accesses the seventh element stored in arr, an array with 100 elements?",,arr[6],arr[7],arr{6},arr{7},A
+"What is the value of a[4]?
+int a[5] = {1,2,3}",,3,1,2,0,D
+The default parameter passing mechanism is,,call by value,call by reference,call by value result,None of these.,A
+The recursive functions are executed in a ...........,,Parallel order.,First In First Out order.,Last In First Out order,Iterative order.,C
+"What number will z in the sample code given below?
+int z, x=5, y= -10, a=4, b=2; 
+z = x++ - --y*b/a; 
+",,5,6,9,10,D
+"What is the output of the following statements?
+int i = 0; 
+printf.""%d %d"", i, i++.; 
+",,0 1,1 0,0 0,1 1,B
+"What is the output of the following statements?
+int b=15, c=5, d=8, e=8, a; 
+a = b>c ? c>d ? 12 : d>e ? 13 : 14 : 15; 
+printf.""%d"", a.; 
+
+",,13,14,15,12,B

@@ -1,0 +1,6 @@
+question,image,option1,option2,option3,option4,answer
+How is plan driven development different from agile development?,,Outputs are decided through a process of negotiation during the software development process.,"Specification, design, implementation and testing are interleaved",Iteration occurs within activities,None,C
+"“Consider a system where, a heat sensor detects an intrusion and alerts the security company.” What kind of a requirement the system is providing?",,Functional,Non-Functional,Known Requirement,None,A
+Choose the incorrect statement with respect to Non-Functional Requirement.NFR..,,Product-oriented Approach – Focus on system .or software. quality,Process-oriented Approach – Focus on how NFRs can be used in the design process,Quantitative Approach – Find measurable scales for the functionality attributes,Qualitative Approach – Study various relationships between quality goals,C
+Testing beyond normal operational capacity is __________.,,Load testing,Performance testing,Stress testing,All of these.,C
+Test cases are created in which phase?,,Test Specification,Test Planning,Test Requirement,Test Configuration,A

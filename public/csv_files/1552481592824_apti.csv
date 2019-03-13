@@ -1,0 +1,53 @@
+question,image,option1,option2,option3,option4,answer
+"A number series is given with one term missing. Choose the corrected alternative so that it will have same pattern and fill in the blank spaces.
+2, 3, 5, 7, 11, ?, 17",,12,13,14,15,B
+"A number series is given with one term missing. Choose the corrected alternative so that it will have same pattern and fill in the blank spaces.
+4, 8, 16, 13, 7, 14, ?, ?",,"8, 16","9, 18","5, 10","18,16",B
+"a number series is given with one term missing. Choose the corrected alternative that will have same pattern and fill in the blank spaces.
+(2,3), (3,5), (5,7), (7,11), (11,13),…",,"(13,15)","(15,16)","(13,17)","(13,19)",C
+"a number series is given with one term missing. Choose the corrected alternative that will have same pattern and fill in the blank spaces.
+In the series 2, 6, 18, 54,…, what will be the 8th term?",,4370,4374,7443,7434,B
+"a number series is given with one term missing. Choose the corrected alternative that will have same pattern and fill in the blank spaces.
+ELFA, GLHA, ILJA, ?, MLNA",,OLPA,KLMA,LLMA,KLLA,D
+"a number series is given with one term missing. Choose the corrected alternative that will have same pattern and fill in the blank spaces.
+If '-' means '÷', ‘÷’ means '-', '+' means ‘x’ and 'x' means '+', then 12 - 4 x 7 + 8 ÷ 5 = ?",,51,45,34,None of these,D
+"a number series is given with one term missing. Choose the corrected alternative that will have same pattern and fill in the blank spaces.
+If '+' means '-', ‘-’ means 'x', 'x' means ‘÷’ and '÷' means '+', then 12 x 4 ÷ 12 + 5 - 3 = ?",,4,15,30,None of these,D
+"a number series is given with one term missing. Choose the corrected alternative that will have same pattern and fill in the blank spaces.
+If 'when' means 'x', ‘you’ means ‘÷', 'come' means ‘-’ and 'will' means '+', then what will be the value of “8 when 12 will 16 you 2 come 10”?",,45,86,72,94,D
+"a number series is given with one term missing. Choose the corrected alternative that will have same pattern and fill in the blank spaces.
+If 'p' means '-', ‘q’ means ‘+', 'r' means ‘÷’ and 's' means 'x', then 16 p 4 q 5 s 8 r 2 = ?",,-8,32,20,12,B
+"a number series is given with one term missing. Choose the corrected alternative that will have same pattern and fill in the blank spaces.
+If '+' means 'x', ‘-’ means '÷', 'x' means ‘-’ and '÷' means '+', then 2 + 15 ÷ 15 - 3 x 8 = ?",,43,27,35,28,B
+"In a family, each daughter has the same number of brothers as she has sisters and each son has twice 
+as many sisters as he has brothers. How many sons are there in the family?",,2,3,4,5,B
+Ayush was born two years after his father's marriage. His mother is five years younger than his father but 20 years older than Ayush who is 10 years old. At what age did the father get married?,,23 years,25 years,33 years,35 years,A
+"A student got twice as many sums wrong as he got right. If he attempted 48 sums in all, how many did he solve correctly?",,12,16,18,24,B
+"In a group of cows and hens, the number of legs are 14 more than twice the number of heads. The number of cows is",,5,7,10,12,B
+"A fires 5 shots to B's 3 but A kills only once in 3 shots while B kills once in 2 shots. When B has missed 27 times, A has killed",,30 birds,60 birds,72 birds,90 birds,A
+A’s son B is married with C whose sister D is married to E the brother of B. How D is related to A?,,Sister,Daughter-in-law,Sister-in-law,Cousin,B
+"Pointing to Priyanka a person said, ""The son of her only brother is the brother of my wife."" How Priyanka is related Priyanka related to the person?",,Maternal aunt,Grandmother,Sister of father-in-law,None of these,C
+"Pointing to a boy in the photograph Pooja said, ""He is the only son of the only child of my grandfather."" How Pooja is related to that boy?",,Mother,Sister,Aunt,Cannot be determined,B
+"Pointing towards Neha, Sanchit says, ""This girl is the daughter of only child of my father."" What is the relation of Sanchit's wife to Neha?",,Daughter,Mother,Aunt,Sister,B
+"Shushant said to a lady sitting in a car, ""The only daughter of the brother of my wife is the sister-in- law of the brother of your sister."" How the husband of the lady is related to Sushant?",,Meternity Uncle,Uncle,Father,SON In Law,D
+"some groups of letters are given, all of which, except one, share a common similarity while one is different. Choose the odd one out.",,HSRI,MVUN,OLKP,PJQX,D
+"some groups of letters are given, all of which, except one, share a common similarity while one is different. Choose the odd one out.",,YDWB,TKRI,QNOM,HLFJ,C
+"In the word 'PARADISE', how many pairs of letters are there which have as many letters between them in the word as in the English alphabet?",,None,One,Two,Three,C
+"From the word 'BEHIND', how many independent words can be made without changing the order of the letters and using each letter only once?",,1,2,3,4,B
+"From the word 'LAPAROSCOPY', how many independent meaningful words can be made without changing the order of the letters and using each letter only once ?",,1,2,3,4,B
+"90, 180, 12, 50, 100, 200, ?, 3, 50, 4, 25, 2, 6, 30, 3",,150,175,225,250,A
+"2/3, 4/7, ?, 11/21, 16/31",,05/Sep,06/Nov,07/13,09/17,C
+"4/9, 9/20, ?, 39/86",,17/40,19/42,20/45,29/53,B
+"3, 10, 29, 66, 127, ?",,164,187,216,218,D
+"2, 9, 28, ?, 126, 127, 217, 344
+",,50,65,70,82,B
+ Who is sitting to the left of A?,campusapi.debutinfotech.com/images/IMAGE-APP-D-31.jpg,E,F,G,H,B
+E is facing whom?,campusapi.debutinfotech.com/images/IMAGE-APP-D-32.jpg,F,B,G,H,D
+Who are immediate neighbours of B?,campusapi.debutinfotech.com/images/IMAGE-APP-D-33.jpg,G and H,E and F ,E and H , F and H,A
+"A,B,C, D,E and F are sitting around a round table. A is between E and F, E is opposite to D, and C is not in   either of the neighbouring seats of E. Who is opposite to B?",campusapi.debutinfotech.com/images/IMAGE-APP-D-34.jpg,C,D,F,none of the mentioned,C
+"Six person A, B, C, D, E and F are standing in a circle, B is between D and C. A is between E and C. F is to the right of D. Who is between A and F?",campusapi.debutinfotech.com/images/IMAGE-APP-D-35.jpg,B,C,D,E,D
+FAKE,campusapi.debutinfotech.com/images/IMAGE-APP-D-36.jpg," 04, 01, 66, 12 ","21, 41, 65, 00","21, 14, 65, 00","01, 14, 56, 00     ",B
+PHGW,campusapi.debutinfotech.com/images/IMAGE-APP-D-37.jpg,"55, 32, 24, 88 ","56, 32, 24, 87 ","97, 23, 42, 88"," 76, 32, 42, 75  ",D
+STEM,campusapi.debutinfotech.com/images/IMAGE-APP-D-38.jpg,"03, 57, 12, 87","22, 79, 41, 58","22, 57, 21, 85","22, 57, 21, 58",A
+VAST,campusapi.debutinfotech.com/images/IMAGE-APP-D-39.jpg,"89, 01, 22, 56","89, 23, 22, 75","56, 41, 44, 57","56, 23, 22, 75    ",C
+FRANK,campusapi.debutinfotech.com/images/IMAGE-APP-D-40.jpg,"04, 78, 01, 58, 66","21, 78, 41, 85, 65","21, 66, 01, 85, 56","04, 66, 10, 58, 65",B

@@ -39,7 +39,7 @@ function dataUpload(organisation_id, category_id, sub_category_id, path) {
                         "question": data.question,
                         "organisation_id": organisation_id,
                         "category_id": category_id,
-                        "image": data.image || "",
+                        "image": "http://localhost:3038/images/" + data.image || "",
                         "status": 1,
                         "is_deleted": 0,
                         "options": [],
@@ -52,7 +52,7 @@ function dataUpload(organisation_id, category_id, sub_category_id, path) {
                             obj.options.push({
                                 "id": String.fromCharCode(64 + i),
                                 "option": data["option" + i],
-                                "is_correct": data.answer.toString() == ("option" + i).toString() ? 1 : 0
+                                "is_correct": data.answer.toString().toUpperCase() == String.fromCharCode(64 + i) ? 1 : 0
                             });
                         }
                     }
@@ -60,7 +60,7 @@ function dataUpload(organisation_id, category_id, sub_category_id, path) {
                     if (sub_category_id) {
                         obj["sub_category_id"] = sub_category_id;
                     }
-                    obj["answer"] = answer;
+                    obj["answer"] = data.answer;
                     csvDataArray.push(obj);
                 }
             }).on('end', function (count) {
