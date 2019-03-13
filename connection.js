@@ -1,7 +1,8 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var env = require('./env');
-
+mongoose.Promise = global.Promise;
+var mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 //mongoose.set('debug', true);
 
 
@@ -716,7 +717,7 @@ var contactUsSchema = new Schema({
         updatedAt: 'updated_at'
     }
 });
-
+contactUsSchema.plugin(mongooseAggregatePaginate);
 var password_reset = new Schema({
     email: String,
     reset_token: String,

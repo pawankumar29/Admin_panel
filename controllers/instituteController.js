@@ -9,7 +9,7 @@ const settings = require('../models/settings')
 var multer = require('multer');
 var util = require('util');
 var fs = require('fs')
-var csv = require('fast-csv')
+var csv = require('fast-csv');
 const roles = require("../helper/roles");
 const quizzes = require("../models/quiz")
 const quiz_results = require("../models/quiz_result")
@@ -26,8 +26,7 @@ function fileFilter(req, file, cb) {
     } else {
         cb(null, false)
     }
-}
-;
+};
 
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
