@@ -39,7 +39,7 @@ function dataUpload(organisation_id, category_id, sub_category_id, path) {
                         "question": data.question,
                         "organisation_id": organisation_id,
                         "category_id": category_id,
-                        "image": "http://localhost:3038/images/" + data.image || "",
+                        "image": data.image || "",
                         "status": 1,
                         "is_deleted": 0,
                         "options": [],
