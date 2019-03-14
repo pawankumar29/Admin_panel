@@ -136,7 +136,7 @@ function dataUpload(organisation_id, institute_id, batch, path) {
                                         "phone_no": obj["phone_no"],
                                         "father_name": obj["father_name"],
                                         "dob": obj["dob"],
-                                        "email": obj["email"],
+                                        "email": obj["email"].toString().toLowerCase(),
                                         "qualification": obj["qualification"],
                                         "branch": obj["branch"]
                                     });
