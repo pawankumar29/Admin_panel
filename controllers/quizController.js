@@ -367,7 +367,6 @@ async function dataUpload(organisation_id, category_id, sub_cat_id, path) {
                                 obj["options"].push({ id: "B", option: obj["option2"], is_correct: 1 });
                             } else
                                 obj["options"].push({ id: "B", option: obj["option2"], is_correct: 0 });
-
                         }
                         if (obj["option3"] != "") {
                             if (obj["answer"].trim().toLowerCase() == "option3") {
