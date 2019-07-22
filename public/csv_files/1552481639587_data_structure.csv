@@ -1,0 +1,220 @@
+question,image,option1,option2,option3,option4,answer
+"What is the functionality of the following piece of code? Select the most appropriate
+
+public void function.int data.
+{
+int flag = 0;
+if. head != null.
+{
+Node temp = head.getNext..;
+while..temp != head. && .!.temp.getItem.. == data...
+{
+temp = temp.getNext..;
+flag = 1;
+break;
+}
+}
+if.flag.
+System.out.println.""success"".;
+else
+System.out.println.""fail"".;
+}",,Print success if a particular element is not found,Print fail if a particular element is not found,Print success if a particular element is equal to 1,Print fail if the list is empty,B
+"Does following code snippet inserts a node to the head of the list?
+
+public void insertHead.int data.
+{
+Node temp = new Node.data.;
+while.cur != head.
+cur = cur.getNext..
+if.head == null.
+{
+head = temp;
+head.setNext.head.;
+}
+else
+{
+temp.setNext.head.getNext...;
+cur.setNext.temp.;
+}
+size++;
+}",,No,Yes,Invalid,Logical error,A
+"What is the output of the following program?
+
+public class Stack
+{
+protected static final int CAPACITY = 100;
+protected int size,top = -1;
+protected Object stk[];
+
+public Stack..
+{
+stk = new Object[CAPACITY];
+}
+
+public void push.Object item.
+{
+if.size_of_stack==size.
+{
+System.out.println.""Stack overflow"".;
+return;
+}
+else
+{
+top++;
+stk[top]=item;
+}
+}
+public Object pop..
+{
+if.top<0.
+{
+return -999;
+}
+else
+{
+Object ele=stk[top];
+top--;
+size_of_stack--;
+return ele;
+}
+}
+}
+
+public class StackDemo
+{
+public static void main.String args[].
+{
+Stack myStack = new Stack..;
+myStack.push.10.;
+Object element1 = myStack.pop..;
+Object element2 = myStack.pop..;
+System.out.println.element2.;
+}",,stack is full,20,0,none of the mentioned,D
+"What is the functionality of the following code? Choose the most appropriate answer.
+public int function..
+{
+if.head == null.
+return Integer.MIN_VALUE;
+int var;
+Node temp = head;
+while.temp.getNext.. != head.
+temp = temp.getNext..;
+if.temp == head.
+{
+var = head.getItem..;
+head = null;
+return var;
+}
+temp.setNext.head.getNext...;
+var = head.getItem..;
+head = head.getNext..;
+return var;
+}",,A. Return data from the end of the list,B. Returns the data and deletes the node at the end of the list,C. Returns the data from the beginning of the list,D. Returns the data and deletes the node from the beginning of the list,D
+"What is the functionality of the following piece of Java code?
+Assume: â€˜aâ€™ is a non empty array of integers, the Stack class creates an array of specified size and provides a top pointer indicating TOS.top of stack., push and pop have normal meaning.
+
+public void some_function.int[] a.
+{
+Stack S=new Stack.a.length.;
+int[] b=new int[a.length];
+for.int i=0;i<a.length;i++.
+{
+S.push.a[i].;
+}
+for.int i=0;i<a.length;i++.
+{
+b[i]=.int..S.pop...;
+}
+System.out.println.""output :"".;
+for.int i=0;i<b.length;i++.
+{
+System.out.println.b[i].;
+}
+}",,A. print alternate elements of array,duplicate the given array,parentheses matching,reverse the array,D
+"Does following is the appropriate code that does binary search using recursion.
+
+public static int recursive.int arr[], int low, int high, int key.
+{
+int mid = low + .high + low./2;
+if.arr[mid] == key.
+{
+return mid;
+}
+else if.arr[mid] < key.
+{
+return recursive.arr,mid-1,high,key.;
+}
+else
+{
+return recursive.arr,low,mid+1,key.;
+}
+}",,Yes,No,Invalid,Logical error,B
+How can you improve the best case efficiency in bubble sort? .The input is already sorted.,,"boolean swapped = false;
+for.int j=arr.length-1; j>=0 && swapped; j--.
+{
+swapped = true;
+for.int k=0; k<j; k++.
+{
+if.arr[k] > arr[k+1].
+{
+int temp = arr[k];
+arr[k] = arr[k+1];
+arr[k+1] = temp;
+swapped = false;
+}
+}
+}","boolean swapped = true;
+for.int j=arr.length-1; j>=0 && swapped; j--.
+{
+swapped = false;
+for.int k=0; k<j; k++.
+{
+if.arr[k] > arr[k+1].
+{
+int temp = arr[k];
+arr[k] = arr[k+1];
+arr[k+1] = temp;
+}
+}
+}","boolean swapped = true;
+for.int j=arr.length-1; j>=0 && swapped; j--.
+{
+swapped = false;
+for.int k=0; k<j; k++.
+{
+if.arr[k] > arr[k+1].
+{
+int temp = arr[k];
+arr[k] = arr[k+1];
+arr[k+1] = temp;
+swapped = true;
+}
+}
+}","boolean swapped = true;
+for.int j=arr.length-1; j>=0 && swapped; j--.
+{
+for.int k=0; k<j; k++.
+{
+if.arr[k] > arr[k+1].
+{
+int temp = arr[k];
+arr[k] = arr[k+1];
+arr[k+1] = temp;
+swapped = true;
+}
+}
+}",C
+"Given an input arr = {2,5,7,99,899}; key = 899; What is the level of recursion?",,5,2,3,4,C
+"What does the following piece of code do?
+
+for .int i = 0; i < arr.length-1; i++.
+{
+for .int j = i+1; j < arr.length; j++.
+{
+if. .arr[i].equals.arr[j].. && .i != j. .
+{
+System.out.println.arr[i].;
+}
+}
+}",,A. Print the duplicate elements in the array,Print the element with maximum frequency,Print the unique elements in the array,None of the mentioned,A
+Which of the following is a disadvantage of linear search?,,Requires more space,Greater time complexities compared to other searching algorithms,Not easy to understand,All of the mentioned,B

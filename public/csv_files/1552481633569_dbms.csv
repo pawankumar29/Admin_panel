@@ -1,0 +1,22 @@
+question,image,option1,option2,option3,option4,answer
+What is Enum Data type,,It is used to store large amounts of binary data.,A field with a maximum length of 65535 characters,A variable-length string between 1 and 255 characters in length,We can create list of items from which the value must be selected.,D
+"What does the following command do? 
+SELECT column1,MAX.column2.
+FROM table_name
+GROUP BY column1
+HAVING MAX.column2.>=5;",,extract those values from 'column1' which have five or more 'column2',extract those values from 'column1' which occurs five or more times,extract those values from 'column2' which occurs five or more times,-,A
+Which two Queries will give same results :-,,"SELECT productName FROM products WHERE buyPrice >= 90 AND buyPrice <= 100;
+SELECT productName FROM products WHERE buyPrice NOT BETWEEN 90 AND 100;","SELECT productName FROM products WHERE price >= 23 AND price <= 89;
+SELECT productName FROM products WHERE price NOT BETWEEN 1 AND 20 AND BETWEEN 23 AND 106;","SELECT productName FROM products WHERE price >= 23 OR price <= 89;
+SELECT productName FROM products WHERE price NOT BETWEEN 1 AND 20 OR BETWEEN 23 AND 106;","SELECT productName FROM products WHERE buyPrice >= 90 AND buyPrice <= 100;
+SELECT productName FROM products WHERE buyPrice BETWEEN 90 AND 100;
+",D
+Which function give current time of My sql sever :-,,select date..;,select now..;,slect timestamp..;,select datetime..;,B
+Which Query will give first 10 rows from the table.,,"SELECT customernumber, customername, creditlimit FROM customers LIMIT 10;","SELECT customernumber, customername, creditlimit FROM customers LIMIT 10,10;","SELECT customernumber, customername, creditlimit FROM customers LIMIT Start 1, END 10;","SELECT customernumber, customername, creditlimit FROM customers LIMIT 10,0;",A
+Which of the following commands should be used to create a database named “student”?,,CREATE ?I student,CREATE DATABASE student,DATABASE /student,DATABSE student,B
+ Which  SQL statement is right to  insert one row into the table countries against the column country_id,campusapi.debutinfotech.com/images/IMAGE-DBMS-1.jpg,INSERT INTO countries .country_id. VALUES.'C1'.;,"INSERT INTO countries .country_id,country_name,REGION_ID
+. VALUES.'C1','India'.;","INSERT INTO countries .country_id,country_name,REGION_ID
+. VALUES.'C1','India',’Delhi’.;",None from these,A
+Here in the following is the structure of the table countries.,campusapi.debutinfotech.com/images/IMAGE-DBMS-2.jpg,"SELECT *, SUM.Price. AS  TotalPrice FROM  Products GROUP   BY  ProductName",SELECT  SUM.Price. AS  TotalPrice FROM  Products GROUP   BY Price,"SELECT customernumber,  customername, creditlimit FROM customers LIMIT  Start 1, END 10;","SELECT customernumber,  customername, creditlimit FROM customers LIMIT 10,0;",C
+Which Query will give  unique name from below employees table.,campusapi.debutinfotech.com/images/IMAGE-DBMS-3.jpg,SELECT name FROM employees group by id;,SELECT DISTINCT name FROM employees;,SELECT name FROM employees group by id;,None from these,B
+Which join will be best for this example to fetch CustomerName and ShipperID.,campusapi.debutinfotech.com/images/IMAGE-DBMS-4.jpg,Right Join,Full join ,Left Join, Inner Join,D

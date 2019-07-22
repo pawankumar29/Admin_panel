@@ -6,17 +6,75 @@ const email_templates = require('../models/email_template.js')
 const mongoose = require('mongoose');
 const questionModel = mongoose.model('questions');
 const users = require("../models/user");
-const settings = require('../models/settings')
+const settings = require('../models/settings');
 var util = require('util');
-const quizzes = require("../models/quiz")
-const quiz_results = require("../models/quiz_result")
-const institute_categories = require("../models/institute_categories")
-const question_categories = require("../models/question_categories")
-const Sync = require('sync');
+const quizzes = require("../models/quiz");
+const quiz_results = require("../models/quiz_result");
+const institute_categories = require("../models/institute_categories");
+const question_categories = require("../models/question_categories");
+const questions = require("../models/questions");
 var multer = require('multer');
 var util = require('util');
 var fs = require('fs')
 var csv = require('fast-csv');
+
+// function dataUpload(organisation_id, category_id, sub_category_id, path) {
+//     return new Promise((resolve, reject) => {
+//         try {
+
+//             organisation_id = mongoose.Types.ObjectId(organisation_id);
+//             category_id = mongoose.Types.ObjectId(category_id);
+//             if (sub_category_id) {
+//                 sub_category_id = mongoose.Types.ObjectId(sub_category_id);
+//             }
+//             let csvDataArray = [];
+//             let completePath = process.cwd() + '/' + path;
+//             let stream = fs.createReadStream(completePath)
+//             csv.fromStream(stream, {
+//                 headers: true
+//             }).on('data', function(data) {
+//                 if ((data.question || data.question != "") && (data.answer || data.answer != "")) {
+//                     let length = Object.keys(data).length;
+//                     var answer = [];
+//                     let obj = {
+//                         "question": data.question,
+//                         "organisation_id": organisation_id,
+//                         "category_id": category_id,
+//                         "image": data.image || "",
+//                         "status": 1,
+//                         "is_deleted": 0,
+//                         "options": [],
+//                     };
+//                     for (let i = 1; i <= length; i++) {
+//                         if (data["option" + i]) {
+//                             if (data.answer.toString() == ("option" + i).toString()) {
+//                                 answer.push(String.fromCharCode(64 + i));
+//                             }
+//                             obj.options.push({
+//                                 "id": String.fromCharCode(64 + i),
+//                                 "option": data["option" + i],
+//                                 "is_correct": data.answer.toString().toUpperCase() == String.fromCharCode(64 + i) ? 1 : 0
+//                             });
+//                         }
+//                     }
+
+//                     if (sub_category_id) {
+//                         obj["sub_category_id"] = sub_category_id;
+//                     }
+//                     obj["answer"] = data.answer;
+//                     csvDataArray.push(obj);
+//                 }
+//             }).on('end', function(count) {
+//                 console.log("here in return ");
+//                 resolve(csvDataArray);
+//             });
+//         } catch (err) {
+//             reject(err);
+//         }
+//     });
+
+
+// }
 
 function fileFilter(req, file, cb) {
     if (
@@ -28,7 +86,7 @@ function fileFilter(req, file, cb) {
     } else {
         cb(null, false)
     }
-};
+}
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, './public/csv_files')
@@ -41,7 +99,6 @@ var upload = multer({
     storage: storage,
     fileFilter: fileFilter
 }).single('file');
-
 exports.get_categoriesList = (req, res, next) => {
     console.log(global.config.pagination_limit);
     new Promise((resolve, reject) => {
@@ -74,7 +131,6 @@ exports.get_categoriesList = (req, res, next) => {
                     preserveNullAndEmptyArrays: true
                 }
             },
-
             {
                 $skip: skipPages * global.config.pagination_limit
             },
@@ -183,28 +239,12 @@ exports.save_new_category = (req, res, next) => {
             sub_category: sub_category
         }
         question_categories.save(data).then(response => {
-                res.redirect('/quiz');
-            }).catch(err => {
-                res.render('error', {
-                    error: err
-                })
+            res.redirect('/quiz');
+        }).catch(err => {
+            res.render('error', {
+                error: err
             })
-            //        settings
-            //                .findOnePromise({}, {
-            //                    qualification: 1
-            //                })
-            //                .then(data => {
-            //                    res.render('quiz/add', {
-            //                        title: 'Add Category',
-            //                        active: 'manage_quiz_page',
-            ////                        qualification: data.qualification,
-            //                        message: req.flash()
-            //                    })
-            //                })
-            //                .catch(error => {
-            //                    reject(error)
-            //                })
-            // render view add institution page
+        })
     } catch (err) {
         res.render('error', {
             error: err
@@ -254,7 +294,6 @@ exports.addCsv = (req, res, next) => {
                     req.flash('error', 'Please Upload a csv file of questions details')
                     res.redirect('/quiz')
                 }
-
             } else {
                 console.log(err)
                 res.render('error', {
@@ -316,7 +355,6 @@ async function dataUpload(organisation_id, category_id, sub_cat_id, path) {
                     if (obj["question"] && obj["option1"] && obj["option2"] && obj["option3"] && obj["option4"] && obj["answer"]) {
                         obj["options"] = [];
                         if (obj["option1"] != "") {
-
                             if (obj["answer"].trim().toLowerCase() == "option1") {
                                 answer.push("A")
                                 obj["options"].push({ id: "A", option: obj["option1"], is_correct: 1 });
@@ -337,7 +375,6 @@ async function dataUpload(organisation_id, category_id, sub_cat_id, path) {
                                 obj["options"].push({ id: "C", option: obj["option3"], is_correct: 1 });
                             } else
                                 obj["options"].push({ id: "C", option: obj["option3"], is_correct: 0 });
-
                         }
                         if (obj["option4"] != "") {
                             if (obj["answer"].trim().toLowerCase() == "option4") {

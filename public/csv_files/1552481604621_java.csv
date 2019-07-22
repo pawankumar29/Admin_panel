@@ -1,0 +1,72 @@
+question,image,option1,option2,option3,option4,answer
+"How many objects will create in the following code snippet.
+String str = new String.“ABCD”.;",,1,2,3,4,A
+"What will be output of the following code?
+public class Boxer1 { 
+Integer i; 
+int x; 
+
+public Boxer1.int y. { 
+x = i + y; 
+System.out.println.x.; 
+} 
+
+public static void main.String[] args. { 
+new Boxer1.new Integer.4..; 
+} 
+} 
+",,The value “4” is printed at the command line,Compilation fails because of an error in line,A NullPointerException occurs at runtime,An IllegalStateException occurs at runtime,D
+"What is the output of this program?
+import java.io.*; 
+import java.net.*; 
+public class URLDemo { 
+public static void main.String[] args. { 
+try { 
+URL url=new URL.""http://www.sanfoundry.com/java-mcq"".; 
+System.out.println.""Protocol: ""+url.getProtocol...; 
+System.out.println.""Host Name: ""+url.getHost...; 
+System.out.println.""Port Number: ""+url.getPort...; 
+} catch.Exception e.{System.out.println.e.;} 
+} 
+} 
+",,Protocol: http,Host Name: www.sanfoundry.com,Port Number: -1,all above mentioned,D
+Which of these Exceptions is thrown by loadClass.. method of ClassLoader class?,,IOException,SystemException,ClassFormatError,ClassNotFoundException,D
+"Which of the following is true about inheritance in Java?
+Private methods are final.
+Protected members are accessible within a package and inherited classes outside the package.
+Protected methods are final.
+We cannot override private methods.",,"1,2 and 4",Only 1 and 2,"1,2, and 3","2,3, and 4",D
+"What is the output of this program?
+import java.util.*; 
+class Collection_Algos { 
+public static void main.String args[]. { 
+LinkedList list = new LinkedList..; 
+list.add.new Integer.2..; 
+list.add.new Integer.8..; 
+list.add.new Integer.5..; 
+list.add.new Integer.1..; 
+Iterator i = list.iterator..; 
+Collections.reverse.list.; 
+Collections.sort.list.; 
+while.i.hasNext... 
+System.out.print.i.next.. + "" "".; 
+} 
+}",,2 8 5 1,1 5 8 2,1 2 5 8,2 1 8 5,C
+Which of the following constructor of Thread class is valid?,,"Thread.Runnable r, int priority.",Thread.int priority.,"Thread.Runnable r, String threadName.","Thread.String threadName, int priority.",C
+"What will be the output of this program
+public class San 
+{ 
+public static void main.String args[]. 
+{ 
+try 
+{ 
+System.out.print.""Hello world "".; 
+} 
+finally 
+{ 
+System.out.println.""Finally executing "".; 
+} 
+} 
+}",,The program will not compile because no exceptions are specified,The program will not compile because no catch clauses are specified,Hello world,Hello world Finally executing,D
+What is Truncation is Java?,,Floating-point value assigned to an integer type.,Integer value assigned to floating type.,Floating-point value assigned to an Floating type.,Integer value assigned to floating type.,A
+Which operator is used to invert all the digits in binary representation of a number?,,~,<<<,>>>,^,A
