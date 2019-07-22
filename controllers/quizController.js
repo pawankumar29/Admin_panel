@@ -1,98 +1,97 @@
 const institutes = require('../models/institutes')
 const moment = require('moment')
-// const mails = require('../helper/send_mail.js');
-// const email = require('../email_template_cms_pages');
+    // const mails = require('../helper/send_mail.js');
+    // const email = require('../email_template_cms_pages');
 const email_templates = require('../models/email_template.js')
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const questionModel = mongoose.model('questions');
 const users = require("../models/user");
-const settings = require('../models/settings')
+const settings = require('../models/settings');
 var util = require('util');
-const quizzes = require("../models/quiz")
-const quiz_results = require("../models/quiz_result")
-const institute_categories = require("../models/institute_categories")
-const question_categories = require("../models/question_categories")
-const  questions = require("../models/questions");
+const quizzes = require("../models/quiz");
+const quiz_results = require("../models/quiz_result");
+const institute_categories = require("../models/institute_categories");
+const question_categories = require("../models/question_categories");
+const questions = require("../models/questions");
 var multer = require('multer');
 var util = require('util');
 var fs = require('fs')
 var csv = require('fast-csv');
 
-function dataUpload(organisation_id, category_id, sub_category_id, path) {
-    return new Promise((resolve, reject) => {
-        try {
+// function dataUpload(organisation_id, category_id, sub_category_id, path) {
+//     return new Promise((resolve, reject) => {
+//         try {
 
-            organisation_id = mongoose.Types.ObjectId(organisation_id);
-            category_id = mongoose.Types.ObjectId(category_id);
-            if (sub_category_id) {
-                sub_category_id = mongoose.Types.ObjectId(sub_category_id);
-            }
-            let csvDataArray = [];
-            let completePath = process.cwd() + '/' + path;
-            let stream = fs.createReadStream(completePath)
-            csv.fromStream(stream, {
-                headers: true
-            }).on('data', function (data) {
-                if ((data.question || data.question != "") && (data.answer || data.answer != "")) {
-                    let length = Object.keys(data).length;
-                    var answer = [];
-                    let obj = {
-                        "question": data.question,
-                        "organisation_id": organisation_id,
-                        "category_id": category_id,
-                        "image": data.image || "",
-                        "status": 1,
-                        "is_deleted": 0,
-                        "options": [],
-                    };
-                    for (let i = 1; i <= length; i++) {
-                        if (data["option" + i]) {
-                            if (data.answer.toString() == ("option" + i).toString()) {
-                                answer.push(String.fromCharCode(64 + i));
-                            }
-                            obj.options.push({
-                                "id": String.fromCharCode(64 + i),
-                                "option": data["option" + i],
-                                "is_correct": data.answer.toString().toUpperCase() == String.fromCharCode(64 + i) ? 1 : 0
-                            });
-                        }
-                    }
+//             organisation_id = mongoose.Types.ObjectId(organisation_id);
+//             category_id = mongoose.Types.ObjectId(category_id);
+//             if (sub_category_id) {
+//                 sub_category_id = mongoose.Types.ObjectId(sub_category_id);
+//             }
+//             let csvDataArray = [];
+//             let completePath = process.cwd() + '/' + path;
+//             let stream = fs.createReadStream(completePath)
+//             csv.fromStream(stream, {
+//                 headers: true
+//             }).on('data', function(data) {
+//                 if ((data.question || data.question != "") && (data.answer || data.answer != "")) {
+//                     let length = Object.keys(data).length;
+//                     var answer = [];
+//                     let obj = {
+//                         "question": data.question,
+//                         "organisation_id": organisation_id,
+//                         "category_id": category_id,
+//                         "image": data.image || "",
+//                         "status": 1,
+//                         "is_deleted": 0,
+//                         "options": [],
+//                     };
+//                     for (let i = 1; i <= length; i++) {
+//                         if (data["option" + i]) {
+//                             if (data.answer.toString() == ("option" + i).toString()) {
+//                                 answer.push(String.fromCharCode(64 + i));
+//                             }
+//                             obj.options.push({
+//                                 "id": String.fromCharCode(64 + i),
+//                                 "option": data["option" + i],
+//                                 "is_correct": data.answer.toString().toUpperCase() == String.fromCharCode(64 + i) ? 1 : 0
+//                             });
+//                         }
+//                     }
 
-                    if (sub_category_id) {
-                        obj["sub_category_id"] = sub_category_id;
-                    }
-                    obj["answer"] = data.answer;
-                    csvDataArray.push(obj);
-                }
-            }).on('end', function (count) {
-                console.log("here in return ");
-                resolve(csvDataArray);
-            });
-        } catch (err) {
-            reject(err);
-        }
-    });
-
-
-}
+//                     if (sub_category_id) {
+//                         obj["sub_category_id"] = sub_category_id;
+//                     }
+//                     obj["answer"] = data.answer;
+//                     csvDataArray.push(obj);
+//                 }
+//             }).on('end', function(count) {
+//                 console.log("here in return ");
+//                 resolve(csvDataArray);
+//             });
+//         } catch (err) {
+//             reject(err);
+//         }
+//     });
 
 
+// }
 
 function fileFilter(req, file, cb) {
     if (
-            file.mimetype == 'text/csv' ||
-            file.mimetype == 'text/xlsx' ||
-            file.mimetype == 'text/xls'
-            ) {
+        file.mimetype == 'text/csv' ||
+        file.mimetype == 'text/xlsx' ||
+        file.mimetype == 'text/xls'
+    ) {
         cb(null, true)
     } else {
         cb(null, false)
     }
 }
 var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+    destination: function(req, file, cb) {
         cb(null, './public/csv_files')
     },
-    filename: function (req, file, cb) {
+    filename: function(req, file, cb) {
         cb(null, Date.now() + '_' + file.originalname)
     }
 });
@@ -139,82 +138,81 @@ exports.get_categoriesList = (req, res, next) => {
                 $limit: global.config.pagination_limit
             }
         ];
-//        console.log(util.inspect(aggregation_query, {depth: null}));
         let p1 = question_categories.count({
             organisation_id: req.user.organisation_id,
             is_deleted: 0
         })
         let p2 = question_categories.aggregate(aggregation_query)
         Promise.all([p1, p2])
-                .then(([count, result]) => {
-//                    console.log(util.inspect(result,{depth:null}));
-                    let last = parseInt(
-                            count % global.config.pagination_limit == 0 ?
-                            count / global.config.pagination_limit :
-                            count / global.config.pagination_limit + 1
-                            )
-                    let pages = []
-                    for (i = 1; i <= last; i++) {
-                        pages.push(i)
-                    }
-                    if (req.query.page) {
-                        res.render('quiz/table', {
-                            response: result,
-                            count: count,
-                            prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
-                            last: last,
-                            pages: pages,
-                            next: options.page == last ? last : last + 1,
-                            message: req.flash(),
-                            options: options,
-                            current: req.query.page || 1,
-                            delta: global.config.delta,
-                            title: 'Manage Quiz',
-                            active: 'manage_quiz_page'
-                        });
-                    } else {
-                        res.render('quiz/categoriesList', {
-                            response: result,
-                            count: count,
-                            prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
-                            last: last,
-                            pages: pages,
-                            next: options.page == last ? last : last + 1,
-                            message: req.flash(),
-                            options: options,
-                            current: req.query.page || 1,
-                            delta: global.config.delta,
-                            title: 'Manage Quiz',
-                            active: 'manage_quiz_page'
-                        })
+            .then(([count, result]) => {
+                //                    console.log(util.inspect(result,{depth:null}));
+                let last = parseInt(
+                    count % global.config.pagination_limit == 0 ?
+                    count / global.config.pagination_limit :
+                    count / global.config.pagination_limit + 1
+                )
+                let pages = []
+                for (i = 1; i <= last; i++) {
+                    pages.push(i)
                 }
-                })
-                .catch(error => {
-                    reject(error)
-                })
+                if (req.query.page) {
+                    res.render('quiz/table', {
+                        response: result,
+                        count: count,
+                        prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
+                        last: last,
+                        pages: pages,
+                        next: options.page == last ? last : last + 1,
+                        message: req.flash(),
+                        options: options,
+                        current: req.query.page || 1,
+                        delta: global.config.delta,
+                        title: 'Manage Quiz',
+                        active: 'manage_quiz_page'
+                    });
+                } else {
+                    res.render('quiz/categoriesList', {
+                        response: result,
+                        count: count,
+                        prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
+                        last: last,
+                        pages: pages,
+                        next: options.page == last ? last : last + 1,
+                        message: req.flash(),
+                        options: options,
+                        current: req.query.page || 1,
+                        delta: global.config.delta,
+                        title: 'Manage Quiz',
+                        active: 'manage_quiz_page'
+                    })
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
     }).catch(err => {
         console.log(err)
-        //        res.redirect('/institutes');
+            //        res.redirect('/institutes');
     })
 }
 exports.add_category = (req, res, next) => {
     try {
         settings
-                .findOnePromise({}, {
-                    qualification: 1
-                })
-                .then(data => {
-                    res.render('quiz/add', {
-                        title: 'Add Category',
-                        active: 'manage_quiz_page',
-//                        qualification: data.qualification,
-                        message: req.flash()
-                    });
-                })
-                .catch(error => {
-                    reject(error)
-                })
-        // render view add institution page
+            .findOnePromise({}, {
+                qualification: 1
+            })
+            .then(data => {
+                res.render('quiz/add', {
+                    title: 'Add Category',
+                    active: 'manage_quiz_page',
+                    //                        qualification: data.qualification,
+                    message: req.flash()
+                });
+            })
+            .catch(error => {
+                reject(error)
+            })
+            // render view add institution page
     } catch (err) {
         res.render('error', {
             error: err
@@ -225,11 +223,11 @@ exports.save_new_category = (req, res, next) => {
     try {
         var sub_category = [];
         if (req.body.category_type == '1') {
-            if (typeof (req.body.sub_category) == 'string') {
-                sub_category = [{name: req.body.sub_category}]
+            if (typeof(req.body.sub_category) == 'string') {
+                sub_category = [{ name: req.body.sub_category }]
             } else {
                 for (var i = 0; i < req.body.sub_category.length; i++) {
-                    sub_category.push({name: req.body.sub_category[i]});
+                    sub_category.push({ name: req.body.sub_category[i] });
                 }
             }
 
@@ -247,22 +245,6 @@ exports.save_new_category = (req, res, next) => {
                 error: err
             })
         })
-//        settings
-//                .findOnePromise({}, {
-//                    qualification: 1
-//                })
-//                .then(data => {
-//                    res.render('quiz/add', {
-//                        title: 'Add Category',
-//                        active: 'manage_quiz_page',
-////                        qualification: data.qualification,
-//                        message: req.flash()
-//                    })
-//                })
-//                .catch(error => {
-//                    reject(error)
-//                })
-        // render view add institution page
     } catch (err) {
         res.render('error', {
             error: err
@@ -280,7 +262,7 @@ exports.csvDowload = (req, res, next) => {
 }
 exports.importCsvCat = (req, res, next) => {
     try {
-        question_categories.findOne({_id: req.params.cat_id}).then(data => {
+        question_categories.findOne({ _id: req.params.cat_id }).then(data => {
             res.render('quiz/importQuestion', {
                 category: data,
                 title: 'Add Questions',
@@ -298,22 +280,20 @@ exports.importCsvCat = (req, res, next) => {
 }
 exports.addCsv = (req, res, next) => {
     try {
-        upload(req, res, async function (err) {
+        upload(req, res, async function(err) {
             if (!err) {
-
-                let data = await dataUpload(req.user.organisaton_id, req.body.category_id, req.body.sub_category_id, req.file.path);
-                //function call to csv;
-                console.log("data");
-                console.log(data);
-                let questionInsert = questions.insertMany(data).then(insertData => {
-                    res.redirect("/quiz");
-                }).catch(err => {
-                    console.log(err)
-                    res.render('error', {
-                        error: err
-                    })
-                })
-
+                let sub_category_id = '';
+                if (req.body.sub_category_id) {
+                    sub_category_id = req.body.sub_category_id
+                }
+                if (req.file) {
+                    let response = await dataUpload(req.user.organisation_id.toString(), req.body.category_id, sub_category_id, req.file.path);
+                    req.flash('success', 'Questions added successfully!!')
+                    res.redirect('/quiz')
+                } else {
+                    req.flash('error', 'Please Upload a csv file of questions details')
+                    res.redirect('/quiz')
+                }
             } else {
                 console.log(err)
                 res.render('error', {
@@ -330,7 +310,7 @@ exports.addCsv = (req, res, next) => {
 }
 exports.importCsvSubCat = (req, res, next) => {
     try {
-        question_categories.findOne({_id: req.params.cat_id}).then(data => {
+        question_categories.findOne({ _id: req.params.cat_id }).then(data => {
             var sub_cat_data = {};
             for (var i = 0; i < data.sub_category.length; i++) {
                 if (data.sub_category[i]._id.toString() == req.params.sub_cat_id.toString()) {
@@ -355,5 +335,91 @@ exports.importCsvSubCat = (req, res, next) => {
     }
 }
 
+async function dataUpload(organisation_id, category_id, sub_cat_id, path) {
+    try {
+        organisation_id = mongoose.Types.ObjectId(organisation_id);
+        let invalidArray = [];
+        let validArray = [];
+        let csvDataArray = [];
+        let completePath = process.cwd() + '/' + path;
+        var stream = fs.createReadStream(completePath)
+        csv.fromStream(stream, {
+            headers: true
+        }).on('data', function(data) {
+            csvDataArray.push(data)
+        }).on('end', async function(count) {
+            if (count > 0) {
+                for (let index = 0; index < csvDataArray.length; index++) {
+                    let answer = [];
+                    let obj = csvDataArray[index];
+                    if (obj["question"] && obj["option1"] && obj["option2"] && obj["option3"] && obj["option4"] && obj["answer"]) {
+                        obj["options"] = [];
+                        if (obj["option1"] != "") {
+                            if (obj["answer"].trim().toLowerCase() == "option1") {
+                                answer.push("A")
+                                obj["options"].push({ id: "A", option: obj["option1"], is_correct: 1 });
+                            } else
+                                obj["options"].push({ id: "A", option: obj["option1"], is_correct: 0 });
+                        }
+                        if (obj["option2"] != "") {
+                            if (obj["answer"].trim().toLowerCase() == "option2") {
+                                answer.push("B");
+                                obj["options"].push({ id: "B", option: obj["option2"], is_correct: 1 });
+                            } else
+                                obj["options"].push({ id: "B", option: obj["option2"], is_correct: 0 });
 
+                        }
+                        if (obj["option3"] != "") {
+                            if (obj["answer"].trim().toLowerCase() == "option3") {
+                                answer.push("C")
+                                obj["options"].push({ id: "C", option: obj["option3"], is_correct: 1 });
+                            } else
+                                obj["options"].push({ id: "C", option: obj["option3"], is_correct: 0 });
+                        }
+                        if (obj["option4"] != "") {
+                            if (obj["answer"].trim().toLowerCase() == "option4") {
+                                answer.push("D");
+                                obj["options"].push({ id: "D", option: obj["option4"], is_correct: 1 });
+                            } else
+                                obj["options"].push({ id: "D", option: obj["option4"], is_correct: 0 });
 
+                        }
+                        if (!obj["image"]) {
+                            obj["image"] = "";
+                        }
+                        if (answer.length) {
+                            delete obj["option1"];
+                            delete obj["option2"];
+                            delete obj["option3"];
+                            delete obj["option4"];
+                            obj["answer"] = answer;
+                            obj["organisation_id"] = organisation_id;
+                            obj["category_id"] = category_id;
+                            if (sub_cat_id != '')
+                                obj["sub_category_id"] = sub_cat_id;
+                            validArray.push(obj);
+                        } else {
+                            obj["message"] = "No Answer found";
+                            obj["errorStatus"] = 1; //field missing
+                            obj["index"] = index;
+                            invalidArray.push(obj);
+                        }
+                    } else {
+                        obj["message"] = "Fields are missing.";
+                        obj["errorStatus"] = 1; //field missing
+                        obj["index"] = index;
+                        invalidArray.push(obj);
+                    }
+                }
+                // console.log(validArray.length);
+                // console.log(util.inspect(validArray, { depth: null }));
+                console.log("Invalid Questions  ", invalidArray.length);
+                console.log(util.inspect(invalidArray, { depth: null }));
+                await questionModel.create(validArray);
+                return Promise.resolve();
+            }
+        });
+    } catch (err) {
+        return Promise.reject(err);
+    }
+}
