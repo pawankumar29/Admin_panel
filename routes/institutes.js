@@ -29,7 +29,12 @@ router.get('/sampeCSV', controller.csvDowload);
 // Get method for delete institution
 router.get('/delete/:id', controller.delete_institute);
 
+
+router.post('/enable_test', controller.enable_test);
+
+
 //predictive search
+
 // router.post('/search_by',controller.predictive_search);
 
 module.exports = router;

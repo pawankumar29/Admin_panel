@@ -110,6 +110,7 @@ module.exports.appPromise = startTheAsyncOperation().then(() => {
     app.use('/faqs', require('./routes/faqs'));
     app.use('/emailTemplate', require('./routes/emailTemplate'));
     app.use('/otp_verification', require('./routes/otp_verification'));
+    app.use('/result', require('./routes/results'));
 
     // middleware for logout
     app.get('/logout', function (req, res) {

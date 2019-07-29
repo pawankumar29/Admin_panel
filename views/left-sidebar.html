@@ -1,4 +1,3 @@
-
 <div class="page-sidebar-wrapper">
     <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
     <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
@@ -17,23 +16,33 @@
                     <span class="title">Dashboard</span>
                 </a>
             </li>
-             <li {% if active == "manage_institutions_page" %} class="active" {% endif %}>
+            <li {% if active == "manage_institutions_page" %} class="active" {% endif %}>
                 <a href="/institutes">
                     <i class="fa fa-university"></i>
                     <span class="title">Manage Institutions</span>
                 </a>
             </li>
-             <li {% if active == "manage_quiz_page" %} class="active" {% endif %}>
+            <li {% if active == "manage_quiz_page" %} class="active" {% endif %}>
                 <a href="/quiz">
                     <i class="fa fa-university"></i>
                     <span class="title">Manage Quiz</span>
                 </a>
             </li>
-            <li {%if active == "cmspage" || active == "Faqspage" || active == "templatepage" %} class="active" {% endif %}>
+
+            <li {% if active == "result_page" %} class="active" {% endif %}>
+                <a href="/result">
+                    <i class="fa fa-clipboard"></i>
+                    <span class="title">Results</span>
+                </a>
+            </li>
+
+            <li {%if active == "cmspage" || active == "Faqspage" || active == "templatepage" %} class="active"
+                {% endif %}>
                 <a href="javascript:;">
                     <i class="glyphicon glyphicon-cog"></i>
                     <span class="title">Settings</span>
-                    <span {%if active == "cmspage" || active == "Faqspage" || active == "templatepage" %} class="arrow open" {% else %} class="arrow" {% endif %}></span>
+                    <span {%if active == "cmspage" || active == "Faqspage" || active == "templatepage" %}
+                        class="arrow open" {% else %} class="arrow" {% endif %}></span>
                 </a>
                 <ul class="sub-menu">
                     <li {% if active == "Faqspage" %} class="active" {% endif %}>
@@ -54,7 +63,7 @@
                             <span class="title">Manage E-Mail Templates</span>
                         </a>
                     </li>
-                </ul>	
+                </ul>
             </li>
         </ul>
         <!-- END SIDEBAR MENU -->
