@@ -234,19 +234,75 @@ jQuery(document).ready(function () {
             batch: {
                 required: true
             },
+            date: {
+                required: true,
+                date: true
+            }
         },
         messages: {
             batch: {
                 required: "Please select Batch."
             },
+            data: {
+                required: "Please select date",
+                date: "Please select valid date"
+            }
+        }
+    });
+    $('.enable_quiz_form').validate({
+        focusInvalid: false,
+        ignore: [],
+        invalidHandler: function (form, validator) {
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+                validator.errorList[0].element.focus();
+            }
+        },
+        rules: {
+            duration: {
+                required: true,
+                number: true
+            },
+        },
+        messages: {
+            duration: {
+                required: "Please select duration.",
+                number: "Enter digits only."
+            },
 
         }
     });
-//    $(document).on("click", ".add_batch_btn", function () {
-////        console.log($('.add_batch_form').valid());
-//        if ($('.add_batch_form').valid()) {
-//            console.log($("form").serializeArray())
-//        }
-//
-//    });
+
+    $(document).on("click", ".enable_test", function (event) {
+        event.preventDefault();
+        if ($(".enable_quiz_form").valid()) {
+            var duration = $("#test_duration").val();
+            var time = $("#test_time").val();
+            var date = $("#date_test").val();
+            var batch = $(".batch_year").children("option:selected").val()
+            var chips = [];
+            $(".chipcontainer").children(".chip").each(function () {
+                chips.push($(this).data("value"));
+            });
+            var data = {
+                duration: duration,
+                time: time,
+                date: date,
+                batch: batch,
+                institute: chips
+            };
+            console.log("data");
+            console.log(data);
+            $.ajax({
+                url: "/institutes/enable_test",
+                type: "POST",
+                data: data,
+                dataType: 'JSON',
+                success: function (result) {
+                    console.log(result);
+                    window.location = "/institutes"
+                }
+            });
+        }
+    });
 });
