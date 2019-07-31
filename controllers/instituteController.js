@@ -766,8 +766,8 @@ exports.enable_test = (req, res, next) => {
         // console.log(req.cookies);
         let datetime = req.body.date + " " + req.body.time;
         let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").utc();
-        // console.log("scheduleDate");
-        // console.log(scheduleDate);
+        console.log("scheduleDate");
+        console.log(scheduleDate);
         // // var newdate = momenttz.tz(moment.utc(scheduleDate), req.cookies.time_zone_offset);
         // let utcDate = scheduleDate.utc();
         // console.log("utcDate from schedule date");
@@ -782,7 +782,7 @@ exports.enable_test = (req, res, next) => {
                 "institute_id": mongoose.Types.ObjectId(institute_id),
                 "organisation_id": mongoose.Types.ObjectId(req.user.organisation_id),
                 "batch_year": parseInt(req.body.batch),
-                "start_time": utcDate,
+                "start_time": scheduleDate,
                 "duration": parseInt(req.body.duration),
                 "end_time": endDate,
                 "status": 1,
