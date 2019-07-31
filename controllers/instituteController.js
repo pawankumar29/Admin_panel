@@ -759,13 +759,24 @@ exports.csvDowload = (req, res, next) => {
 exports.enable_test = (req, res, next) => {
     new Promise(async (resolve, reject) => {
         // console.log("cookies");
+        console.log("timezone");
+        console.log(req.cookies.time_zone_offset);
+        console.log("body");
+        console.log(req.body);
         // console.log(req.cookies);
         let datetime = req.body.date + " " + req.body.time;
         let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm");
-        var newdate = momenttz.tz(moment.utc(scheduleDate), req.cookies.time_zone_offset);
-        let utcDate = newdate.utc();
+        console.log("scheduleDate");
+        console.log(scheduleDate);
+        // var newdate = momenttz.tz(moment.utc(scheduleDate), req.cookies.time_zone_offset);
+        let utcDate = scheduleDate.utc();
+        console.log("utcDate from schedule date");
+        console.log(utcDate);
         let endDate = utcDate.clone();
+
         endDate = endDate.add(parseInt(req.body.duration), "m");
+        console.log("enddate");
+        console.log(endDate);
         let dataToinsert = req.body.institute.map(institute_id => {
             return {
                 "institute_id": mongoose.Types.ObjectId(institute_id),
