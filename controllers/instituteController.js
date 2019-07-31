@@ -765,14 +765,14 @@ exports.enable_test = (req, res, next) => {
         console.log(req.body);
         // console.log(req.cookies);
         let datetime = req.body.date + " " + req.body.time;
-        let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm");
-        console.log("scheduleDate");
-        console.log(scheduleDate);
-        // var newdate = momenttz.tz(moment.utc(scheduleDate), req.cookies.time_zone_offset);
-        let utcDate = scheduleDate.utc();
-        console.log("utcDate from schedule date");
-        console.log(utcDate);
-        let endDate = utcDate.clone();
+        let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").utc();
+        // console.log("scheduleDate");
+        // console.log(scheduleDate);
+        // // var newdate = momenttz.tz(moment.utc(scheduleDate), req.cookies.time_zone_offset);
+        // let utcDate = scheduleDate.utc();
+        // console.log("utcDate from schedule date");
+        // console.log(utcDate);
+        let endDate = scheduleDate.clone();
 
         endDate = endDate.add(parseInt(req.body.duration), "m");
         console.log("enddate");
