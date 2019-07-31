@@ -13,52 +13,37 @@
             </tr>
         </thead>
         <tbody>
-            {% set curr = current-1  %}
-            {% set index = curr* options.perPage +1  %}
-            {% if response.length > 0 %}
-            {% for quiz in response %}
+            {% set curr = current-1 %} {% set index = curr* options.perPage +1 %} {% if response.length > 0 %} {% for quiz in response %}
             <tr>
                 <td>{{index}}</td>
 
-                {% if !quiz.institute.name  %}
+                {% if !quiz.institute.name %}
                 <td>--</td>
                 {% else %}
                 <td>{{quiz.institute.name}} </td>
-                {% endif %}
-
-                {% if !quiz.institute.po_name %}
+                {% endif %} {% if !quiz.institute.po_name %}
                 <td>--</td>
                 {% else %}
                 <td>{{quiz.institute.po_name}}</td>
-                {% endif %}
-
-                {% if !quiz.batch_year %}
+                {% endif %} {% if !quiz.batch_year %}
                 <td>--</td>
                 {% else %}
                 <td>{{quiz.batch}}</td>
-                {% endif %}
-
-                {% if quiz.institute.qualification.length > 0 %}
+                {% endif %} {% if quiz.institute.qualification.length > 0 %}
                 <td>{{quiz.institute.qualification | join(', ')}}</td>
                 {% else %}
                 <td>--</td>
-                {% endif %}
-
-                {% if !quiz.start_time %}
+                {% endif %} {% if !quiz.start_time %}
                 <td>--</td>
                 {% else %}
                 <td>{{quiz.start_time|date('Y-m-d H:i')}}</td>
                 {% endif %}
 
                 <td>
-                    <a href="/result/students?i={{quiz.institute._id | safe}}&q={{quiz._id | safe}}"
-                        class="anchor_username view-affiliate btn btn-circle btn-icon-only btn-default"
-                        title="View detail"><i style="color:green" class="fa fa-eye"></i></a>
+                    <a href="/result/students?i={{quiz.institute._id | safe}}&q={{quiz._id | safe}}" class="anchor_username view-affiliate btn btn-circle btn-icon-only btn-default" title="View detail"><i style="color:green" class="fa fa-eye"></i></a>
                 </td>
             </tr>
-            {% set index=index+1 %}
-            {% endfor %}
-            {% else %}
+            {% set index=index+1 %} {% endfor %} {% else %}
             <tr>
                 <td colspan="12">
                     <p class="text-center">No records to display</p>

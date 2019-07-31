@@ -20,11 +20,11 @@ var organisationSchema = new Schema({
         default: 1
     }, //1 for active,0 for disable
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 
 // defines email_template schemas
 var email_template = new Schema({
@@ -58,11 +58,11 @@ var email_template = new Schema({
         default: 1
     }
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 
 
 var notificationSchema = new Schema({
@@ -97,11 +97,11 @@ var notificationSchema = new Schema({
         default: 1
     }, //1 for unread,2 for read
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 
 var userSchema = new Schema({
     name: {
@@ -229,11 +229,11 @@ var userSchema = new Schema({
         default: 1
     },
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 
 var roleSchema = new Schema({
     name: {
@@ -252,11 +252,11 @@ var roleSchema = new Schema({
         default: 0
     }, //1-deleted by admin
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 
 var permissionSchema = new Schema({
     name: {
@@ -280,11 +280,11 @@ var permissionSchema = new Schema({
         default: 0
     }, //1-deleted by admin
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 
 var instituteSchema = new Schema({
     organisation_id: {
@@ -332,11 +332,11 @@ var instituteSchema = new Schema({
         default: 0
     }, //1-deleted by admin
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 
 
 var quizSchema = new Schema({
@@ -379,11 +379,11 @@ var quizSchema = new Schema({
         default: 0
     }, //1-deleted by admin
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 
 var questionCategoriesSchema = new Schema({
     organisation_id: {
@@ -417,11 +417,11 @@ var questionCategoriesSchema = new Schema({
         default: 0
     }, //1-deleted by admin
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 
 var instituteWiseCategoriesSchema = new Schema({
     organisation_id: {
@@ -463,11 +463,11 @@ var instituteWiseCategoriesSchema = new Schema({
         default: 0
     }, //1-deleted by admin
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 
 var questionSchema = new Schema({
     organisation_id: { type: Schema.Types.ObjectId, ref: "organisations" },
@@ -486,7 +486,7 @@ var quizResultScehma = new Schema({
         type: Schema.Types.ObjectId,
         ref: "organisations"
     },
-    //    "quiz_id": {type: Schema.Types.ObjectId, ref: 'quiz'},
+    "quiz_id": { type: Schema.Types.ObjectId, ref: 'quiz' },
     "institute_id": {
         type: Schema.Types.ObjectId,
         ref: 'institutes'
@@ -584,11 +584,11 @@ var quizResultScehma = new Schema({
         default: 0
     }, //1-deleted by admin
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 
 
 var settingSchema = new Schema({
@@ -643,11 +643,11 @@ var settingSchema = new Schema({
         default: 1
     }, // in hours
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 
 var contactUsSchema = new Schema({
     user_id: {
@@ -675,22 +675,22 @@ var contactUsSchema = new Schema({
         default: 0
     },
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 contactUsSchema.plugin(mongooseAggregatePaginate);
 var password_reset = new Schema({
     email: String,
     reset_token: String,
     expiry: Date // expiry is 30 min
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 
 var cms_page = new Schema({
     name: {
@@ -712,11 +712,11 @@ var cms_page = new Schema({
         default: 1
     }
 }, {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
 
 var options = {
     useNewUrlParser: true
@@ -744,7 +744,7 @@ mongoose.model('cms_page', cms_page);
 
 
 // mongoose runs only on 27017 port
-mongoose.connect('mongodb://127.0.0.1:27017/' + env.database.name, options, function (err, db) {
+mongoose.connect('mongodb://127.0.0.1:27017/' + env.database.name, options, function(err, db) {
     if (err) {
         console.log('Unable to connect to the mongoDB server. Error:', err);
     } else {

@@ -14,7 +14,7 @@ const quiz_results = require("../models/quiz_result")
 const institute_categories = require("../models/institute_categories")
 const question_categories = require("../models/question_categories")
 
-exports.get_quiz = async (req, res, next) => {
+exports.get_quiz = async(req, res, next) => {
     try {
         let condition = {
             organisation_id: mongoose.Types.ObjectId(req.user.organisation_id),
@@ -30,23 +30,23 @@ exports.get_quiz = async (req, res, next) => {
                     from: 'institutes',
                     let: { ref_id: '$institute_id' },
                     pipeline: [{
-                        $match: {
-                            $expr: {
-                                $and: [
-                                    { $eq: ['$_id', '$$ref_id'] },
-                                    { $eq: ['$organisation_id', req.user.organisation_id] },
-                                    { $eq: ['$is_deleted', 0] },
-                                ]
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: ['$_id', '$$ref_id'] },
+                                        { $eq: ['$organisation_id', req.user.organisation_id] },
+                                        { $eq: ['$is_deleted', 0] },
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            $project: {
+                                name: 1,
+                                qualification: 1,
+                                po_name: 1
                             }
                         }
-                    },
-                    {
-                        $project: {
-                            name: 1,
-                            qualification: 1,
-                            po_name: 1
-                        }
-                    }
                     ],
                     as: 'institute'
                 }
@@ -54,7 +54,6 @@ exports.get_quiz = async (req, res, next) => {
             { $unwind: "$institute" }
         ];
         let result = await quizzes.aggregate(aggregation_query);
-        console.log(result);
         res.render('result/list', {
             response: result,
             // count: count,
@@ -75,7 +74,7 @@ exports.get_quiz = async (req, res, next) => {
         res.redirect('/dashboard');
     }
 }
-exports.get_quiz_result = async (req, res, next) => {
+exports.get_quiz_result = async(req, res, next) => {
     new Promise((resolve, reject) => {
         // make global variable options for paginate method parameter
         let options = {
@@ -88,75 +87,61 @@ exports.get_quiz_result = async (req, res, next) => {
         }
         var condition = {
             organisation_id: req.user.organisation_id,
-            institute_id: mongoose.Types.ObjectId(req.params.inst_id),
+            institute_id: mongoose.Types.ObjectId(req.query.i),
+            quiz_id: mongoose.Types.ObjectId(req.query.q),
             is_deleted: 0
         };
-        if (req.query.status) {
-            condition.status == parseInt(req.query.status);
-        } else {
-            condition.status = 2;
-        }
         var user_lookup = {
             from: 'users',
             let: {
                 ref_id: '$user_id'
             },
-            pipeline: [{ $match: { $expr: { $eq: ['$_id', '$$ref_id'] } } }],
+            pipeline: [{ $match: { $expr: { $eq: ['$_id', '$$ref_id'] } } }, { $project: { _id: 1, name: 1, roll_no: 1, qualification: 1 } }],
             as: 'user_detail'
         };
-        if (req.query.name) {
-            user_lookup = {
-                from: 'users',
-                let: {
-                    ref_id: '$user_id'
-                },
-                pipeline: [{ $match: { $expr: { $eq: ['$name', new RegExp('.*' + req.query.name + '.*', 'i')] } } }],
-                as: 'user_detail'
-            }
-        }
+
         let p1 = quiz_results.count(condition);
         /** ***skip check*****/
         let skipPages = options.page - 1
         let aggregation_query = [{
-            $match: condition
-        },
-        {
-            $sort: {
-                created_at: -1
-            }
-        },
-        {
-            $skip: skipPages * global.config.pagination_limit
-        },
-        {
-            $limit: global.config.pagination_limit
-        },
-        {
-            $lookup: user_lookup
-        },
-        {
-            $unwind: {
-                path: '$user_detail',
-                preserveNullAndEmptyArrays: true
-            }
-        },
+                $match: condition
+            },
+            {
+                $sort: {
+                    created_at: -1
+                }
+            },
+            // {
+            //     $skip: skipPages * global.config.pagination_limit
+            // },
+            // {
+            //     $limit: global.config.pagination_limit
+            // },
+            {
+                $lookup: user_lookup
+            },
+            {
+                $unwind: {
+                    path: '$user_detail',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
         ]
-        console.log(aggregation_query);
         let p2 = quiz_results.aggregate(aggregation_query)
         Promise.all([p1, p2])
             .then(([count, result]) => {
                 let last = parseInt(
                     count % global.config.pagination_limit == 0 ?
-                        count / global.config.pagination_limit :
-                        count / global.config.pagination_limit + 1
+                    count / global.config.pagination_limit :
+                    count / global.config.pagination_limit + 1
                 )
                 let pages = []
                 for (i = 1; i <= last; i++) {
                     pages.push(i)
                 }
-                console.log(result);
+                // console.log(util.inspect(result, { depth: null }));
                 if (req.query.page) {
-                    res.render('result/student_table', {
+                    res.render('result/student_list', {
                         response: result,
                         count: count,
                         prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
@@ -167,8 +152,8 @@ exports.get_quiz_result = async (req, res, next) => {
                         options: options,
                         current: req.query.page || 1,
                         delta: global.config.delta,
-                        title: 'Manage Students',
-                        active: 'manage_institutions_page',
+                        title: 'Results',
+                        active: 'result_page',
                         institute_id: req.params.inst_id
                     })
                 } else {
@@ -183,8 +168,8 @@ exports.get_quiz_result = async (req, res, next) => {
                         options: options,
                         current: req.query.page || 1,
                         delta: global.config.delta,
-                        title: 'Manage Students',
-                        active: 'manage_institutions_page',
+                        title: 'Results',
+                        active: 'result_page',
                         institute_id: req.params.inst_id
 
                     })
