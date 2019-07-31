@@ -168,7 +168,9 @@
                                                 <!-- <th width="5%">Action</th> -->
                                             </tr>
                                         </thead>
-                                        <tbody> {% set curr = current-1 %} {% set index = curr* options.perPage +1 %} {% if response.length > 0 %} {% for student in response %}
+                                        <tbody> {% set curr = current-1 %}
+                                             {% set index = curr* options.perPage +1 %}
+                                              {% for student in response %}
                                             <tr>
                                                 <td></td>
                                                 {% if !student.user_detail.name %}
@@ -230,13 +232,7 @@
                                                     </div>
                                                 </td>-->
                                             </tr>
-                                            {% set index=index+1 %} {% endfor %} {% else %}
-                                            <tr>
-                                                <td colspan="12">
-                                                    <p class="text-center">No records to display</p>
-                                                </td>
-                                            </tr>
-                                            {% endif %}
+                                            {% set index=index+1 %} {% endfor %} 
                                         </tbody>
                                     </table>
                                 </div>

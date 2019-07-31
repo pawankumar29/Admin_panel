@@ -762,8 +762,8 @@ exports.enable_test = (req, res, next) => {
         // console.log(req.cookies);
         let datetime = req.body.date + " " + req.body.time;
         let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm");
-        var newdate = momenttz.tz(scheduleDate, req.cookies.time_zone_offset);
-        let utcDate = newdate.utc();
+        // var newdate = momenttz.tz(scheduleDate, req.cookies.time_zone_offset);
+        let utcDate = scheduleDate.utc();
         let endDate = utcDate.clone();
         endDate = endDate.add(parseInt(req.body.duration), "m");
         let dataToinsert = req.body.institute.map(institute_id => {
