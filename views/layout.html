@@ -31,7 +31,8 @@
     <link href="{{getVersionedPath('/stylesheetLight/custom.css')}}" rel="stylesheet" type="text/css" /> {% else %}
     <link href="{{getVersionedPath('/assets/layout/stylesheet/layout.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{getVersionedPath('/assets/layout/stylesheet/darkblue.css')}}" rel="stylesheet" type="text/css" id="style_color" /> {% endif %}
-    <!-- <link href="{{getVersionedPath('/assets/datatables/plugins/bootstrap/dataTables.bootstrap.css')}}" rel="stylesheet" /> {% if user.theme == 1 %} -->
+    <!-- <link href="{{getVersionedPath('/assets/datatables/plugins/bootstrap/dataTables.bootstrap.css')}}" rel="stylesheet" />  -->
+        {% if user.theme == 1 %}
 
     <style>
         .green {
