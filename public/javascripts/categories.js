@@ -58,11 +58,11 @@ jQuery(document).ready(function () {
                         message: "unauthorised"
                     };
                 } else {
-                    text = '<form class="category_form" action=""><div class="form-body"><div class="form-group"><div class="row"><div class="col-md-3"><label class="control-label"><b>Select Category Type:</b></label></div><div class="col-md-8"><select class="bs-select form-control category" data-placeholder="Select category type" name="category"><option value="" disabled selected hidden>Select category type:</option>'
+                    text = '<form class="category_form" action=""><div class="form-body"><div class="form-group"><div class="row"><div class="col-md-3"><label class="control-label"><b>Select Category Type:</b></label></div><div class="col-md-6"><select class="bs-select form-control category" data-placeholder="Select category type" name="category"><option value="" disabled selected hidden>Select category type:</option>'
                     for (let i = 0; i < result.data.length; i++) {
                         text = text + '<option value="' + result.data[i]["_id"] + '">' + result.data[i]["name"] + '</option>';
                     }
-                    text = text + '</select></div></div></div><div class="form-group"></div></div></form>';
+                    text = text + '</select></div><button type="button" class="btn btn-labeled btn-danger delete-category"><span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span></button></div></div><div class="form-group"></div></div></form>';
                     button.parents(".portlet-body").find(".form-container").append(text);
                 }
             },
@@ -126,6 +126,11 @@ jQuery(document).ready(function () {
         let sub_category_id = $(this).find('option:selected').val();
         console.log($(this).parent().next().find("input").attr("name"));
 
+
+    });
+    $(document).on("click", ".delete-category", function () {
+        console.log($(this).parents("form"));
+        $(this).parents("form").remove();
 
     });
     $(document).on("click", "#save-category-btn", function (e) {

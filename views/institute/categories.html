@@ -51,31 +51,37 @@
                     <input type="hidden" id="institute_id" value="{{id}}" name="institute_id">
                     <!-- form start for one category -->
                     <div class="form-container">
+
+                        {% for data in categories %}
                         <form class="category_form" action="">
                             <div class="form-body">
-                                {% for data in categories %}
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-3">
                                             <label class="control-label"><b>Select Category Type:</b></label>
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-md-6">
                                             <!--<input class="form-control placeholder-no-fix" placeholder="Select Category Type" type="text" name="category_name[1]">-->
-                                            <select class="bs-select form-control category" data-placeholder="Select category type" name="category">
+                                            <select class="bs-select form-control category"
+                                                data-placeholder="Select category type" name="category">
                                                 <!--<option value="" disabled selected hidden>Select category type:</option>-->
                                                 {% for category in raw_categories %}
                                                 {% if data.category_id == category.id %}
                                                 {% set sub_category = category.sub_category %}
-                                                <option value="{{category._id |safe}}" selected>{{category.name}}</option>
+                                                <option value="{{category._id |safe}}" selected>{{category.name}}
+                                                </option>
                                                 {% else %}
                                                 <option value="{{category._id | safe}}">{{category.name}}</option>
                                                 {% endif %}
                                                 {% endfor %}
                                             </select>
                                         </div>
+                                        <button type="button" class="btn btn-labeled btn-danger delete-category">
+                                            <span class="btn-label">
+                                                <i class="glyphicon glyphicon-trash"></i></span>
+                                        </button>
                                     </div>
                                 </div>
-
                                 {% if data.sub_category.length > 0 %}
                                 <!-- sub category section start -->
                                 <div class="form-group">
@@ -91,25 +97,34 @@
                                                 <div class="row sub-category-row">
                                                     <div class="col-md-4">
                                                         <!--<input class="form-control placeholder-no-fix" type="text" placeholder="Sub Category Name" name="sub_category_name[1][1]">-->
-                                                        <select class="bs-select form-control sub_category" data-placeholder="Select category type" name="sub_category[{{data.category_id | safe}}]">
+                                                        <select class="bs-select form-control sub_category"
+                                                            data-placeholder="Select category type"
+                                                            name="sub_category[{{data.category_id | safe}}]">
                                                             <!--<option value="" disabled selected hidden>Select sub category:</option>-->
                                                             {% for subCategory in sub_category %}
                                                             {% if sub_category_data.sub_category_id == subCategory.id %}
                                                             {% set sub_category_number = sub_category_data.number_of_question
                                                             %}
-                                                            <option value="{{subCategory._id | safe}}" selected>{{subCategory.name}}</option>
+                                                            <option value="{{subCategory._id | safe}}" selected>
+                                                                {{subCategory.name}}</option>
                                                             {% else %}
-                                                            <option value="{{subCategory._id | safe}}">{{subCategory.name}}</option>
+                                                            <option value="{{subCategory._id | safe}}">
+                                                                {{subCategory.name}}</option>
                                                             {% endif %}
                                                             {% endfor %}
                                                         </select>
                                                     </div>
                                                     <div class="col-md-7">
                                                         <div class="col-md-6">
-                                                            <label class="control-label"><b>Number of Questions:</b></label>
+                                                            <label class="control-label"><b>Number of
+                                                                    Questions:</b></label>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <input class="form-control placeholder-no-fix" value="{{sub_category_number}}" type="text" placeholder="Number" name="sub_category_number[{{data.category_id | safe}}][{{sub_category_data.sub_category_id | safe}}]" maxlength="3">
+                                                            <input class="form-control placeholder-no-fix"
+                                                                value="{{sub_category_number}}" type="text"
+                                                                placeholder="Number"
+                                                                name="sub_category_number[{{data.category_id | safe}}][{{sub_category_data.sub_category_id | safe}}]"
+                                                                maxlength="3">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -120,7 +135,8 @@
                                                 <div class="col-md-7">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <button class="btn btn-success add_more_sub_category"><i class="glyphicon glyphicon-plus"></i>
+                                                    <button class="btn btn-success add_more_sub_category"><i
+                                                            class="glyphicon glyphicon-plus"></i>
                                                         Add More</button>
                                                 </div>
                                             </div>
@@ -140,7 +156,9 @@
                                                 <label class="control-label"><b>Number of Questions:</b></label>
                                             </div>
                                             <div class="col-md-4">
-                                                <input class="form-control placeholder-no-fix" value="{{data.number_of_question}}" type="text" placeholder="Number" name="category_number[{{data.category_id | safe}}]" maxlength="3">
+                                                <input class="form-control placeholder-no-fix"
+                                                    value="{{data.number_of_question}}" type="text" placeholder="Number"
+                                                    name="category_number[{{data.category_id | safe}}]" maxlength="3">
                                             </div>
                                         </div>
 
@@ -149,10 +167,10 @@
                                 <!--  sub category section end-->
                                 {% endif %}
 
-
-                                {% endfor %}
                             </div>
                         </form>
+                        {% endfor %}
+
                     </div>
                     <div class="text-center">
                         <button class="btn blue-hoki add_category"><i class="glyphicon glyphicon-plus"></i> Add More

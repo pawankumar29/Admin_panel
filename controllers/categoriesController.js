@@ -87,7 +87,8 @@ exports.update_category_data = async (req, res, next) => {
         let instituteId = mongoose.Types.ObjectId(req.body.instituteId);
         let organisationId = mongoose.Types.ObjectId(req.user.organisation_id);
         let categories = body.category_number
-        let sub_categories = body.sub_category_number;
+        let sub_categories_number = body.sub_category_number;
+        let sub_category = body.sub_category;
 
         let arrayFinal = [];
 
@@ -100,17 +101,34 @@ exports.update_category_data = async (req, res, next) => {
                 institute_id: instituteId
             });
         }
-        for (let key in sub_categories) {
+        for (let key in sub_categories_number) {
             let number = 0;
 
             let subcategoryData = [];
-            for (let subkey in sub_categories[key]) {
-                number = number + parseInt(sub_categories[key][subkey]);
+            if (Array.isArray(sub_categories_number[key])) {
+                let numberArray = sub_categories_number[key];
+                let idArray = sub_category[key];
+                idArray.forEach((obj, index) => {
+                    subcategoryData.push({
+                        "number_of_question": parseInt(numberArray[index]),
+                        "sub_category_id": mongoose.Types.ObjectId(idArray[index]),
+                    });
+                })
+                // for (let subkey in sub_categories_number[key]) {
+                //     let numberarray = 
+                //     number = number + parseInt(sub_categories_number[key][subkey]);
+                //     subcategoryData.push({
+                //         "number_of_question": parseInt(sub_categories_number[key][subkey]),
+                //         "sub_category_id": mongoose.Types.ObjectId(subkey),
+                //     });
+                // }
+            } else {
                 subcategoryData.push({
-                    "number_of_question": parseInt(sub_categories[key][subkey]),
-                    "sub_category_id": mongoose.Types.ObjectId(subkey),
+                    "number_of_question": parseInt(sub_categories_number[key]),
+                    "sub_category_id": mongoose.Types.ObjectId(sub_category[key]),
                 });
             }
+
             arrayFinal.push({
                 category_id: mongoose.Types.ObjectId(key),
                 number_of_question: number,
@@ -141,17 +159,17 @@ exports.get_category_list = (req, res, next) => {
             is_deleted: 0
         }, { name: 1 }).then(async (data) => {
             let finalArray = [];
-            let selectedCategories = await instituteCategoriesModel.find({ institute_id: instituteId, is_deleted: 0, status: 1 });
-            if (selectedCategories.length > 0) {
-                selectedCategories = selectedCategories.map(obj => obj.category_id.toString());
-                data.forEach(obj => {
-                    if (!selectedCategories.includes(obj._id.toString())) {
-                        finalArray.push(obj);
-                    }
-                })
-            } else {
-                selectedCategories = [];
-            }
+            // let selectedCategories = await instituteCategoriesModel.find({ institute_id: instituteId, is_deleted: 0, status: 1 });
+            // if (selectedCategories.length > 0) {
+            // selectedCategories = selectedCategories.map(obj => obj.category_id.toString());
+            data.forEach(obj => {
+                // if (!selectedCategories.includes(obj._id.toString())) {
+                finalArray.push(obj);
+                // }
+            })
+            // } else {
+            //     selectedCategories = [];
+            // }
             res.status(200).send({
                 status: 1,
                 data: finalArray
