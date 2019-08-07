@@ -16,7 +16,7 @@ jQuery(document).ready(function () {
             },
             dataType: 'JSON',
             success: function (result) {
-//                console.log(result);
+                //                console.log(result);
                 if (result == 'unauthorised') {
                     return {
                         status: 0,
@@ -43,15 +43,15 @@ jQuery(document).ready(function () {
         });
     });
     $(document).on("click", ".add_category", function (event) {
-        console.log("click to add sub category");
+        console.log("click to add category");
         let button = $(this);
         let text = "";
+        let institute_id = $("#institute_id").val();
         $.ajax({
-            url: "/categories/list",
+            url: "/categories/list?i=" + institute_id,
             type: "GET",
             dataType: 'JSON',
             success: function (result) {
-                console.log(result);
                 if (result == 'unauthorised') {
                     return {
                         status: 0,
@@ -75,7 +75,7 @@ jQuery(document).ready(function () {
             }
         });
     });
-    
+
     $(document).on("change", ".category", function (e) {
         let event = $(this);
         let category_id = $(this).find('option:selected').val();
@@ -101,12 +101,12 @@ jQuery(document).ready(function () {
                             text = text + '<option value="' + result.data.sub_category[i]["_id"] + '">' + result.data.sub_category[i]["name"] + '</option>';
                         }
                         text = text + '</select></div><div class="col-md-7"><div class="col-md-6"><label class="control-label"><b>Number of Questions:</b></label></div><div class="col-md-6"><input class="form-control placeholder-no-fix" value="0" type="text" placeholder="Number" name="sub_category_number[' + category_id.toString() + ']" maxlength="3"></div></div></div></div><div class="row"><div class="col-md-7"></div><div class="col-md-4"><button class="btn btn-success add_more_sub_category"><i class="glyphicon glyphicon-plus"></i> Add More</button></div></div><div></div>'
-                        
+
                     } else {
                         text = '<div class="row"><div class="col-md-3"></div><div class="col-md-8 category-number-label"><div class="col-md-4"><label class="control-label"><b>Number of Questions:</b></label></div><div class="col-md-4"><input class="form-control placeholder-no-fix" value="0" type="text" placeholder="Number" name="category_number[' + category_id.toString() + ']" maxlength="3"></div></div></div>'
                     }
                     event.parents(".form-group").next().html(text);
-                    
+
                 }
             },
             error: function (xhr) {
@@ -117,7 +117,7 @@ jQuery(document).ready(function () {
             }
         });
     })
-    
+
     $(document).on("change", ".sub_category", function (e) {
         console.log("sub category change");
         let category_id = $(this).parents(".form-group").prev().find("select").children("option:selected").val();
@@ -125,25 +125,24 @@ jQuery(document).ready(function () {
         console.log(category_id);
         let sub_category_id = $(this).find('option:selected').val();
         console.log($(this).parent().next().find("input").attr("name"));
-        
-        
+
+
     });
     $(document).on("click", "#save-category-btn", function (e) {
-        console.log("save category");
-        console.log($("form").serializeArray());
+        var data = $("form").serializeArray();
+        data = JSON.parse(JSON.stringify(data));
+        data.push({ name: "instituteId", value: $("#institute_id").val() });
         $.ajax({
             url: "/categories",
             type: "PUT",
-            data: $("form").serializeArray(),
+            data: data,
             dataType: 'JSON',
             success: function (result) {
                 console.log(result);
+                window.location.reload();
             },
             error: function (xhr) {
-                return {
-                    status: 0,
-                    message: xhr.responseText
-                };
+                window.location = "/institutes";
             }
         });
     })
