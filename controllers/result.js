@@ -104,29 +104,30 @@ exports.get_quiz_result = async(req, res, next) => {
         /** ***skip check*****/
         let skipPages = options.page - 1
         let aggregation_query = [{
-                $match: condition
-            },
-            {
-                $sort: {
-                    created_at: -1
-                }
-            },
-            // {
-            //     $skip: skipPages * global.config.pagination_limit
-            // },
-            // {
-            //     $limit: global.config.pagination_limit
-            // },
-            {
-                $lookup: user_lookup
-            },
-            {
-                $unwind: {
-                    path: '$user_detail',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-        ]
+                    $match: condition
+                },
+                {
+                    $sort: {
+                        created_at: -1
+                    }
+                },
+                // {
+                //     $skip: skipPages * global.config.pagination_limit
+                // },
+                // {
+                //     $limit: global.config.pagination_limit
+                // },
+                {
+                    $lookup: user_lookup
+                },
+                {
+                    $unwind: {
+                        path: '$user_detail',
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+            ]
+            // console.log(util.inspect(aggregation_query, { depth: null }));
         let p2 = quiz_results.aggregate(aggregation_query)
         Promise.all([p1, p2])
             .then(([count, result]) => {

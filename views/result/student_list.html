@@ -168,9 +168,7 @@
                                                 <!-- <th width="5%">Action</th> -->
                                             </tr>
                                         </thead>
-                                        <tbody> {% set curr = current-1 %}
-                                             {% set index = curr* options.perPage +1 %}
-                                              {% for student in response %}
+                                        <tbody> {% set curr = current-1 %} {% set index = curr* options.perPage +1 %} {% for student in response %}
                                             <tr>
                                                 <td></td>
                                                 {% if !student.user_detail.name %}
@@ -185,54 +183,20 @@
                                                 <td>--</td>
                                                 {% else %}
                                                 <td>{{student.user_detail.qualification}} </td>
-                                                {% endif %} {% if student.category_marks.length > 0 %} {% for category in student.category_marks %} {% if category.category_id == '5c2ee79f73f5913e447b5150' %}
-                                                <td>{{category.marks}}</td>
+                                                {% endif %} {% if student.category_marks.length > 0 %}
+                                                <td>
+                                                    {% for category in student.category_marks %} {% if category.category_id == '5c2ee79f73f5913e447b5150' %} {{category.marks}} {% endif %} {% endfor %}
+                                                </td>
+                                                <td>
+                                                    {% for category in student.category_marks %} {% if category.category_id == '5c2ee9f201b40af8a3dcc94a' %} {{category.marks}} {% endif %} {% endfor %}
+                                                </td>
                                                 {% else %}
-                                                <td>--</td>
-                                                {% endif %} {% if category.category_id == '5c2ee9f201b40af8a3dcc94a' %}
-                                                <td>{{category.marks}}</td>
-                                                {% else %}
-                                                <td>--</td>
-                                                {% endif %} {% endfor %} {% else %}
                                                 <td>--</td>
                                                 <td>--</td>
                                                 {% endif %}
-
-
                                                 <td>{{student.total_marks}}</td>
-                                                <!--<td>
-                                                    <div class=" dropdown dropleft button-group">
-                                                        <button type="button" class="btn btn-default btn-circle btn-icon-only  action_dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-chevron-down"></i></button>
-                                                        <ul class="dropdown-menu dropdown-left-manual" role="menu" aria-labelledby="dropdownMenuButton">
-                                                             <li>
-                                                                <a href="/students/edit/{{student.user_id | safe}}">
-                                                                    <i class="glyphicon glyphicon-edit"></i>
-                                                                    <span>Edit Details</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="/students/view_test/{{student.institute_id | safe}}/{{student.user_id | safe}}">
-                                                                    <i class="glyphicon glyphicon-th-large"></i>
-                                                                    <span>View Test</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="/students/send_offer_letter/{{student.institute_id | safe}}/{{student.user_id | safe}}">
-                                                                    <i class="fa fa-info"></i>
-                                                                    <span>Send Offer Letter</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="show_batch_modal" href="/students/viewCV/{{student.user_id | safe}}">
-                                                                    <i class="glyphicon glyphicon-plus"></i>
-                                                                    <span>View CV</span>
-                                                                </a>
-                                                            </li> 
-                                                        </ul>
-                                                    </div>
-                                                </td>-->
                                             </tr>
-                                            {% set index=index+1 %} {% endfor %} 
+                                            {% set index=index+1 %} {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
