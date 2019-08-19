@@ -35,10 +35,10 @@ function validateEmail(email) {
 }
 
 var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+    destination: function(req, file, cb) {
         cb(null, './public/csv_files')
     },
-    filename: function (req, file, cb) {
+    filename: function(req, file, cb) {
         cb(null, Date.now() + '_' + file.originalname)
     }
 })
@@ -60,7 +60,7 @@ function dataUpload(organisation_id, institute_id, batch, path) {
     var stream = fs.createReadStream(completePath)
     csv.fromStream(stream, {
         headers: true
-    }).on('data', function (data) {
+    }).on('data', function(data) {
         if (emailArray.includes(data.email)) {
             data["message"] = "Email repeated in csv";
             data["errorStatus"] = 6;
@@ -68,7 +68,7 @@ function dataUpload(organisation_id, institute_id, batch, path) {
         }
         emailArray.push(data.email)
         csvDataArray.push(data)
-    }).on('end', function (count) {
+    }).on('end', function(count) {
         if (count > 0) {
             users.find({
                 organisation_id: organisation_id,
@@ -132,6 +132,7 @@ function dataUpload(organisation_id, institute_id, batch, path) {
                                         "is_walkin_user": 0,
                                         "role": roles.app_user,
                                         "batch": batch,
+                                        "status": 1,
                                         "name": obj["name"],
                                         "roll_no": obj["roll_no"],
                                         "phone_no": obj["phone_no"],
@@ -210,143 +211,143 @@ exports.get_institutions = (req, res, next) => {
         let startOfYear = new Date(moment.utc().startOf('year'))
         let endOfYear = new Date(moment.utc().endOf('year'))
         let aggregation_query = [{
-            $match: {
-                organisation_id: req.user.organisation_id,
-                is_walkin: 0,
-                is_deleted: 0
-            }
-        },
-        {
-            $sort: {
-                name: 1
-            }
-        },
-        {
-            $skip: skipPages * global.config.pagination_limit
-        },
-        {
-            $limit: global.config.pagination_limit
-        },
-        {
-            $lookup: {
-                from: 'quizzes',
-                let: {
-                    ref_id: '$_id'
-                },
-                pipeline: [{
-                    $match: {
-                        $expr: {
-                            $and: [{
-                                $eq: ['$institute_id', '$$ref_id']
-                            },
-                            {
-                                $eq: ['$organisation_id', req.user.organisation_id]
-                            },
-                            {
-                                $eq: ['$is_deleted', 0]
-                            },
-                            {
-                                $gte: ['$created_at', startOfYear]
-                            },
-                            {
-                                $lte: ['$created_at', endOfYear]
+                $match: {
+                    organisation_id: req.user.organisation_id,
+                    is_walkin: 0,
+                    is_deleted: 0
+                }
+            },
+            {
+                $sort: {
+                    name: 1
+                }
+            },
+            {
+                $skip: skipPages * global.config.pagination_limit
+            },
+            {
+                $limit: global.config.pagination_limit
+            },
+            {
+                $lookup: {
+                    from: 'quizzes',
+                    let: {
+                        ref_id: '$_id'
+                    },
+                    pipeline: [{
+                            $match: {
+                                $expr: {
+                                    $and: [{
+                                            $eq: ['$institute_id', '$$ref_id']
+                                        },
+                                        {
+                                            $eq: ['$organisation_id', req.user.organisation_id]
+                                        },
+                                        {
+                                            $eq: ['$is_deleted', 0]
+                                        },
+                                        {
+                                            $gte: ['$created_at', startOfYear]
+                                        },
+                                        {
+                                            $lte: ['$created_at', endOfYear]
+                                        }
+                                    ]
+                                }
                             }
-                            ]
-                        }
-                    }
-                },
-                {
-                    $sort: {
-                        cretaed_at: -1
-                    }
-                },
-                {
-                    $limit: 1
-                },
-                {
-                    $project: {
-                        status: 1
-                    }
-                }
-                ],
-                as: 'quiz'
-            }
-        },
-        {
-            $lookup: {
-                from: 'quiz_results',
-                let: {
-                    ref_id: '$_id'
-                },
-                pipeline: [{
-                    $match: {
-                        $expr: {
-                            $and: [{
-                                $eq: ['$institute_id', '$$ref_id']
-                            },
-                            {
-                                $eq: ['$organisation_id', req.user.organisation_id]
-                            },
-                            {
-                                $eq: ['$is_deleted', 0]
-                            },
-                            {
-                                $eq: ['$status', 2]
-                            },
-                            {
-                                $eq: ['$placed_status', 1]
-                            },
-                            {
-                                $gte: ['$created_at', startOfYear]
-                            },
-                            {
-                                $lte: ['$created_at', endOfYear]
+                        },
+                        {
+                            $sort: {
+                                cretaed_at: -1
                             }
-                            ]
+                        },
+                        {
+                            $limit: 1
+                        },
+                        {
+                            $project: {
+                                status: 1
+                            }
                         }
-                    }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        candidate_selected: {
-                            $sum: 1
+                    ],
+                    as: 'quiz'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'quiz_results',
+                    let: {
+                        ref_id: '$_id'
+                    },
+                    pipeline: [{
+                            $match: {
+                                $expr: {
+                                    $and: [{
+                                            $eq: ['$institute_id', '$$ref_id']
+                                        },
+                                        {
+                                            $eq: ['$organisation_id', req.user.organisation_id]
+                                        },
+                                        {
+                                            $eq: ['$is_deleted', 0]
+                                        },
+                                        {
+                                            $eq: ['$status', 2]
+                                        },
+                                        {
+                                            $eq: ['$placed_status', 1]
+                                        },
+                                        {
+                                            $gte: ['$created_at', startOfYear]
+                                        },
+                                        {
+                                            $lte: ['$created_at', endOfYear]
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: null,
+                                candidate_selected: {
+                                    $sum: 1
+                                }
+                            }
+                        },
+                        {
+                            $project: {
+                                candidate_selected: 1
+                            }
                         }
-                    }
-                },
-                {
-                    $project: {
-                        candidate_selected: 1
+                    ],
+                    as: 'quiz_result'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$quiz',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $unwind: {
+                    path: '$quiz_result',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    name: 1,
+                    po_name: 1,
+                    qualification: 1,
+                    no_of_students: 1,
+                    candidate_selected: '$quiz_result.candidate_selected',
+                    test_status: {
+                        $cond: ['$quiz.status', '$quiz.status', 0]
                     }
                 }
-                ],
-                as: 'quiz_result'
-            }
-        },
-        {
-            $unwind: {
-                path: '$quiz',
-                preserveNullAndEmptyArrays: true
-            }
-        },
-        {
-            $unwind: {
-                path: '$quiz_result',
-                preserveNullAndEmptyArrays: true
-            }
-        },
-        {
-            $project: {
-                name: 1,
-                po_name: 1,
-                qualification: 1,
-                no_of_students: 1,
-                candidate_selected: '$quiz_result.candidate_selected',
-                test_status: {
-                    $cond: ['$quiz.status', '$quiz.status', 0]
-                }
-            }
-        },
+            },
         ]
         let p1 = institutes.count({
             organisation_id: req.user.organisation_id,
@@ -358,8 +359,8 @@ exports.get_institutions = (req, res, next) => {
             .then(([count, result]) => {
                 let last = parseInt(
                     count % global.config.pagination_limit == 0 ?
-                        count / global.config.pagination_limit :
-                        count / global.config.pagination_limit + 1
+                    count / global.config.pagination_limit :
+                    count / global.config.pagination_limit + 1
                 )
                 let pages = []
                 for (i = 1; i <= last; i++) {
@@ -402,7 +403,7 @@ exports.get_institutions = (req, res, next) => {
             })
     }).catch(err => {
         console.log(err)
-        //        res.redirect('/institutes');
+            //        res.redirect('/institutes');
     })
 }
 
@@ -423,16 +424,16 @@ exports.add_institutions = (req, res, next) => {
             .catch(error => {
                 reject(error)
             })
-        // render view add institution page
+            // render view add institution page
     } catch (err) {
         res.render('error', {
             error: err
         })
     }
 }
-var addNewInstituteValidator = function (req, res, next) {
+var addNewInstituteValidator = function(req, res, next) {
     req.checkBody('name', 'name is required').notEmpty()
-    //    req.checkBody('batch', 'batch is required').notEmpty()
+        //    req.checkBody('batch', 'batch is required').notEmpty()
     req.checkBody('po_name', 'P.O name is required').notEmpty()
     req.checkBody('po_email', 'P.O email is required').notEmpty()
     req.checkBody('resume', 'Resume is required').notEmpty()
@@ -441,7 +442,7 @@ var addNewInstituteValidator = function (req, res, next) {
 
 exports.add_new_institutions = (req, res, next) => {
     try {
-        upload(req, res, function (err) {
+        upload(req, res, function(err) {
             if (!err) {
                 new Promise((resolve, reject) => {
                     var errors = addNewInstituteValidator(req, res, next)
@@ -579,7 +580,7 @@ exports.get_edit_institution = (req, res, next) => {
                 .catch(error => {
                     reject(error)
                 })
-            // render view add institution page
+                // render view add institution page
         }).catch(error => {
             req.flash('error', error.message)
             res.redirect('/institutes')
@@ -590,7 +591,7 @@ exports.get_edit_institution = (req, res, next) => {
         })
     }
 }
-var editInstituteValidator = function (req, res, next) {
+var editInstituteValidator = function(req, res, next) {
     req.checkBody('name', 'name is required').notEmpty()
     req.checkBody('po_name', 'P.O name is required').notEmpty()
     req.checkBody('po_email', 'P.O email is required').notEmpty()
@@ -600,7 +601,7 @@ var editInstituteValidator = function (req, res, next) {
 }
 exports.add_batch = (req, res, next) => {
     try {
-        upload(req, res, function (err) {
+        upload(req, res, function(err) {
             if (!err) {
                 if (req.file) {
                     let response = dataUpload(req.user.organisation_id.toString(), req.body.institute_id, req.body.batch.toString(), req.file.path);
@@ -683,11 +684,11 @@ exports.post_edit_institution = (req, res, next) => {
                 }
                 institutes
                     .update({
-                        organisation_id: req.user.organisation_id,
-                        _id: mongoose.Types.ObjectId(req.params.id),
-                        status: 1,
-                        is_deleted: 0
-                    },
+                            organisation_id: req.user.organisation_id,
+                            _id: mongoose.Types.ObjectId(req.params.id),
+                            status: 1,
+                            is_deleted: 0
+                        },
                         updateData
                     )
                     .then(ressult => {
@@ -757,28 +758,28 @@ exports.csvDowload = (req, res, next) => {
 }
 
 exports.enable_test = (req, res, next) => {
-    new Promise(async (resolve, reject) => {
+    new Promise(async(resolve, reject) => {
         // console.log("cookies");
-        console.log("timezone");
-        console.log(req.cookies.time_zone_offset);
-        console.log("body");
-        console.log(req.body);
+        // console.log("timezone");
+        // console.log(req.cookies.time_zone_offset);
+        // console.log("body");
+        // console.log(req.body);
         // console.log(req.cookies);
         let datetime = req.body.date + " " + req.body.time;
         let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").format("YYYY-MM-DD HH:mm");
-        console.log("scheduleDate");
-        console.log(scheduleDate);
+        // console.log("scheduleDate");
+        // console.log(scheduleDate);
         var newdate = momenttz.tz(scheduleDate, req.cookies.time_zone_offset).utc();
-        console.log("newdate");
-        console.log(newdate);
+        // console.log("newdate");
+        // console.log(newdate);
         // let utcDate = scheduleDate.utc();
         // console.log("utcDate from schedule date");
         // console.log(utcDate);
         let endDate = newdate.clone();
 
         endDate = endDate.add(parseInt(req.body.duration), "m");
-        console.log("enddate");
-        console.log(endDate);
+        // console.log("enddate");
+        // console.log(endDate);
         let dataToinsert = req.body.institute.map(institute_id => {
             return {
                 "institute_id": mongoose.Types.ObjectId(institute_id),
@@ -791,7 +792,7 @@ exports.enable_test = (req, res, next) => {
             }
         });
         let insertedData = await quizzes.insertMany(dataToinsert);
-        console.log(insertedData);
+        // console.log(insertedData);
         res.status(200).send({ status: 1, message: "Success" });
     }).catch(err => {
         req.flash('error', err.message)

@@ -10,54 +10,58 @@
         <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
         <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
         <ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-            <li {% if active == "dashboardpage" %} class="active" {% endif %}>
+            <li {% if active=="dashboardpage" %} class="active" {% endif %}>
                 <a href="/dashboard" class="selected">
                     <i class="fa fa-home"></i>
                     <span class="title">Dashboard</span>
                 </a>
             </li>
-            <li {% if active == "manage_institutions_page" %} class="active" {% endif %}>
+            <li {% if active=="manage_institutions_page" %} class="active" {% endif %}>
                 <a href="/institutes">
                     <i class="fa fa-university"></i>
                     <span class="title">Manage Institutions</span>
                 </a>
             </li>
-            <li {% if active == "manage_quiz_page" %} class="active" {% endif %}>
+            <li {% if active=="manage_quiz_page" %} class="active" {% endif %}>
                 <a href="/quiz">
                     <i class="fa fa-university"></i>
                     <span class="title">Manage Quiz</span>
                 </a>
             </li>
 
-            <li {% if active == "result_page" %} class="active" {% endif %}>
+            <li {% if active=="schedule_test" %} class="active" {% endif %}>
+                <a href="/quiz/scheduled">
+                    <i class="fa fa-clipboard"></i>
+                    <span class="title">Scheduled Test</span>
+                </a>
+            </li>
+            <li {% if active=="result_page" %} class="active" {% endif %}>
                 <a href="/result">
                     <i class="fa fa-clipboard"></i>
                     <span class="title">Results</span>
                 </a>
             </li>
 
-            <li {%if active == "cmspage" || active == "Faqspage" || active == "templatepage" %} class="active"
-                {% endif %}>
+            <li {%if active=="cmspage" || active=="Faqspage" || active=="templatepage" %} class="active" {% endif %}>
                 <a href="javascript:;">
                     <i class="glyphicon glyphicon-cog"></i>
                     <span class="title">Settings</span>
-                    <span {%if active == "cmspage" || active == "Faqspage" || active == "templatepage" %}
-                        class="arrow open" {% else %} class="arrow" {% endif %}></span>
+                    <span {%if active=="cmspage" || active=="Faqspage" || active=="templatepage" %} class="arrow open" {% else %} class="arrow" {% endif %}></span>
                 </a>
                 <ul class="sub-menu">
-                    <li {% if active == "Faqspage" %} class="active" {% endif %}>
+                    <li {% if active=="Faqspage" %} class="active" {% endif %}>
                         <a href="/faqs">
                             <i class="glyphicon glyphicon-cog"></i>
                             <span class="title">Manage FAQs</span>
                         </a>
                     </li>
-                    <li {% if active == "cmspage" %} class="active" {% endif %}>
+                    <li {% if active=="cmspage" %} class="active" {% endif %}>
                         <a href="/pages">
                             <i class="fa fa-file-text-o"></i>
                             <span class="title">Manage CMS Pages</span>
                         </a>
                     </li>
-                    <li {% if active == "templatepage" %} class="active" {% endif %}>
+                    <li {% if active=="templatepage" %} class="active" {% endif %}>
                         <a href="/emailTemplate">
                             <i class="icon-envelope"></i>
                             <span class="title">Manage E-Mail Templates</span>

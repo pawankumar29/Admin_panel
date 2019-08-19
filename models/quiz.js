@@ -13,6 +13,28 @@ exports.update = (query, updatedata) => {
         });
     });
 };
+exports.findOne = (query) => {
+    return new Promise((resolve, reject) => {
+        quiz.findOne(query, (error, data) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(data);
+            }
+        });
+    });
+};
+exports.count = (query) => {
+    return new Promise((resolve, reject) => {
+        quiz.count(query, (error, data) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(data);
+            }
+        });
+    });
+};
 exports.aggregate = (query) => {
     return new Promise((resolve, reject) => {
         quiz.aggregate(query, (error, data) => {

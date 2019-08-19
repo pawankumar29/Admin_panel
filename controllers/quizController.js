@@ -1,7 +1,8 @@
 const institutes = require('../models/institutes')
 const moment = require('moment')
-    // const mails = require('../helper/send_mail.js');
-    // const email = require('../email_template_cms_pages');
+const momenttz = require('moment-timezone');
+// const mails = require('../helper/send_mail.js');
+// const email = require('../email_template_cms_pages');
 const email_templates = require('../models/email_template.js')
 const mongoose = require('mongoose');
 const questionModel = mongoose.model('questions');
@@ -17,64 +18,6 @@ var multer = require('multer');
 var util = require('util');
 var fs = require('fs')
 var csv = require('fast-csv');
-
-// function dataUpload(organisation_id, category_id, sub_category_id, path) {
-//     return new Promise((resolve, reject) => {
-//         try {
-
-//             organisation_id = mongoose.Types.ObjectId(organisation_id);
-//             category_id = mongoose.Types.ObjectId(category_id);
-//             if (sub_category_id) {
-//                 sub_category_id = mongoose.Types.ObjectId(sub_category_id);
-//             }
-//             let csvDataArray = [];
-//             let completePath = process.cwd() + '/' + path;
-//             let stream = fs.createReadStream(completePath)
-//             csv.fromStream(stream, {
-//                 headers: true
-//             }).on('data', function(data) {
-//                 if ((data.question || data.question != "") && (data.answer || data.answer != "")) {
-//                     let length = Object.keys(data).length;
-//                     var answer = [];
-//                     let obj = {
-//                         "question": data.question,
-//                         "organisation_id": organisation_id,
-//                         "category_id": category_id,
-//                         "image": data.image || "",
-//                         "status": 1,
-//                         "is_deleted": 0,
-//                         "options": [],
-//                     };
-//                     for (let i = 1; i <= length; i++) {
-//                         if (data["option" + i]) {
-//                             if (data.answer.toString() == ("option" + i).toString()) {
-//                                 answer.push(String.fromCharCode(64 + i));
-//                             }
-//                             obj.options.push({
-//                                 "id": String.fromCharCode(64 + i),
-//                                 "option": data["option" + i],
-//                                 "is_correct": data.answer.toString().toUpperCase() == String.fromCharCode(64 + i) ? 1 : 0
-//                             });
-//                         }
-//                     }
-
-//                     if (sub_category_id) {
-//                         obj["sub_category_id"] = sub_category_id;
-//                     }
-//                     obj["answer"] = data.answer;
-//                     csvDataArray.push(obj);
-//                 }
-//             }).on('end', function(count) {
-//                 console.log("here in return ");
-//                 resolve(csvDataArray);
-//             });
-//         } catch (err) {
-//             reject(err);
-//         }
-//     });
-
-
-// }
 
 function fileFilter(req, file, cb) {
     if (
@@ -99,6 +42,7 @@ var upload = multer({
     storage: storage,
     fileFilter: fileFilter
 }).single('file');
+
 exports.get_categoriesList = (req, res, next) => {
     console.log(global.config.pagination_limit);
     new Promise((resolve, reject) => {
@@ -195,6 +139,112 @@ exports.get_categoriesList = (req, res, next) => {
             //        res.redirect('/institutes');
     })
 }
+exports.get_scheduledList = (req, res, next) => {
+    new Promise((resolve, reject) => {
+        // make global variable options for paginate method parameter
+        let options = {
+            perPage: global.config.pagination_limit,
+            delta: global.config.delta,
+            page: 1
+        }
+        if (req.query.page) {
+            options.page = req.query.page
+        }
+        /** ***skip check*****/
+        let skipPages = options.page - 1
+        let startOfYear = new Date(moment.utc().startOf('year'))
+        let aggregation_query = [{
+                $match: {
+                    organisation_id: req.user.organisation_id,
+                    is_deleted: 0
+                }
+            },
+            {
+                $sort: {
+                    start_time: 1
+                }
+            },
+            {
+                $lookup: {
+                    from: 'institutes',
+                    let: {
+                        ref_id: '$institute_id'
+                    },
+                    pipeline: [{ $match: { $expr: { $eq: ['$_id', '$$ref_id'] } } }, { $project: { _id: 1, name: 1, no_of_students: 1 } }],
+                    as: 'institute'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$institute',
+                    preserveNullAndEmptyArrays: true
+                }
+            }
+            // {
+            //     $skip: skipPages * global.config.pagination_limit
+            // },
+            // {
+            //     $limit: global.config.pagination_limit
+            // }
+        ];
+        let p1 = quizzes.count({
+            organisation_id: req.user.organisation_id,
+            is_deleted: 0
+        })
+        let p2 = quizzes.aggregate(aggregation_query)
+            // console.log(util.inspect(aggregation_query, { depth: null }));
+        Promise.all([p1, p2])
+            .then(([count, result]) => {
+                // console.log(util.inspect(result, { depth: null }));
+                let last = parseInt(
+                    count % global.config.pagination_limit == 0 ?
+                    count / global.config.pagination_limit :
+                    count / global.config.pagination_limit + 1
+                )
+                let pages = []
+                for (i = 1; i <= last; i++) {
+                    pages.push(i)
+                }
+                if (req.query.page) {
+                    res.render('quiz/scheduledList', {
+                        response: JSON.parse(JSON.stringify(result)),
+                        count: count,
+                        prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
+                        last: last,
+                        pages: pages,
+                        next: options.page == last ? last : last + 1,
+                        message: req.flash(),
+                        options: options,
+                        current: req.query.page || 1,
+                        delta: global.config.delta,
+                        title: 'Manage Scheduled Test',
+                        active: 'schedule_test'
+                    });
+                } else {
+                    res.render('quiz/scheduledList', {
+                        response: JSON.parse(JSON.stringify(result)),
+                        count: count,
+                        prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
+                        last: last,
+                        pages: pages,
+                        next: options.page == last ? last : last + 1,
+                        message: req.flash(),
+                        options: options,
+                        current: req.query.page || 1,
+                        delta: global.config.delta,
+                        title: 'Manage Scheduled Test',
+                        active: 'schedule_test'
+                    })
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+    }).catch(err => {
+        console.log(err)
+            //        res.redirect('/institutes');
+    })
+}
 exports.add_category = (req, res, next) => {
     try {
         settings
@@ -259,6 +309,51 @@ exports.csvDowload = (req, res, next) => {
             error: err
         })
     })
+}
+exports.getQuizDetail = (req, res, next) => {
+    new Promise((resolve, reject) => {
+        quizzes.findOne({ _id: req.params.id }).then(data => {
+            if (data != null) {
+                data = JSON.parse(JSON.stringify(data))
+                data.start_time = momenttz.tz(data.start_time, req.cookies.time_zone_offset).format("YYYY-MM-DD HH:mm");
+                res.send({ status: 1, data: data });
+            } else
+                res.send({ status: 0 });
+        });
+    }).catch(err => {
+        res.render('error', {
+            error: err
+        })
+    })
+}
+exports.updateQuizDetail = (req, res, next) => {
+    new Promise((resolve, reject) => {
+        let datetime = req.body.date + " " + req.body.time;
+        let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").format("YYYY-MM-DD HH:mm");
+        var newdate = momenttz.tz(scheduleDate, req.cookies.time_zone_offset).utc();
+        let endDate = newdate.clone();
+        endDate = endDate.add(parseInt(req.body.duration), "m");
+        req.body.batch = parseInt(req.body.batch);
+        req.body.start_time = newdate;
+        req.body.end_time = endDate;
+        req.body.duration = parseInt(req.body.duration);
+        quizzes.update({ _id: req.body.quiz_id }, req.body).then(data => {
+            if (data != null) {
+                res.send({ status: 1, data: data });
+            } else
+                res.send({ status: 0 });
+        });
+    }).catch(err => {
+        res.render('error', {
+            error: err
+        })
+    })
+}
+exports.deleteQuiz = async(req, res, next) => {
+    await quiz_id.delete({ quiz_id: req.params.id });
+    await quizzes.delete({ _id: req.params.id });
+    res.redirect('/quiz/scheduled');
+
 }
 exports.importCsvCat = (req, res, next) => {
     try {
