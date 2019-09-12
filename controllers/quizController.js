@@ -179,6 +179,11 @@ exports.get_scheduledList = (req, res, next) => {
                     path: '$institute',
                     preserveNullAndEmptyArrays: true
                 }
+            },
+            {
+                $sort: {
+                    start_time: -1
+                }
             }
             // {
             //     $skip: skipPages * global.config.pagination_limit
