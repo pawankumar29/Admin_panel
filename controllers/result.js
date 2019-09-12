@@ -51,7 +51,12 @@ exports.get_quiz = async(req, res, next) => {
                     as: 'institute'
                 }
             },
-            { $unwind: "$institute" }
+            { $unwind: "$institute" },
+            {
+                $sort: {
+                    start_time: -1
+                }
+            }
         ];
         let result = await quizzes.aggregate(aggregation_query);
         res.render('result/list', {

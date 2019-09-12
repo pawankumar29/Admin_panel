@@ -36,7 +36,8 @@
                 {% endif %} {% if !quiz.start_time %}
                 <td>--</td>
                 {% else %}
-                <td>{{quiz.start_time|date('Y-m-d H:i')}}</td>
+                <td>{{quiz.start_time | date('d-m-Y H:i',-330)}}</td>
+                <!-- <td>{{quiz.start_time|date('Y-m-d H:i')}}</td> -->
                 {% endif %}
 
                 <td>
