@@ -144,9 +144,10 @@ jQuery(document).ready(function () {
             dataType: 'JSON',
             success: function (result) {
                 console.log(result);
-                window.location.reload();
+                 window.location.reload();
             },
             error: function (xhr) {
+                console.log(xhr);
                 window.location = "/institutes";
             }
         });

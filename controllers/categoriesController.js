@@ -109,6 +109,7 @@ exports.update_category_data = async (req, res, next) => {
                 let numberArray = sub_categories_number[key];
                 let idArray = sub_category[key];
                 idArray.forEach((obj, index) => {
+                    number = number + parseInt(numberArray[index]); //for the total number of questions
                     subcategoryData.push({
                         "number_of_question": parseInt(numberArray[index]),
                         "sub_category_id": mongoose.Types.ObjectId(idArray[index]),
@@ -123,6 +124,7 @@ exports.update_category_data = async (req, res, next) => {
                 //     });
                 // }
             } else {
+                number = number + parseInt(sub_categories_number[key]); // for the total number questions for the category
                 subcategoryData.push({
                     "number_of_question": parseInt(sub_categories_number[key]),
                     "sub_category_id": mongoose.Types.ObjectId(sub_category[key]),
