@@ -1,5 +1,5 @@
-jQuery(document).ready(function () {
-    $("input[type=file]").on('change', function (event) {
+jQuery(document).ready(function() {
+    $("input[type=file]").on('change', function(event) {
         if (event.target.files.length > 0) {
             $(".batch-div").show(100);
             $("#batch").attr("required", true);
@@ -13,7 +13,7 @@ jQuery(document).ready(function () {
     $('.institute-form').validate({
         focusInvalid: false,
         ignore: [],
-        invalidHandler: function (form, validator) {
+        invalidHandler: function(form, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 validator.errorList[0].element.focus();
@@ -35,7 +35,7 @@ jQuery(document).ready(function () {
             },
             po_email: {
                 required: {
-                    depends: function () {
+                    depends: function() {
                         $(this).val($.trim($(this).val()));
                         return true;
                     }
@@ -73,7 +73,7 @@ jQuery(document).ready(function () {
             }
 
         },
-        errorPlacement: function (error, element) {
+        errorPlacement: function(error, element) {
             if (element.attr("name") == "po_email") {
                 error.insertAfter(element.parent("div"));
             } else {
@@ -104,7 +104,7 @@ jQuery(document).ready(function () {
         }
     }
     //javascript code for instruction code
-    $(document).on("click", ".add", function () {
+    $(document).on("click", ".add", function() {
         let lastIndex = $("table").find("tr:last").children("td").children("span").text();
         if (parseInt(lastIndex.toString())) {
             lastIndex = parseInt(lastIndex.toString()) + 1;
@@ -116,12 +116,12 @@ jQuery(document).ready(function () {
         $("table").append(text);
         $(".addcontent").focus();
     });
-    $(document).on("click", ".remove", function () {
+    $(document).on("click", ".remove", function() {
         $(this).parents("tr").remove();
         $(".add").attr("disabled", false);
     })
 
-    $(document).on("click", ".create", function () {
+    $(document).on("click", ".create", function() {
         let id = $("#institute_id").val();
         let instruction = $(this).parents("td").prev(".addcontent").text();
         $.ajax({
@@ -132,7 +132,7 @@ jQuery(document).ready(function () {
                 instruction: instruction
             },
             dataType: 'JSON',
-            success: function (result) {
+            success: function(result) {
                 if (result == 'unauthorised') {
                     window.location = "/login";
                 } else {
@@ -143,25 +143,25 @@ jQuery(document).ready(function () {
         });
     })
 
-    $('td.content').keydown(function (e) {
+    $('td.content').keydown(function(e) {
         if (e.keyCode === 13) {
             $(this).next("td").children().children("button.save").trigger("click");
         }
     });
 
-    $('td.addcontent').keydown(function (e) {
+    $('td.addcontent').keydown(function(e) {
         if (e.keyCode === 13) {
             $(this).next("td").children().children("button.save").trigger("click");
         }
     });
 
-    $(document).on("click", ".edit", function () {
+    $(document).on("click", ".edit", function() {
         let elem = $(this).parents("td").prev();
         elem.attr("contenteditable", 'true').focus();
         setEndOfContenteditable(elem.get(0));
         $(this).removeClass("edit yellow").addClass("save green").html('<i class="fa fa-check"></i>');
     });
-    $(document).on("click", ".save", function () {
+    $(document).on("click", ".save", function() {
         let button = $(this);
         let id = $("#institute_id").val();
         let contentElem = button.parents("td").prev(".content");
@@ -176,7 +176,7 @@ jQuery(document).ready(function () {
                 newInstruction: newcontent
             },
             dataType: 'JSON',
-            success: function (result) {
+            success: function(result) {
                 if (result == 'unauthorised') {
                     window.location = "/login";
                 } else if (result["status"] == 1) {
@@ -188,7 +188,7 @@ jQuery(document).ready(function () {
             }
         });
     });
-    $(document).on("click", ".delete", function () {
+    $(document).on("click", ".delete", function() {
         let old_instruction = $(this).parents("td").siblings(':first').find("input").val();
         let id = $("#institute_id").val();
         $.ajax({
@@ -199,7 +199,7 @@ jQuery(document).ready(function () {
                 instruction: old_instruction
             },
             dataType: 'JSON',
-            success: function (result) {
+            success: function(result) {
                 if (result == 'unauthorised') {
                     window.location = "/login";
                 } else {
@@ -209,7 +209,7 @@ jQuery(document).ready(function () {
             }
         });
     });
-    $(document).on("click", ".show_batch_modal", function () {
+    $(document).on("click", ".show_batch_modal", function() {
         var institute_id = $(this).attr('inst_id');
         $('#batch_inst_id').val(institute_id);
         var current_year = new Date().getFullYear();
@@ -224,7 +224,7 @@ jQuery(document).ready(function () {
     $('.add_batch_form').validate({
         focusInvalid: false,
         ignore: [],
-        invalidHandler: function (form, validator) {
+        invalidHandler: function(form, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 validator.errorList[0].element.focus();
@@ -252,7 +252,7 @@ jQuery(document).ready(function () {
     $('.enable_quiz_form').validate({
         focusInvalid: false,
         ignore: [],
-        invalidHandler: function (form, validator) {
+        invalidHandler: function(form, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 validator.errorList[0].element.focus();
@@ -273,15 +273,22 @@ jQuery(document).ready(function () {
         }
     });
 
-    $(document).on("click", ".enable_test", function (event) {
+    $(document).on("change", "select", function() {
+        $("option[value=" + this.value + "]", this)
+            .attr("selected", true).siblings()
+            .removeAttr("selected")
+    });
+
+    $(document).on("click", ".enable_test", function(event) {
         event.preventDefault();
         if ($(".enable_quiz_form").valid()) {
             var duration = $("#test_duration").val();
             var time = $("#test_time").val();
             var date = $("#date_test").val();
-            var batch = $(".batch_year").children("option:selected").val()
+            var batch = $("#batch_year_test").children("option:selected").val()
+
             var chips = [];
-            $(".chipcontainer").children(".chip").each(function () {
+            $(".chipcontainer").children(".chip").each(function() {
                 chips.push($(this).data("value"));
             });
             var data = {
@@ -298,7 +305,7 @@ jQuery(document).ready(function () {
                 type: "POST",
                 data: data,
                 dataType: 'JSON',
-                success: function (result) {
+                success: function(result) {
                     console.log(result);
                     window.location = "/institutes"
                 }

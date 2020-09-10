@@ -117,7 +117,7 @@ function dataUpload(organisation_id, institute_id, batch, path) {
                                         invalidArray.push(obj);
                                         continue;
                                     } else if (matchedData.batch !== obj["batch"]) {
-                                        updateBatchArray.push(mongoose.Types.ObjectId(obj["_id"]));
+                                        updateBatchArray.push(mongoose.Types.ObjectId(matchedData["_id"]));
                                     } else {
                                         obj["message"] = "User already present in the system.";
                                         obj["errorStatus"] = 5; //field missing
@@ -762,8 +762,8 @@ exports.enable_test = (req, res, next) => {
         // console.log("cookies");
         // console.log("timezone");
         // console.log(req.cookies.time_zone_offset);
-        // console.log("body");
-        // console.log(req.body);
+        console.log("body");
+        console.log(req.body);
         // console.log(req.cookies);
         let datetime = req.body.date + " " + req.body.time;
         let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").format("YYYY-MM-DD HH:mm");

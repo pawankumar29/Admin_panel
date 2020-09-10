@@ -7,7 +7,7 @@ var local = {
         port: '3039'
     },
     database: {
-        name: 'hireme'
+        name: 'campus_recruiter'
     },
 };
 config = local;

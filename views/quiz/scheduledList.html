@@ -316,6 +316,7 @@
                         html += "<option value = '" + year + "'>" + year + "</option>"
                     }
                     $('.batch_year').html(html);
+                    $('#batch_year_test').html(html);
                     let H = new Date(result.data.start_time).getHours();
                     let M = new Date(result.data.start_time).getMinutes();
                     if (M < 10)
