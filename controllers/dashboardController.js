@@ -12,16 +12,33 @@ const roles = require("../helper/roles");
 
 
 /* GET method for dashboard */
-exports.dashboard_get = (req, res, next) => {
-    new Promise((resolve, reject) => {
-        res.render('dashboard', {
-            active: 'dashboardpage',
-            title: 'Dashboard'
-        });
-    }).catch(err => {
-        console.log(err);
-        res.render('error', {error: err});
-    });
+exports.dashboard_get = async(req, res, next) => {
+     try {
+        const query={
+            is_deleted:0,
+            status:1
+            }
+            //user data
+              const userData=await users.count(query)
+              var user_data_count=0;
+              if(userData.status=1 && userData.message=="success"){
+                  user_data_count=userData.data;
+              }
+              //contact_us data
+              const contactUsData=await contact.count()
+              var contact_data_count=0;
+              if(contactUsData.status=1 && contactUsData.message=="success"){
+                contact_data_count=contactUsData.data;
+            }  
+            res.render('dashboard', {
+                        active: 'dashboardpage',
+                        title: 'Dashboard',
+                        user_data:user_data_count,
+                        contact_us:contact_data_count
+                    });          
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 //

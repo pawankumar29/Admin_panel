@@ -32,7 +32,7 @@ exports.count = (query) => {
             } else {
                 resolve({status: 0, message: error.message});
             }
-        }).catch(err => reject(err));
+        })
     });
 };
 
