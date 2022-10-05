@@ -48,7 +48,7 @@ exports.save = (data) => {
 };
 exports.update = (query, updatedata) => {
     return new Promise((resolve, reject) => {
-        question_categories.update(query, updatedata, {multi: true}, (error, data) => {
+        question_categories.updateMany(query, updatedata, {multi: true}, (error, data) => {
             if (error) {
                 reject(error)
             } else {

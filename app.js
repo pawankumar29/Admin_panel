@@ -40,7 +40,7 @@ module.exports.appPromise = startTheAsyncOperation().then(() => {
     app.engine('html', swig.renderFile);
 
     app.use(favicon());
-    app.use(logger('dev'));
+    // app.use(logger('dev'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
         extended: true

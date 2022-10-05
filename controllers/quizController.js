@@ -18,6 +18,8 @@ var multer = require('multer');
 var util = require('util');
 var fs = require('fs')
 var csv = require('fast-csv');
+const e = require('connect-flash');
+const ObjectID = require('mongodb').ObjectID;
 
 function fileFilter(req, file, cb) {
     if (
@@ -315,21 +317,31 @@ exports.csvDowload = (req, res, next) => {
         })
     })
 }
-exports.getQuizDetail = (req, res, next) => {
-    new Promise((resolve, reject) => {
-        quizzes.findOne({ _id: req.params.id }).then(data => {
-            if (data != null) {
-                data = JSON.parse(JSON.stringify(data))
-                data.start_time = momenttz.tz(data.start_time, req.cookies.time_zone_offset).format("YYYY-MM-DD HH:mm");
-                res.send({ status: 1, data: data });
-            } else
-                res.send({ status: 0 });
-        });
-    }).catch(err => {
-        res.render('error', {
-            error: err
+exports.getQuizDetail = async(req,res,next)=>{
+try {
+    let options = {
+        perPage: global.config.pagination_limit,
+        delta: global.config.delta,
+        page: 1
+    }
+    if (req.query.page) {
+        options.page = req.query.page
+    }
+    const quizQuestions = await questions.find({category_id:req.params.cat_id,sub_category_id:req.params.sub_cat_id})
+    if (quizQuestions != null) {
+        quizQuestions.start_time = momenttz.tz(quizQuestions.start_time, req.cookies.time_zone_offset).format("YYYY-MM-DD HH:mm");
+        res.render('quiz/questions',{questions:quizQuestions, 
+        title: 'Questions',
+        prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
+        message: req.flash(),
+        options: options,
+        current: req.query.page || 1,
         })
-    })
+    } else
+        res.send({ status: 0 });
+} catch (error) {
+    console.log(error)    
+}
 }
 exports.updateQuizDetail = (req, res, next) => {
     new Promise((resolve, reject) => {
@@ -353,12 +365,6 @@ exports.updateQuizDetail = (req, res, next) => {
             error: err
         })
     })
-}
-exports.deleteQuiz = async(req, res, next) => {
-    await quiz_id.delete({ quiz_id: req.params.id });
-    await quizzes.delete({ _id: req.params.id });
-    res.redirect('/quiz/scheduled');
-
 }
 exports.importCsvCat = (req, res, next) => {
     try {
@@ -407,6 +413,10 @@ exports.addCsv = (req, res, next) => {
             error: err
         })
     }
+}
+exports.deleteQuiz = async(req, res, next) => {
+    const delteCategories = await question_categories.update({_id: req.params.cat_id},{is_deleted:1});
+    res.redirect('/quiz/scheduled');
 }
 exports.importCsvSubCat = (req, res, next) => {
     try {

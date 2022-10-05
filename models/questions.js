@@ -13,3 +13,26 @@ exports.insertMany = (data) => {
         });
     });
 };
+exports.find = (data) => {
+    return new Promise((resolve, reject) => {
+        questions.find(data, (error, data) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(data);
+            }
+        });
+    });
+};
+
+exports.findOne = (data) => {
+    return new Promise((resolve, reject) => {
+        questions.findOne(data, (error, data) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(data);
+            }
+        });
+    });
+};

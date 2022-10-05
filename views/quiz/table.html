@@ -1,4 +1,3 @@
-
             {% set curr = current-1  %}
             {% set index = curr* options.perPage +1  %}
             {% for category in response %}	 
@@ -30,7 +29,7 @@
                     <a class="btn btn-circle btn-icon-only btn-default" href="/quiz/edit/{{category._id | safe}}/{{category.sub_category._id | safe }}">
                         <i class="icon-eye" style="color:blue"></i>
                     </a>
-                    <a class="btn btn-circle btn-icon-only btn-default" href="/quiz/importCsv/{{category._id |safe}}/{{category.sub_category._id | safe}}" title="Import Question Csv">
+                    <a class="btn btn-circle btn-icon-only btn-default" href="/quiz/importCsv/{{category._id |safe}}" title="Import Question Csv">
                         <i class="glyphicon glyphicon-upload" style="color:green"></i>
                     </a>
                     {% endif %}
@@ -42,5 +41,3 @@
             </tr>
             {% set index=index+1 %}
             {% endfor %}					
-            				
-        
