@@ -41,7 +41,7 @@ jQuery(document).ready(function () {
         let buttonClick = $(this);
         event.preventDefault();
         var html = "<div class='row sub_cat_row'><div class='col-md-4'><label class='control-label'><b>Sub Category Name:</b></label></div><div class='col-md-4'><input class='form-control placeholder-no-fix' type='text' placeholder='Sub Category Name' name='sub_category'></div><div class='col-md-3'><a class='remove_sub_cat_row btn btn-circle btn-icon-only btn-default'><i class='fa fa-times' style='color:red'></i></a></div></div>"
-        $('.sub_category_div').append(html);
+        $('.sub_category').append(html);
     });
     $(document).on("click", ".remove_sub_cat_row", function (event) {
         $(this).parents('.sub_cat_row').css('display', 'none');
