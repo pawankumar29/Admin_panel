@@ -416,7 +416,7 @@ exports.addCsv = (req, res, next) => {
 }
 exports.deleteQuiz = async(req, res, next) => {
     const delteCategories = await question_categories.update({_id: req.params.cat_id},{is_deleted:1});
-    res.redirect('/quiz/scheduled');
+    res.redirect('/quiz');
 }
 exports.importCsvSubCat = (req, res, next) => {
     try {
