@@ -80,6 +80,7 @@ exports.get_quiz = async(req, res, next) => {
     }
 }
 exports.get_quiz_result = async(req, res, next) => {
+    console.log("oiuoiuiiuuuouo")
     new Promise((resolve, reject) => {
         // make global variable options for paginate method parameter
         let options = {

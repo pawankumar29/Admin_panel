@@ -142,6 +142,7 @@ exports.get_categoriesList = (req, res, next) => {
     })
 }
 exports.get_scheduledList = (req, res, next) => {
+  console.log("listtttttttttttttt")
     new Promise((resolve, reject) => {
         // make global variable options for paginate method parameter
         let options = {
@@ -319,6 +320,7 @@ exports.csvDowload = (req, res, next) => {
 }
 exports.getQuizDetail = async(req,res,next)=>{
 try {
+    console.log("getttttttttttttttttttt")
     let options = {
         perPage: global.config.pagination_limit,
         delta: global.config.delta,
@@ -343,7 +345,47 @@ try {
     console.log(error)    
 }
 }
+exports.getQuizDetail = (req, res, next) => {
+    console.log("pppppppppppppppp")
+    new Promise((resolve, reject) => {
+        quizzes.findOne({ _id: req.params.id }).then(data => {
+            if (data != null) {
+                data = JSON.parse(JSON.stringify(data))
+                data.start_time = momenttz.tz(data.start_time, req.cookies.time_zone_offset).format("YYYY-MM-DD HH:mm");
+                res.send({ status: 1, data: data });
+            } else
+                res.send({ status: 0 });
+        });
+    }).catch(err => {
+        res.render('error', {
+            error: err
+        })
+    })
+}
+exports.getQuizDetailById = (req, res, next) => {
+    try{
+    quizId = mongoose.Types.ObjectId(req.params.id);
+   // req.params.id,"ajaxxxxxxidddd"
+    const query={
+    _id:quizId,
+    is_deleted:0
+    }
+    quizzes.findOne(query).then((quizData )=> {
+        return res.send(quizData) 
+    })
+    .catch(error => {
+        reject(error)
+    })
+}
+        catch (err) {
+            res.render('error', {
+                error: err
+            })
+        }
+    
+}
 exports.updateQuizDetail = (req, res, next) => {
+    console.log(req.params.id)
     new Promise((resolve, reject) => {
         let datetime = req.body.date + " " + req.body.time;
         let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").format("YYYY-MM-DD HH:mm");
@@ -414,10 +456,26 @@ exports.addCsv = (req, res, next) => {
         })
     }
 }
+
+//delete
 exports.deleteQuiz = async(req, res, next) => {
-    const delteCategories = await question_categories.update({_id: req.params.cat_id},{is_deleted:1});
-    res.redirect('/quiz');
+    try{
+    const id=mongoose.Types.ObjectId(req.params.id)
+    console.log(req.params.id,"idddddddddddd")
+    const result=await quizzes.delete({_id:id},{is_deleted:1})
+    if(!result){
+   req.flash('error', 'could not delete!!')
+   return res.redirect('/quiz/scheduled')
+    }
+    return res.redirect('/quiz/scheduled')
 }
+    catch (err) {
+        res.render('error', {
+            error: err
+        })
+    }
+
+  };
 exports.importCsvSubCat = (req, res, next) => {
     try {
         question_categories.findOne({ _id: req.params.cat_id }).then(data => {

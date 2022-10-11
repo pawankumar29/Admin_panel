@@ -17,6 +17,7 @@ var session = require('express-session');
 var helmet = require('helmet');
 var paginate = require('paginate-for-mongoose');
 var validator = require('express-validator');
+const router = require('./routes/quiz');
 
 
 function startTheAsyncOperation() {

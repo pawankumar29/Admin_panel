@@ -161,7 +161,9 @@
                                                 <th>Start Time</th>
                                                 <th>Duration</th>
                                                 <th>Status</th>
+                                               
                                                 <th width="15%">Action</th>
+                                                <th>idd</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -183,8 +185,18 @@
                                                 <td>
                                                     {% if quiz.status == 1 || quiz.status == 2 %}
                                                     <a class="btn btn-circle btn-icon-only btn-default editQuiz" quiz_id="{{quiz._id}}" title="Edit" link="/quiz/edit/{{quiz._id}}"><i style="color:orange" class="fa fa-edit"></i></a> {% else %}
-                                                    <a class="btn btn-circle btn-icon-only btn-default" title="Delete" href="/quiz/delete/{{quiz._id}}"><i style="color:red" class="fa fa-times"></i></a> {% endif %}
+                                                    <a class="btn btn-circle btn-icon-only btn-default deleteQuiz" title="Delete" link="/quiz/delete/{{quiz._id}}"><i style="color:red" class="fa fa-times"></i></a> {% endif %} 
+                                                    <!-- <a
+                                                    title="Delete"
+                                                    class="btn btn-circle btn-icon-only btn-default delete_advanced"
+                                                    data-delete-title="delete importer"
+                                                    data-delete-link="/quiz/delete/{{quiz._id}}"
+                                                  >
+                                                  <i style="color:red" class="fa fa-times"></i>
+                                                  </a> -->
+                                                  
                                                 </td>
+                                                <td>{{quiz._id}}</td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>
@@ -261,7 +273,7 @@
             </div>
 
             <div class="modal-footer" style="text-align: center">
-                <button type="button" class="btn btn-success update_test">Update</button>
+                <button type="button" class="btn btn-success update_test" link="/quiz/edit/{{quiz._id}}">Update</button>
                 <button type="button" data-dismiss="modal" class="btn default ">Close</button>
             </div>
         </div>
@@ -285,16 +297,22 @@
     TableManaged.init();
 
     $('.editQuiz').click(function(e) {
+        console.log("eeeeeeeeeeeeeeeeee")
         e.preventDefault();
         let url = $(this).attr('link');
+        console.log(url,"uuuuuuuuuuuuu")
         let quiz_id = $(this).attr('quiz_id');
+        console.log(quiz_id,"idddddddddddddd")
         $.ajax({
             url: url,
             type: "GET",
             success: function(result) {
+                console.log(result.start_time)
                 if (result == 'unauthorised') {
+                    console.log("resuuuuuuuuulttttttttttt")
                     window.location = "/login";
                 } else if (result["status"] == 1) {
+                    console.log("timeeeeeebhgfhfhfeeeee")
                     // var dt = new Date(result.data.start_time);
                     // dt.setDate(dt.getDate() + 1);
                     ComponentsPickers.init();
@@ -306,9 +324,7 @@
                         $(".date").attr("data-value", e.dates)
                         $(".date-error").html("");
                     });
-                    $('.date').datepicker('setDate', new Date(result.data.start_time));
-
-
+                    $('.date').datepicker('setDate', new Date(result.start_time));
                     var current_year = new Date().getFullYear();
                     var start_year = current_year - 2;
                     var html = "";
@@ -317,14 +333,15 @@
                     }
                     $('.batch_year').html(html);
                     $('#batch_year_test').html(html);
-                    let H = new Date(result.data.start_time).getHours();
-                    let M = new Date(result.data.start_time).getMinutes();
+                    let H = new Date(result.start_time).getHours();
+                    let M = new Date(result.start_time).getMinutes();
                     if (M < 10)
                         M = '0' + M
                     $('#test_time').val(H + ':' + M);
                     $('#quiz_id').val(quiz_id);
-                    $('#test_duration').val(result.data.duration);
-                    $('#batch_year').val(result.data.batch_year);
+                    $('#test_duration').val(result.duration);
+                    $('#batch_year').val(result.batch_year);
+                    console.log("eeeeeeeeeeeeeeeeeeppppppppppppppppp")
                     $('#edit_test_modal').modal('show');
                 }
             },
@@ -332,6 +349,7 @@
 
     });
     $(document).on("click", ".update_test", function(event) {
+        console.log("oooooooooooooooooooo")
         event.preventDefault();
         if ($(".enable_quiz_form").valid()) {
             var duration = $("#test_duration").val();
@@ -342,6 +360,8 @@
                 // $(".chipcontainer").children(".chip").each(function () {
                 //     chips.push($(this).data("value"));
                 // });
+                var url = $(".update_test").attr('link');
+                console.log(url,"uuurrrllllllllllllll")
             var data = {
                 duration: duration,
                 time: time,
@@ -351,7 +371,7 @@
                 quiz_id: $('#quiz_id').val()
             };
             $.ajax({
-                url: "/quiz/edit",
+                url: "/quiz/edit/{{quiz._id}}",
                 type: "PUT",
                 data: data,
                 dataType: 'JSON',
@@ -362,5 +382,19 @@
             });
         }
     });
+    $(document).on("click", ".deleteQuiz", function () {
+    var message = "Are you sure you want to delete?";
+    var url = $(this).attr("link");
+    console.log(url)
+    bootbox.confirm(message, function (result) {
+
+        console.log(result)
+      if (result) {
+
+        console.log("urllllllllllllll")
+        window.location = url;
+      }
+    });
+  });
 </script>
 {% endblock %}
