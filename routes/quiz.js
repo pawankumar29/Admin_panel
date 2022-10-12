@@ -12,6 +12,6 @@ router.get('/importCsv/:cat_id/:sub_cat_id', controller.importCsvSubCat);
 router.post('/importCsv', controller.addCsv);
 router.get('/edit/:cat_id/:sub_cat_id', controller.getQuizDetail);
 router.get('/edit/:id', controller.getQuizDetailById);
-router.put('/edit/:id', controller.updateQuizDetail);
+router.put('/edit', controller.updateQuizDetail);
 router.get('/delete/:id', controller.deleteQuiz);
 module.exports = router;
