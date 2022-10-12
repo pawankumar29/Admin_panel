@@ -399,10 +399,10 @@ var questionCategoriesSchema = new Schema({
         default: ""
     },
     sub_category: [{
-        _id: {
-            type: Schema.Types.ObjectId,
-            default: new mongoose.Types.ObjectId
-        },
+        // _id: {
+        //     type: Schema.Types.ObjectId,
+        //     default: new mongoose.Types.ObjectId
+        // },
         name: {
             type: String,
             default: ""

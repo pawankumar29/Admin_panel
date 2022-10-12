@@ -143,6 +143,7 @@ jQuery(document).ready(function () {
             data: data,
             dataType: 'JSON',
             success: function (result) {
+                console.log("===============================")
                 console.log(result);
                  window.location.reload();
             },

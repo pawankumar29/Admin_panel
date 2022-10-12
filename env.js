@@ -9,6 +9,15 @@ var local = {
     database: {
         name: 'campus_recruiter'
     },
+    smtp : {
+        host : "smtp.gmail.com",
+        port : 465,
+        secure : true,
+        auth : {
+        user : "hireme.debut@gmail.com",
+        pass : "plgwtwqvmhomjjgs"
+        }
+        },
 };
 config = local;
 
