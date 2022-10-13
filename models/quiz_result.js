@@ -1,7 +1,6 @@
 "use strict";
 const mongoose = require("mongoose");
 const quiz_results = mongoose.model("quiz_results");
-const question_categories = mongoose.model("question_categories");
 
 exports.count = (query) => {
   return new Promise((resolve, reject) => {
@@ -9,6 +8,7 @@ exports.count = (query) => {
       if (error) {
         reject(error);
       } else {
+        //console.log(data)
         resolve(data);
       }
     });
@@ -31,6 +31,7 @@ exports.aggregate = (aggregate_query) => {
       if (error) {
         reject(error);
       } else {
+        //console.log(data)
         resolve(data);
       }
     });

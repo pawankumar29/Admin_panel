@@ -482,6 +482,7 @@ var questionSchema = new Schema({
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
 
 var quizResultScehma = new Schema({
+    student_shortlist:{type:Number,default:0},
     organisation_id: {
         type: Schema.Types.ObjectId,
         ref: "organisations"

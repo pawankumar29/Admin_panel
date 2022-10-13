@@ -10,9 +10,25 @@ var util = require('util');
 const quizzes = require("../models/quiz")
 const quiz_results = require("../models/quiz_result")
 const institute_categories = require("../models/institute_categories")
-const question_categories = require("../models/question_categories")
+const question_categories = require("../models/question_categories");
+const { Console } = require('console');
 
 exports.get_students = (req, res, next) => {
+    //console.log(req.params.extra_dat,"====================")
+//    console.log(req.params,"===============")
+//    const data=JSON.parse(req.params.inst_id)
+//    var id=mongoose.Types.ObjectId(data[0])
+//    console.log(typeof id)
+//    console.log(data,"dataaaaaaaaaaaaaaaaaaa")
+//    let dataa=[]
+//    data.forEach((element)=>{
+//        console.log(element,"elemmmmmmmmmmmmmmmm")
+//        var id=mongoose.Types.ObjectId(element)
+//        console.log(id,"dddddddddddddddd")
+//        dataa.push(id)
+//    })
+//    console.log(dataa,"=================")
+    //console.log(req.body.data.ids,"idsssssssssssssssss")
     new Promise((resolve, reject) => {
         // make global variable options for paginate method parameter
         let options = {
@@ -20,12 +36,15 @@ exports.get_students = (req, res, next) => {
             delta: global.config.delta,
             page: 1
         }
+        //{ $in:req.body.data.ids}
         if (req.query.page) {
             options.page = req.query.page
         }
+        console.log(req.user.organisation_id,"orgsidddddddddddddddddd")
         var condition = {
             organisation_id: req.user.organisation_id,
             institute_id: mongoose.Types.ObjectId(req.params.inst_id),
+            student_shortlist:1,
             is_deleted: 0
         };
         if (req.query.status) {
@@ -55,7 +74,7 @@ exports.get_students = (req, res, next) => {
         /** ***skip check*****/
         let skipPages = options.page - 1
         let aggregation_query = [{
-                $match: condition
+                $match:condition,
             },
             {
                 $sort: {
@@ -254,6 +273,25 @@ exports.get_students = (req, res, next) => {
         console.log(err)
         //        res.redirect('/institutes');
     })
+}
+exports.student_shortlist = (req, res, next) => {
+console.log(req.body,"===========")
+// data.forEach((element) => {
+// const query={
+// element
+// }
+// quiz_results.update({_id:"df"},{student_short_list:1}).then((updatedData)=>{
+//     console.log(updatedData,"updateeeeeeeeeeeeeee")
+//     if (updatedData != null) {
+//         res.send({ status: 1});
+//     } else
+//         res.send({ status: 0 });
+// });
+// }).catch(err => {
+// res.render('error', {
+//     error: err
+// })
+// })
 }
 exports.get_user_detail = (req, res, next) => {
     new Promise((resolve, reject) => {

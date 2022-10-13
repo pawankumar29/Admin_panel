@@ -219,6 +219,7 @@ jQuery(document).ready(function () {
             bootbox.alert("Select atleast One institute to enable the test!");
         } else {
             let checkedData = $('.check:checked').serializeArray()
+            console.log(checkedData,"chkdataaaaaaaaaaa")
             let text = "";
             checkedData.forEach(function (obj) {
                 text = text + "<span class='chip' data-value='" + obj.value + "'>" + obj.name + "<span class='custom_close'><i class='fa fa-remove' aria-hidden='true'></i></span></span>"
@@ -235,6 +236,7 @@ jQuery(document).ready(function () {
         $(".chip").each(function (index) {
             arrayIds.push($(this).data("value"));
         });
+        console.log(arrayIds,"idsssssssssssssss")
         let date = $(".date").data("value");
         date = dateConvert(date);
         let time = $(".time").val();
@@ -733,6 +735,70 @@ jQuery(document).ready(function () {
         }
         return str;
     }
+    $('#check_list').click(function () {
+        console.log("ajaxxxxxxxxxxxxxx")
+        const message=$(this).attr('message_data')
+        var url=$(this).attr('url')
+        console.log(url,'urllllllllllll')
+        //const abc= document.getElementsByClassName("check")
+        let shortlistIds=[]
+        const abc= document.querySelectorAll(".check")
+        abc.forEach(function (element) {
+            console.log(element,"=================")
+            shortlistIds.push(element.id);
+        })
+        console.log(shortlistIds,"idssssssssssssssssssssss")
+        if ($('.check:checked').length == 0) {
+         
+            console.log("ifffffffffffffff")
+            console.log(message,"mggggggggggggg")
+            bootbox.alert(`Select atleast one ${message} for shortlist`);
+        } else {
+            
+           console.log($('input[type="checkbox"]:checked'),"==================================")
+            //.each(function (element) {
+            //     console.log(element,"=================")
+            //     shortlistIds.push(element.id);
+            // })
+            console.log($('.check:checked').length,"ooooooooooooooo")
+            //console.log(checkedData ,"chkdataaaaaaaaaaa")
+            console.log($('.check:checked').attr('etc'),"etcccccccccccccccccc")
+           
+            // checkedData.forEach(function (element) {
+            //     console.log(element,"=================")
+            //     shortlistIds.push(element.id);
+            // })
+         
+           
+           console.log(shortlistIds,"ssssssssssssssss")
+        //     //console.log(shortlistIds,"IDSSSSSSSSSSSSSSSSSS")
+        //     var url=$(this).attr('url')
+        //     console.log(url+shortlistIds)
+        //     var urll=url+"/"+ids
+        }
+        let arrids=[]
+        shortlistIds.forEach(function (element) {
+            console.log(element,"=================")
+            var id=JSON.stringify(element)
+            arrids.push(id);
+        })
+     
+        //var data= JSON(arrids)
+        $.ajax({
+            url: url,
+            type: "POST",
+            data:{data:arrids},
+            // dataType: 'JSON',
+            success: function (result) {
+                console.log(result)
+                if (result == 'unauthorised') {
+                    window.location = "/login";
+                } else if (result["status"] == 1) {
+                    window.location = "/institutes";
+                }
+            }
+            })
+    });
 
 //    $(document).on("click", ".view", function () {
 //        /***********user ajax view *******/

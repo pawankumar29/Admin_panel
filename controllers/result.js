@@ -80,8 +80,9 @@ exports.get_quiz = async (req, res, next) => {
   }
 };
 exports.get_quiz_result = async (req, res, next) => {
-  let questionCategories = await question_categories.find({ status: 1 });
-  questionCategories = JSON.parse(JSON.stringify(questionCategories));
+  console.log(req.query.i,"iiiiiiiiiiii")
+  console.log(req.query.q,"qqqqqqqqqqqqqqqqq")
+  console.log(req.user.organisation_id,"orgidddddddddddddddddd")
   new Promise((resolve, reject) => {
     // make global variable options for paginate method parameter
     let options = {
@@ -111,6 +112,7 @@ exports.get_quiz_result = async (req, res, next) => {
     };
 
     let p1 = quiz_results.count(condition);
+    console.log(p1,"p1111111111111111111")
     /** ***skip check*****/
     let skipPages = options.page - 1;
     let aggregation_query = [
@@ -140,6 +142,7 @@ exports.get_quiz_result = async (req, res, next) => {
     ];
     // console.log(util.inspect(aggregation_query, { depth: null }));
     let p2 = quiz_results.aggregate(aggregation_query);
+    console.log(p2,"p222222222222222222222")
     Promise.all([p1, p2])
       .then(([count, result]) => {
         let last = parseInt(
@@ -151,13 +154,12 @@ exports.get_quiz_result = async (req, res, next) => {
         for (i = 1; i <= last; i++) {
           pages.push(i);
         }
-
+console.log(result,"tttttttttttttttttt")
         // console.log(util.inspect(result, { depth: null }));
         if (req.query.page) {
           res.render("result/student_list", {
             response: result,
             count: count,
-            question_categories: questionCategories,
             prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
             last: last,
             pages: pages,
@@ -174,8 +176,6 @@ exports.get_quiz_result = async (req, res, next) => {
           res.render("result/student_list", {
             response: result,
             count: count,
-            question_categories: questionCategories,
-            data: "kjhjk",
             prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
             last: last,
             pages: pages,
