@@ -15,7 +15,7 @@
         <tbody>
             {% set curr = current-1 %} {% set index = curr* options.perPage +1 %} {% if response.length > 0 %} {% for quiz in response %}
             <tr>
-                <td width="2%"><span class="checked"><input type="checkbox" class="check" name="{{institute.name}}" value="{{institute._id | safe}}"></span></td>
+
                 <td>{{index}}</td>
 
                 {% if !quiz.institute.name %}

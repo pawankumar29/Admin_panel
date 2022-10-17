@@ -399,28 +399,29 @@ exports.getQuizDetailById = (req, res, next) => {
 };
 
 exports.updateQuizDetail = (req, res, next) => {
-    new Promise((resolve, reject) => {
-        let datetime = req.body.date + " " + req.body.time;
-        let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").format("YYYY-MM-DD HH:mm");
-        var newdate = momenttz.tz(scheduleDate, req.cookies.time_zone_offset).utc();
-        let endDate = newdate.clone();
-        endDate = endDate.add(parseInt(req.body.duration), "m");
-        req.body.batch = parseInt(req.body.batch);
-        req.body.start_time = newdate;
-        req.body.end_time = endDate;
-        req.body.duration = parseInt(req.body.duration);
-        quizzes.update({ _id: req.body.quiz_id }, req.body).then(data => {
-            if (data != null) {
-                res.send({ status: 1, data: data });
-            } else
-                res.send({ status: 0 });
-        });
-    }).catch(err => {
-        res.render('error', {
-            error: err
-        })
-    })
-}
+  new Promise((resolve, reject) => {
+    let datetime = req.body.date + " " + req.body.time;
+    let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").format(
+      "YYYY-MM-DD HH:mm"
+    );
+    var newdate = momenttz.tz(scheduleDate, req.cookies.time_zone_offset).utc();
+    let endDate = newdate.clone();
+    endDate = endDate.add(parseInt(req.body.duration), "m");
+    req.body.batch = parseInt(req.body.batch);
+    req.body.start_time = newdate;
+    req.body.end_time = endDate;
+    req.body.duration = parseInt(req.body.duration);
+    quizzes.update({ _id: req.body.quiz_id }, req.body).then((data) => {
+      if (data != null) {
+        res.send({ status: 1, data: data });
+      } else res.send({ status: 0 });
+    });
+  }).catch((err) => {
+    res.render("error", {
+      error: err,
+    });
+  });
+};
 exports.importCsvCat = (req, res, next) => {
   try {
     question_categories

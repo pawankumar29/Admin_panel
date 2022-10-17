@@ -141,13 +141,14 @@
 {% endblock %} {% extends "../layout.html" %} {% block content %}
 
 <div class="page-content">
+  
   <div class="row">
     <div class="col-md-12">
       {% include "../flashMessage_Success.html" %}
       <!-- BEGIN BORDERED TABLE PORTLET-->
       <div class="portlet box green">
         <div class="portlet-title">
-          <div class="caption"><i class="fa fa-university"></i></div>
+          <div class="caption"><i class="fa fa-university"></i>{{title}}</div>
         </div>
         <div class="portlet-body">
           <div class="row">
@@ -163,13 +164,13 @@
             <div class="row">
               <br />
             </div>
-            <button class="btn btn green pull-right check_list" id="check_list" message_data="student"  url=/students/student_shortlist>Shortlist</button>
+        
             <form id="frm">
               <input type="hidden" id="action" name="action" />
               <div id="ajaxResponce">
                 <div class="table-responsive">
                   <!-- <input type="hidden" id="url" value="/institutes/"> -->
-                 
+                  <button style="margin-right:250px"class="btn btn green pull-right check_list" id="check_list" message_data="student"  url=/students/student_shortlist redirect_url='/result/students?i={{inst_id}}&q={{quiz_id}}'>Shortlist</button>
                   <table
                     class="table table-bordered table-hover horizontal-table"
                     id="datatable"
@@ -184,8 +185,6 @@
                         <th>Technical Marks</th>
                         <th>Aptitude marks</th>
                         <th>Total Marks</th>
-                        <th>st</th>
-                     
                         <!-- <th>Offer Letter</th>
                                                 <th width="5%">Status</th> -->
                         <!-- <th width="5%">Action</th> -->
@@ -196,7 +195,7 @@
                       options.perPage +1 %} {% for student in response %}
                       <tr>
                         
-                        <td width="2%"><span class="checked"><input type="checkbox" class="check" id={{JSON.stringify(student._id)}} etc="ddddddddddddd"></span></td>
+                        <td width="2%"><span class="checked"><input type="checkbox" class="check" value={{JSON.stringify(student._id)}}></span></td>
                         <!-- name="{{institute.name}}" value="{{institute._id | safe}}" -->
                 <td>{{index}}</td>
                         {% if !student.user_detail.name %}
@@ -211,7 +210,8 @@
                         <td>--</td>
                         {% else %}
                         <td>{{student.user_detail.qualification}}</td>
-                        {% endif %} {% if student.category_marks.length > 0 %}
+                        {% endif %} 
+                        {% if student.category_marks.length > 0 %}
                         <td>
                 {{student.category_marks[0].marks}}
                         </td>
@@ -223,7 +223,6 @@
                         <td>--</td>
                         {% endif %}
                         <td>{{student.total_marks}}</td>
-                        <td>jhgjhgghhj{{JSON.stringify(student._id)}}</td>
                       </tr>
                       {% set index=index+1 %} {% endfor %}
                     </tbody>

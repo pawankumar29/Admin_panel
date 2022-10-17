@@ -11,6 +11,7 @@ var TableManaged = function() {
                 var length = this.fnPagingInfo().iLength;
                 $("td:first", nRow).html(page * length + (iDisplayIndex + 1));
                 // $("td:first", nRow).html(iDisplayIndex + 1);
+                console.log(nRow,"====================")
                 return nRow;
             },
             "infoCallback": function(settings, start, end, max, total, pre) {

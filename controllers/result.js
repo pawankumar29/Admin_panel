@@ -15,6 +15,7 @@ const institute_categories = require("../models/institute_categories");
 const question_categories = require("../models/question_categories");
 
 exports.get_quiz = async (req, res, next) => {
+ 
   try {
     let condition = {
       organisation_id: mongoose.Types.ObjectId(req.user.organisation_id),
@@ -80,9 +81,6 @@ exports.get_quiz = async (req, res, next) => {
   }
 };
 exports.get_quiz_result = async (req, res, next) => {
-  console.log(req.query.i,"iiiiiiiiiiii")
-  console.log(req.query.q,"qqqqqqqqqqqqqqqqq")
-  console.log(req.user.organisation_id,"orgidddddddddddddddddd")
   new Promise((resolve, reject) => {
     // make global variable options for paginate method parameter
     let options = {
@@ -98,6 +96,7 @@ exports.get_quiz_result = async (req, res, next) => {
       institute_id: mongoose.Types.ObjectId(req.query.i),
       quiz_id: mongoose.Types.ObjectId(req.query.q),
       is_deleted: 0,
+      student_shortlist: 0,
     };
     var user_lookup = {
       from: "users",
@@ -112,7 +111,6 @@ exports.get_quiz_result = async (req, res, next) => {
     };
 
     let p1 = quiz_results.count(condition);
-    console.log(p1,"p1111111111111111111")
     /** ***skip check*****/
     let skipPages = options.page - 1;
     let aggregation_query = [
@@ -142,7 +140,6 @@ exports.get_quiz_result = async (req, res, next) => {
     ];
     // console.log(util.inspect(aggregation_query, { depth: null }));
     let p2 = quiz_results.aggregate(aggregation_query);
-    console.log(p2,"p222222222222222222222")
     Promise.all([p1, p2])
       .then(([count, result]) => {
         let last = parseInt(
@@ -154,8 +151,6 @@ exports.get_quiz_result = async (req, res, next) => {
         for (i = 1; i <= last; i++) {
           pages.push(i);
         }
-console.log(result,"tttttttttttttttttt")
-        // console.log(util.inspect(result, { depth: null }));
         if (req.query.page) {
           res.render("result/student_list", {
             response: result,
@@ -171,6 +166,8 @@ console.log(result,"tttttttttttttttttt")
             title: "Results",
             active: "result_page",
             institute_id: req.params.inst_id,
+            quiz_id:req.query.q,
+            inst_id:req.query.i
           });
         } else {
           res.render("result/student_list", {
@@ -187,6 +184,8 @@ console.log(result,"tttttttttttttttttt")
             title: "Results",
             active: "result_page",
             institute_id: req.params.inst_id,
+            quiz_id:req.query.q,
+            inst_id:req.query.i
           });
         }
       })
