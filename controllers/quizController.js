@@ -19,6 +19,7 @@ var util = require("util");
 var fs = require("fs");
 var csv = require("fast-csv");
 const e = require("connect-flash");
+const { Console } = require("console");
 const ObjectID = require("mongodb").ObjectID;
 
 function fileFilter(req, file, cb) {
@@ -377,7 +378,6 @@ exports.getQuizDetail = (req, res, next) => {
 };
 exports.getQuizDetailById = (req, res, next) => {
   quizId = mongoose.Types.ObjectId(req.params.id);
-  // req.params.id,"ajaxxxxxxidddd"
   const query = {
     _id: quizId,
     is_deleted: 0,
@@ -397,30 +397,49 @@ exports.getQuizDetailById = (req, res, next) => {
       });
     });
 };
-
-exports.updateQuizDetail = (req, res, next) => {
-    new Promise((resolve, reject) => {
-        let datetime = req.body.date + " " + req.body.time;
-        let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").format("YYYY-MM-DD HH:mm");
-        var newdate = momenttz.tz(scheduleDate, req.cookies.time_zone_offset).utc();
-        let endDate = newdate.clone();
-        endDate = endDate.add(parseInt(req.body.duration), "m");
-        req.body.batch = parseInt(req.body.batch);
-        req.body.start_time = newdate;
-        req.body.end_time = endDate;
-        req.body.duration = parseInt(req.body.duration);
-        quizzes.update({ _id: req.body.quiz_id }, req.body).then(data => {
-            if (data != null) {
-                res.send({ status: 1, data: data });
-            } else
-                res.send({ status: 0 });
-        });
-    }).catch(err => {
-        res.render('error', {
-            error: err
-        })
-    })
-}
+//update test
+exports.updateQuizDetail = async (req, res, next) => {
+  console.log(req.body.quiz_id)
+  //query
+  const query = {
+    _id: req.body.quiz_id,
+    is_deleted: 0,
+  };
+  //find test data
+  const chkTest = await quizzes.findone(query);
+  //chk wheteher test has started or not
+  if (chkTest.status == 2) {
+    req.flash("error", "cannot update!!");
+    return res.send({ status: 0 });
+  }
+  //promise
+  new Promise((resolve, reject) => {
+    //handling body data
+    let datetime = req.body.date + " " + req.body.time;
+    let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").format(
+      "YYYY-MM-DD HH:mm"
+    );
+    var newdate = momenttz.tz(scheduleDate, req.cookies.time_zone_offset).utc();
+    let endDate = newdate.clone();
+    endDate = endDate.add(parseInt(req.body.duration), "m");
+    req.body.batch_year = parseInt(req.body.batch);
+    req.body.start_time = newdate;
+    req.body.end_time = endDate;
+    req.body.duration = parseInt(req.body.duration);
+    //update data
+    quizzes.update({ _id: req.body.quiz_id }, req.body).then((data) => {
+      if (data != null) {
+        req.flash("success", "updated successfully!!");
+        return res.send({ status: 1 });
+      } else req.flash("error", "could not update!!");
+      return res.send({ status: 0 });
+    });
+  }).catch((err) => {
+    res.render("error", {
+      error: err,
+    });
+  });
+};
 exports.importCsvCat = (req, res, next) => {
   try {
     question_categories
@@ -478,8 +497,11 @@ exports.addCsv = (req, res, next) => {
 //delete
 exports.deleteQuiz = async (req, res, next) => {
   try {
+    //converting id in to Object Id
     const id = mongoose.Types.ObjectId(req.params.id);
+    //delete data
     const result = await quizzes.delete({ _id: id }, { is_deleted: 1 });
+    //condition
     if (!result) {
       req.flash("error", "could not delete!!");
       return res.redirect("/quiz/scheduled");

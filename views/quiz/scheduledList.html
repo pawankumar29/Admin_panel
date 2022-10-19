@@ -145,6 +145,7 @@
     <div class="col-md-12">
       {% include "../flashMessage_Success.html" %}
       <!-- BEGIN BORDERED TABLE PORTLET-->
+      <input type="hidden" id="url" value="/test/" />
       <div class="portlet box green">
         <div class="portlet-title">
           <div class="caption"><i class="fa fa-university"></i>{{title}}</div>
@@ -199,7 +200,7 @@
                         <td>--</td>
                         {% endif %}
                         <td>
-                          {% if quiz.status == 1 || quiz.status == 2 %}
+                          {% if quiz.status == 1%}
                           <a
                             class="btn btn-circle btn-icon-only btn-default editQuiz"
                             quiz_id="{{quiz._id}}"
@@ -207,13 +208,13 @@
                             link="/quiz/edit/{{quiz._id}}"
                             ><i style="color: orange" class="fa fa-edit"></i
                           ></a>
-                          {% else %}
+                          {% endif %} {% if quiz.status == 2%}
                           <a
-                            class="btn btn-circle btn-icon-only btn-default"
-                            title="Delete"
-                            href="/quiz/delete/{{quiz._id}}"
-                            ><i style="color: red" class="fa fa-times"></i
-                          ></a>
+                            deleteLink="/quiz/delete/{{quiz._id}}"
+                            class="btn btn-circle btn-icon-only btn-default delete"
+                          >
+                            <i style="color: red" class="fa fa-times"></i>
+                          </a>
                           {% endif %}
                         </td>
                       </tr>
@@ -367,6 +368,10 @@
   src="{{getVersionedPath('/assets/datatables/plugins/bootstrap/dataTables.bootstrap.js')}}"
 ></script>
 <script src="{{getVersionedPath('/javascripts/scheduledList.js')}}"></script>
+<script
+  src="{{getVersionedPath('/javascripts/developer.js')}}"
+  type="text/javascript"
+></script>
 <script>
   TableManaged.init();
 
@@ -391,7 +396,6 @@
               startDate: new Date(),
             })
             .on("changeDate", function (e) {
-              console.log(e.dates,"==============")
               $(".date").attr("data-value", e.dates);
               $(".date-error").html("");
             });
@@ -441,22 +445,14 @@
         data: data,
         dataType: "JSON",
         success: function (result) {
-          if (result) {
+          if (result == "unathorised") {
+            window.location = "/login";
+          } else {
             window.location = "/quiz/scheduled";
           }
         },
       });
     }
-  });
-  $(document).on("click", ".deleteQuiz", function () {
-    var message = "Are you sure you want to delete?";
-    var url = $(this).attr("link");
-    
-    bootbox.confirm(message, function (result) {
-      if (result) {
-        window.location = url;
-      }
-    });
   });
 </script>
 {% endblock %}
