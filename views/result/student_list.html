@@ -1,231 +1,272 @@
 <!--admin userList.html-->
 
 {% block css %}
-<link href="{{getVersionedPath('/assets/layout/stylesheet/datepicker3.css')}}" id="style_components" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" type="text/css" href="{{getVersionedPath('/assets/datatables/plugins/bootstrap/dataTables.bootstrap.css')}}" />
-<link rel="stylesheet" type="text/css" href="{{getVersionedPath('/assets/layout/stylesheet/bootstrap-timepicker.min.css')}}" />
+<link
+  href="{{getVersionedPath('/assets/layout/stylesheet/datepicker3.css')}}"
+  id="style_components"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{getVersionedPath('/assets/datatables/plugins/bootstrap/dataTables.bootstrap.css')}}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{getVersionedPath('/assets/layout/stylesheet/bootstrap-timepicker.min.css')}}"
+/>
 
 <!-- BEGIN PAGE LEVEL STYLES -->
 <style>
-    th,
-    td {
-        text-align: left !important;
-        padding: 15px
-    }
-    
-    .action_dropdown {
-        height: 30px;
-        width: 30px;
-        background-color: white;
-    }
-    
-    .action_dropdown>i {
-        color: black;
-    }
-    
-    .dropdown-left-manual {
-        right: 0;
-        left: auto;
-        padding-left: 1px;
-        padding-right: 1px;
-    }
-    
-    .dropdown>.dropdown-menu:after,
-    .dropdown-toggle>.dropdown-menu:after,
-    .btn-group>.dropdown-menu:after {
-        position: absolute;
-        top: -7px;
-        left: auto;
-        right: 20px;
-        display: inline-block !important;
-        border-right: 7px solid transparent;
-        border-bottom: 7px solid #fff;
-        border-left: 7px solid transparent;
-        content: '';
-    }
-    
-    .dropdown>.dropdown-menu:before,
-    .dropdown-toggle>.dropdown-menu:before,
-    .btn-group>.dropdown-menu:before {
-        position: absolute;
-        top: -7px;
-        left: auto;
-        right: 20px;
-        display: inline-block !important;
-        border-right: 7px solid transparent;
-        border-bottom: 7px solid #fff;
-        border-left: 7px solid transparent;
-        content: '';
-    }
-    
-    .table-responsive {
-        min-height: .01%;
-        overflow-x: initial;
-    }
-    
-    #add_new_institute {
-        margin-left: 2%;
-    }
-    
-    h1 {
-        font-size: 15px
-    }
-    
-    .collegeContainer {
-        text-align: center;
-        min-height: 85px;
-    }
-    
-    .chip {
-        display: inline-block;
-        height: 32px;
-        font-size: 13px;
-        font-weight: 500;
-        color: black;
-        line-height: 25px;
-        padding: 0 12px;
-        border-radius: 16px;
-        background-color: white;
-        margin-bottom: 5px;
-        margin-right: 5px;
-        border: 2px solid black;
-    }
-    
-    .custom_close {
-        line-height: 25px;
-        padding-left: 10px;
-        font-size: 13px;
-        font-weight: 500;
-        cursor: pointer;
-    }
-    
-    .form-control[disabled],
-    .form-control[readonly] {
-        background-color: #fff;
-        cursor: default;
-    }
-    
-    label.error {
-        color: red;
-    }
-    
-    .width-45 {
-        width: 45%;
-    }
-    
-    .sampleCsv {
-        padding-left: 80px;
-        font-size: 15px;
-        line-height: 0px;
-    }
-    
-    .form-actions {
-        padding-top: 20px;
-        text-align: center;
-    }
+  th,
+  td {
+    text-align: left !important;
+    padding: 15px;
+  }
+
+  .action_dropdown {
+    height: 30px;
+    width: 30px;
+    background-color: white;
+  }
+
+  .action_dropdown > i {
+    color: black;
+  }
+
+  .dropdown-left-manual {
+    right: 0;
+    left: auto;
+    padding-left: 1px;
+    padding-right: 1px;
+  }
+
+  .dropdown > .dropdown-menu:after,
+  .dropdown-toggle > .dropdown-menu:after,
+  .btn-group > .dropdown-menu:after {
+    position: absolute;
+    top: -7px;
+    left: auto;
+    right: 20px;
+    display: inline-block !important;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #fff;
+    border-left: 7px solid transparent;
+    content: "";
+  }
+
+  .dropdown > .dropdown-menu:before,
+  .dropdown-toggle > .dropdown-menu:before,
+  .btn-group > .dropdown-menu:before {
+    position: absolute;
+    top: -7px;
+    left: auto;
+    right: 20px;
+    display: inline-block !important;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #fff;
+    border-left: 7px solid transparent;
+    content: "";
+  }
+
+  .table-responsive {
+    min-height: 0.01%;
+    overflow-x: initial;
+  }
+
+  #add_new_institute {
+    margin-left: 2%;
+  }
+
+  h1 {
+    font-size: 15px;
+  }
+
+  .collegeContainer {
+    text-align: center;
+    min-height: 85px;
+  }
+
+  .chip {
+    display: inline-block;
+    height: 32px;
+    font-size: 13px;
+    font-weight: 500;
+    color: black;
+    line-height: 25px;
+    padding: 0 12px;
+    border-radius: 16px;
+    background-color: white;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    border: 2px solid black;
+  }
+
+  .custom_close {
+    line-height: 25px;
+    padding-left: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .form-control[disabled],
+  .form-control[readonly] {
+    background-color: #fff;
+    cursor: default;
+  }
+
+  label.error {
+    color: red;
+  }
+
+  .width-45 {
+    width: 45%;
+  }
+
+  .sampleCsv {
+    padding-left: 80px;
+    font-size: 15px;
+    line-height: 0px;
+  }
+
+  .form-actions {
+    padding-top: 20px;
+    text-align: center;
+  }
 </style>
 
 {% endblock %} {% extends "../layout.html" %} {% block content %}
 
 <div class="page-content">
-    <div class="row">
-        <div class="col-md-12">
-            {% include "../flashMessage_Success.html" %}
-            <!-- BEGIN BORDERED TABLE PORTLET-->
-            <div class="portlet box green">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-university"></i>{{title}}
-                    </div>
-                </div>
-                <div class="portlet-body">
-
-                    <div class="row">
-                        <br/>
-                    </div>
-                    <div class="">
-                        <input type="hidden" id="url" name="url" value="/students/{{institute_id}}">
-                        <div class="row">
-                            <br/>
-                        </div>
-                        <form id="frm">
-                            <input type="hidden" id="action" name="action">
-                            <div id="ajaxResponce">
-                                <div class="table-responsive">
-                                    <!-- <input type="hidden" id="url" value="/institutes/"> -->
-                                    <table class="table table-bordered table-hover horizontal-table" id="datatable">
-                                        <thead>
-                                            <tr>
-                                                <th>S.No.</th>
-                                                <th>Name</th>
-                                                <th>Roll no</th>
-                                                <th>Branch</th>
-                                                <th>Technical Marks</th>
-                                                <th>Aptitude marks</th>
-                                                <th>Total Marks</th>
-                                                <!-- <th>Offer Letter</th>
-                                                <th width="5%">Status</th> -->
-                                                <!-- <th width="5%">Action</th> -->
-                                            </tr>
-                                        </thead>
-                                        <tbody> {% set curr = current-1 %} {% set index = curr* options.perPage +1 %} {% for student in response %}
-                                            <tr>
-                                                <td></td>
-                                                {% if !student.user_detail.name %}
-                                                <td>--</td>
-                                                {% else %}
-                                                <td>{{student.user_detail.name}} </td>
-                                                {% endif %} {% if !student.user_detail.roll_no %}
-                                                <td>--</td>
-                                                {% else %}
-                                                <td>{{student.user_detail.roll_no}} </td>
-                                                {% endif %} {% if !student.user_detail.qualification %}
-                                                <td>--</td>
-                                                {% else %}
-                                                <td>{{student.user_detail.qualification}} </td>
-                                                {% endif %} {% if student.category_marks.length > 0 %}
-                                                <td>
-                                                    {% for category in student.category_marks %} {% if category.category_id == '5c2ee79f73f5913e447b5150' %} {{category.marks}} {% endif %} {% endfor %}
-                                                </td>
-                                                <td>
-                                                    {% for category in student.category_marks %} {% if category.category_id == '5c2ee9f201b40af8a3dcc94a' %} {{category.marks}} {% endif %} {% endfor %}
-                                                </td>
-                                                {% else %}
-                                                <td>--</td>
-                                                <td>--</td>
-                                                {% endif %}
-                                                <td>{{student.total_marks}}</td>
-                                            </tr>
-                                            {% set index=index+1 %} {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- END BORDERED TABLE PORTLET-->
+  <div class="row">
+    <div class="col-md-12">
+      {% include "../flashMessage_Success.html" %}
+      <!-- BEGIN BORDERED TABLE PORTLET-->
+      <div class="portlet box green">
+        <div class="portlet-title">
+          <div class="caption"><i class="fa fa-university"></i>{{title}}</div>
         </div>
+        <div class="portlet-body">
+          <div class="row">
+            <br />
+          </div>
+          <div class="">
+            <input
+              type="hidden"
+              id="url"
+              name="url"
+              value="/students/{{institute_id}}"
+            />
+            <div class="row">
+              <br />
+            </div>
+            <form id="frm">
+              <input type="hidden" id="action" name="action" />
+              <div id="ajaxResponce">
+                <div class="table-responsive">
+                  <!-- <input type="hidden" id="url" value="/institutes/"> -->
+                  <table
+                    class="table table-bordered table-hover horizontal-table"
+                    id="datatable"
+                  >
+                    <thead>
+                      <tr>
+                        <th>S.No.</th>
+                        <th>Name</th>
+                        <th>Roll no</th>
+                        <th>Branch</th>
+                        <th>Technical Marks</th>
+                        <th>Aptitude marks</th>
+                        <th>Total Marks</th>
+                        <!-- <th>Offer Letter</th>
+                                                <th width="5%">Status</th> -->
+                        <!-- <th width="5%">Action</th> -->
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% set curr = current-1 %} {% set index = curr*
+                      options.perPage +1 %} {% for student in response %}
+                      <tr>
+                        <td></td>
+                        {% if !student.user_detail.name %}
+                        <td>--</td>
+                        {% else %}
+                        <td>{{student.user_detail.name}}</td>
+                        {% endif %} {% if !student.user_detail.roll_no %}
+                        <td>--</td>
+                        {% else %}
+                        <td>{{student.user_detail.roll_no}}</td>
+                        {% endif %} {% if !student.user_detail.qualification %}
+                        <td>--</td>
+                        {% else %}
+                        <td>{{student.user_detail.qualification}}</td>
+                        {% endif %} {% if student.category_marks.length > 0 %}
+                        <td>
+                {{student.category_marks[0].marks}}
+                        </td>
+                        <td>
+                          {{student.category_marks[1].marks}}
+                        </td>
+                        {% else %}
+                        <td>--</td>
+                        <td>--</td>
+                        {% endif %}
+                        <td>{{student.total_marks}}</td>
+                      </tr>
+                      {% set index=index+1 %} {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- END BORDERED TABLE PORTLET-->
     </div>
+  </div>
 </div>
 
 {% endblock %} {% block js %}
 
-<script src="{{getVersionedPath('/javascripts/bootstrap-datepicker.js')}}" type="text/javascript"></script>
-<script type="text/javascript" src="{{getVersionedPath('/assets/layout/javascript/bootstrap-timepicker.min.js')}}"></script>
-<script src="{{getVersionedPath('/javascripts/bootstrap-datepicker.js')}}" type="text/javascript"></script>
+<script
+  src="{{getVersionedPath('/javascripts/bootstrap-datepicker.js')}}"
+  type="text/javascript"
+></script>
+<script
+  type="text/javascript"
+  src="{{getVersionedPath('/assets/layout/javascript/bootstrap-timepicker.min.js')}}"
+></script>
+<script
+  src="{{getVersionedPath('/javascripts/bootstrap-datepicker.js')}}"
+  type="text/javascript"
+></script>
 <script src="{{getVersionedPath('/assets/layout/javascript/components-pickers.js')}}"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- include developer js file -->
-<script src="{{getVersionedPath('/javascripts/developer.js')}}" type="text/javascript"></script>
-<script src="{{getVersionedPath('/javascripts/bootbox.min.js')}}" type="text/javascript"></script>
+<script
+  src="{{getVersionedPath('/javascripts/developer.js')}}"
+  type="text/javascript"
+></script>
+<script
+  src="{{getVersionedPath('/javascripts/bootbox.min.js')}}"
+  type="text/javascript"
+></script>
 <!-- <script src="{{getVersionedPath('/javascripts/pagination.js')}}"></script> -->
-<script type="text/javascript" src="{{getVersionedPath('/assets/datatables/media/js/jquery.dataTables.min.js')}}"></script>
-<script type="text/javascript" src="{{getVersionedPath('/assets/datatables/plugins/bootstrap/dataTables.bootstrap.js')}}"></script>
+<script
+  type="text/javascript"
+  src="{{getVersionedPath('/assets/datatables/media/js/jquery.dataTables.min.js')}}"
+></script>
+<script
+  type="text/javascript"
+  src="{{getVersionedPath('/assets/datatables/plugins/bootstrap/dataTables.bootstrap.js')}}"
+></script>
 <script src="{{getVersionedPath('/javascripts/student_result.js')}}"></script>
 
 <script>
-    TableManaged.init();
+  TableManaged.init();
 </script>
 {% endblock %}

@@ -800,7 +800,7 @@ mongoose.model('question_categories', questionCategoriesSchema);
 mongoose.model('institute_categories', instituteWiseCategoriesSchema);
 mongoose.model('permissions', permissionSchema);
 mongoose.model('questions', questionSchema);
-mongoose.model('quiz_result', quizResultScehma);
+mongoose.model('quiz_results', quizResultScehma);
 mongoose.model("quizzezs", quizSchema);
 mongoose.model("contact_us", contactUsSchema);
 mongoose.model("settings", settingSchema);
