@@ -140,11 +140,8 @@
                 <div class="portlet-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <a class="btn btn green pull-right" id="add_new_institute" href="/institutes/get-walkins">Walkings</a>
-                            <a class="btn btn green pull-right" id="add_new_institute" href="/institutes/add">Add new
-                                Institute</a>
-                            <button class="btn btn green pull-right" id="enable_test">Enable Test</button>
-
+                            <a class="btn btn green pull-right" id="add_new_institute" href="/institutes/add-new-walkins">Add Walkings</a>
+                            <button class="btn btn green pull-right" id="enable_test_walkings">Enable Test</button>
                         </div>
                     </div>
 
@@ -153,8 +150,6 @@
                     </div>
                     <div class="">
                         <input type="hidden" id="url" name="url" value="/institutes/">
-                        <!--<input type="hidden" id="filterUrl" name="filterUrl" value="/users/">-->
-                        <!-- <input type="text" id="export_csv_url" name="export_csv_url" value="/users/getcsv" hidden> -->
                         <div class="row">
                             <br />
                         </div>
@@ -162,7 +157,7 @@
                             <input type="hidden" id="action" name="action">
                             <div id="ajaxResponce">
                                 <!-- To show Ajax Responce -->
-                                {% include "./table.html" %}
+                                {% include "./wTable.html" %}
                             </div>
                         </form>
                     </div>
@@ -179,18 +174,12 @@
         <div class="modal-content">
             <div class="modal-header text-center">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h3 class="modal-title center">Add Batch</h3>
+                <h3 class="modal-title center">Add Walkings Candidate</h3>
             </div>
-            <form name="add_batch_form" class="add_batch_form" method="POST" action="/institutes/add_batch" enctype="multipart/form-data">
+            <form name="add_batch_form" class="add_batch_form" method="POST" action="/institutes/add-new-walkings" enctype="multipart/form-data">
                 <div class="modal-body">
 
-                    <input type="hidden" name="institute_id" id="batch_inst_id" />
-                    <div class="form-group width-45">
-                        <label class="control-label"><b>Batch</b></label>
-                        <span class="star"></span>
-                        <select name="batch" class="form-control batch_year" placeholder="Batch">
-                        </select>
-                    </div>
+                    <input type="hidden" name="walkings_id" id="batch_inst_id" />
                     <div class="form-group width-45">
                         <label class="control-label"><b>Students CSV</b></label>
                         <div class="" input-group>
@@ -226,7 +215,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="collegeContainer">
-                                <h1>Select Collage(s)</h1>
+                                <h1>Select Walkins(s)</h1>
                                 <div class="line"></div>
                                 <div class="chipcontainer"></div>
                             </div>
@@ -234,6 +223,9 @@
                                 <label class="control-label col-md-3">Choose Date</label>
                                 <div class="input-group" id="test_date" data-date-format="mm/dd/yyyy" data-date-start-date="+1d">
                                     <input type="text" class="form-control date" id="date_test" readonly="" name="date">
+                                    <!-- <span class="input-group-btn">
+                                        <button class="btn green" type="button"><i class="fa fa-calendar"></i></button>
+                                    </span> -->
                                 </div>
                                 <div class="col-md-3"></div>
                                 <label class="error date-error"></label>
@@ -244,10 +236,6 @@
                                     <label class="control-label col-md-3">Set Time</label>
                                     <div class="input-group">
                                         <input type="text" id="test_time" class="form-control timepicker timepicker-24">
-                                        <!-- <span class="input-group-btn">
-                                            <button class="btn green" type="button"><i
-                                                    class="fa fa-clock-o"></i></button>
-                                        </span> -->
                                     </div>
                                     <div class="col-md-3"></div>
                                     <label class="error time-error"></label>
@@ -263,17 +251,6 @@
                                     <label class="error time-error"></label>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3">Batch</label>
-                                    <div class="input-group">
-                                        <select name="batch" class="form-control" id="batch_year_test" placeholder="Batch">
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                    <label class="error time-error"></label>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <!-- </div> -->
@@ -281,7 +258,7 @@
             </div>
 
             <div class="modal-footer" style="text-align: center">
-                <button type="button" class="btn btn-success enable_test">Save</button>
+                <button type="button" class="btn btn-success enable_test_walking">Save</button>
                 <button type="button" data-dismiss="modal" class="btn default ">Close</button>
             </div>
         </div>
@@ -305,17 +282,14 @@
 <script>
     $(function() {
         jQuery(document).ready(function() {
-            console.log("jjjjjjjjjjjjjjjjjj")
             var current_year = new Date().getFullYear();
             var start_year = current_year - 2;
             var html = "";
             for (var year = current_year; year >= start_year; year--) {
                 html += "<option value = '" + year + "'>" + year + "</option>"
             }
-            $('.batch_year').html(html);
-            $('#batch_year_test').html(html);
             var dt = new Date();
-            dt.setDate(dt.getDate() + 1);
+            dt.setDate(dt.getDate() );
             ComponentsPickers.init();
             $(".date").datepicker({
                 autoclose: true,

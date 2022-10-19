@@ -28,6 +28,7 @@ exports.findOne = (query) => {
     });
   });
 };
+
 exports.count = (query) => {
   return new Promise((resolve, reject) => {
     quiz.count(query, (error, data) => {
@@ -60,4 +61,8 @@ exports.insertMany = (data) => {
       }
     });
   });
+};
+exports.findone = async (query) => {
+  const chkTest = await quiz.findOne(query);
+  return chkTest;
 };
