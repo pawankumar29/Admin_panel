@@ -1,3 +1,4 @@
+//const moment = require("moment");
 jQuery(document).ready(function () {
   // set local timezone offset in cookies
   var time_zone_offset = -new Date().getTimezoneOffset();

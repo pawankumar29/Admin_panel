@@ -81,6 +81,46 @@ jQuery(document).ready(function() {
             }
         }
     });
+    $('.walkings-form').validate({
+        focusInvalid: false,
+        ignore: [],
+        invalidHandler: function(form, validator) {
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+                validator.errorList[0].element.focus();
+            }
+        },
+        rules: {
+            //            batch: {
+            //                required: true
+            //            },
+            name: {
+                required: true,
+                minlength: 2,
+                maxlength: 100
+            },
+            
+           resume: {
+                required: true
+            }
+        },
+        messages: {
+            //            batch: {
+            //                required: "Please select Batch.",
+            //                minlength: "Please enter 4 characters.",
+            //                maxlength: "Please enter 4 characters."
+            //            },
+            name: {
+                required: "Please enter name of Institute.",
+                minlength: "Please enter atleast 3 characters.",
+                maxlength: "Please enter maximum 100 characters."
+            },
+            resume: {
+                required: "Please select resume option"
+            }
+
+        },
+    });
 
     let date = new Date();
     let year = parseInt(date.getFullYear() + 5);
@@ -209,6 +249,18 @@ jQuery(document).ready(function() {
             }
         });
     });
+    $(document).on("click", ".show_walkings_modal", function() {
+        var institute_id = $(this).attr('inst_id');
+        const walkingId = $('#batch_inst_id').val(institute_id);
+        var current_year = new Date().getFullYear();
+        var start_year = current_year - 2;
+        var html = "";
+        for (var year = current_year; year >= start_year; year--) {
+            html += "<option>" + year + "</option>"
+        }
+        $('.batch_year').html(html);
+        $('#add_batch_modal').modal('show');
+    });
     $(document).on("click", ".show_batch_modal", function() {
         var institute_id = $(this).attr('inst_id');
         $('#batch_inst_id').val(institute_id);
@@ -220,6 +272,28 @@ jQuery(document).ready(function() {
         }
         $('.batch_year').html(html);
         $('#add_batch_modal').modal('show');
+    });
+    $('.add_walkins_form').validate({
+        focusInvalid: false,
+        ignore: [],
+        invalidHandler: function(form, validator) {
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+                validator.errorList[0].element.focus();
+            }
+        },
+        rules: {
+            date: {
+                required: true,
+                date: true
+            }
+        },
+        messages: {
+            data: {
+                required: "Please select date",
+                date: "Please select valid date"
+            }
+        }
     });
     $('.add_batch_form').validate({
         focusInvalid: false,
@@ -308,6 +382,38 @@ jQuery(document).ready(function() {
                 success: function(result) {
                     console.log(result);
                     window.location = "/institutes"
+                }
+            });
+        }
+    });
+    $(document).on("click", ".enable_test_walking", function(event) {
+        event.preventDefault();
+        if ($(".enable_quiz_form").valid()) {
+            var duration = $("#test_duration").val();
+            var time = $("#test_time").val();
+            var date = $("#date_test").val();
+         
+
+            var chips = [];
+            $(".chipcontainer").children(".chip").each(function() {
+                chips.push($(this).data("value"));
+            });
+            var data = {
+                duration: duration,
+                time: time,
+                date: date,
+                walkings: chips
+            };
+            console.log("data");
+            console.log(data);
+            $.ajax({
+                url: "/institutes/enable-test-walkings",
+                type: "POST",
+                data: data,
+                dataType: 'JSON',
+                success: function(result) {
+                    console.log(result);
+                    window.location = "/institutes/get-walkins"
                 }
             });
         }

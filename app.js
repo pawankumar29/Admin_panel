@@ -99,7 +99,6 @@ module.exports.appPromise = startTheAsyncOperation().then(() => {
         }
     });
 
-
     app.use('/dashboard', require('./routes/dashboard'));
     app.use('/categories', require('./routes/categories'));
     app.use('/students', require('./routes/students'));

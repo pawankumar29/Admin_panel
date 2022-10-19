@@ -13,6 +13,7 @@ var fs = require('fs')
 var csv = require('fast-csv');
 const roles = require("../helper/roles");
 const quizzes = require("../models/quiz")
+const walkings = require("../models/walkings")
 const quiz_results = require("../models/quiz_result")
 const institute_categories = require("../models/institute_categories")
 const question_categories = require("../models/question_categories")
@@ -142,8 +143,6 @@ function dataUpload(organisation_id, institute_id, batch, path) {
                                         "qualification": obj["qualification"],
                                         "branch": obj["branch"]
                                     });
-
-
                                 }
                             } else {
                                 obj["message"] = "dob format is not correct.";
@@ -623,53 +622,9 @@ exports.add_batch = (req, res, next) => {
             error: err
         })
     }
-    //    new Promise((resolve, reject) => {
-    //        //        console.log(req.body);
-    //        var errors = editInstituteValidator(req, res, next)
-    //        if (!errors) {
-    //            if (parseInt(req.body.resume) == 1 || parseInt(req.body.resume) == 0) {
-    //                let updateData = {
-    //                    name: req.body.name.trim(),
-    //                    po_name: req.body.po_name.trim(),
-    //                    po_email: req.body.po_email.trim(),
-    //                    qualification: req.body.qualification,
-    //                    no_of_students: parseInt(req.body.no_of_students),
-    //                    is_walkin: 0,
-    //                    resume: parseInt(req.body.resume)
-    //                }
-    //                institutes
-    //                        .update({
-    //                            organisation_id: req.user.organisation_id,
-    //                            _id: mongoose.Types.ObjectId(req.params.id),
-    //                            status: 1,
-    //                            is_deleted: 0
-    //                        },
-    //                                updateData
-    //                                )
-    //                        .then(ressult => {
-    //                            req.flash('success', 'Institution detail changed successfully!!')
-    //                            res.redirect('/institutes')
-    //                        })
-    //                        .catch(err => {
-    //                            reject(err)
-    //                        })
-    //            } else {
-    //                req.flash('error', 'invalid value for resume.')
-    //                res.redirect('/institutes/edit/' + req.param.id.toString())
-    //            }
-    //        } else {
-    //            req.flash('error', Object.values(errors)[0].msg)
-    //            res.redirect('/institutes/edit/' + req.param.id.toString())
-    //        }
-    //    }).catch(err => {
-    //        res.render('error', {
-    //            error: err
-    //        })
-    //    })
 }
 exports.post_edit_institution = (req, res, next) => {
     new Promise((resolve, reject) => {
-        //        console.log(req.body);
         var errors = editInstituteValidator(req, res, next)
         if (!errors) {
             if (parseInt(req.body.resume) == 1 || parseInt(req.body.resume) == 0) {
@@ -759,27 +714,13 @@ exports.csvDowload = (req, res, next) => {
 
 exports.enable_test = (req, res, next) => {
     new Promise(async(resolve, reject) => {
-        // console.log("cookies");
-        // console.log("timezone");
-        // console.log(req.cookies.time_zone_offset);
         console.log("body");
-        console.log(req.body);
-        // console.log(req.cookies);
         let datetime = req.body.date + " " + req.body.time;
         let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").format("YYYY-MM-DD HH:mm");
-        // console.log("scheduleDate");
-        // console.log(scheduleDate);
         var newdate = momenttz.tz(scheduleDate, req.cookies.time_zone_offset).utc();
-        // console.log("newdate");
-        // console.log(newdate);
-        // let utcDate = scheduleDate.utc();
-        // console.log("utcDate from schedule date");
-        // console.log(utcDate);
         let endDate = newdate.clone();
 
         endDate = endDate.add(parseInt(req.body.duration), "m");
-        // console.log("enddate");
-        // console.log(endDate);
         let dataToinsert = req.body.institute.map(institute_id => {
             return {
                 "institute_id": mongoose.Types.ObjectId(institute_id),
@@ -799,3 +740,537 @@ exports.enable_test = (req, res, next) => {
         res.redirect('/institutes')
     })
 };
+exports.addWalkins = async(req, res, next) => {
+    try {
+            let options = {perPage: global.config.pagination_limit,delta: global.config.delta,page: 1}
+            if (req.query.page)
+            {
+                options.page = req.query.page
+            }
+            let skipPages = options.page - 1
+            let startOfYear = new Date(moment.utc().startOf('year'))
+            let endOfYear = new Date(moment.utc().endOf('year'))
+            let aggregation_query = [{
+                    $match: {
+                        organisation_id: req.user.organisation_id,
+                        is_walkin: 1,
+                        is_deleted: 0
+                    }
+                },
+                {
+                    $sort: {
+                        name: 1
+                    }
+                },
+                {
+                    $skip: skipPages * global.config.pagination_limit
+                },
+                {
+                    $limit: global.config.pagination_limit
+                },
+                {
+                    $lookup: {
+                        from: 'quizzes',
+                        let: {
+                            ref_id: '$_id'
+                        },
+                        pipeline: [{
+                                $match: {
+                                    $expr: {
+                                        $and: [{
+                                                $eq: ['$walkings_id', '$$ref_id']
+                                            },
+                                            {
+                                                $eq: ['$organisation_id', req.user.organisation_id]
+                                            },
+                                            {
+                                                $eq: ['$is_deleted', 0]
+                                            },
+                                            {
+                                                $gte: ['$created_at', startOfYear]
+                                            },
+                                            {
+                                                $lte: ['$created_at', endOfYear]
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $sort: {
+                                    cretaed_at: -1
+                                }
+                            },
+                            {
+                                $limit: 1
+                            },
+                            {
+                                $project: {
+                                    status: 1
+                                }
+                            }
+                        ],
+                        as: 'quiz'
+                    }
+                },
+                // {
+                //     $lookup: {
+                //         from: 'quiz_results',
+                //         let: {
+                //             ref_id: '$_id'
+                //         },
+                //         pipeline: [{
+                //                 $match: {
+                //                     $expr: {
+                //                         $and: [{
+                //                                 $eq: ['$walkings_id', '$$ref_id']
+                //                             },
+                //                             {
+                //                                 $eq: ['$organisation_id', req.user.organisation_id]
+                //                             },
+                //                             {
+                //                                 $eq: ['$is_deleted', 0]
+                //                             },
+                //                             {
+                //                                 $eq: ['$status', 2]
+                //                             },
+                //                             {
+                //                                 $eq: ['$placed_status', 1]
+                //                             },
+                //                             {
+                //                                 $gte: ['$created_at', startOfYear]
+                //                             },
+                //                             {
+                //                                 $lte: ['$created_at', endOfYear]
+                //                             }
+                //                         ]
+                //                     }
+                //                 }
+                //             },
+                //             {
+                //                 $group: {
+                //                     _id: null,
+                //                     candidate_selected: {
+                //                         $sum: 1
+                //                     }
+                //                 }
+                //             },
+                //             {
+                //                 $project: {
+                //                     candidate_selected: 1
+                //                 }
+                //             }
+                //         ],
+                //         as: 'quiz_result'
+                //     }
+                // },
+                // {
+                //     $unwind: {
+                //         path: '$quiz',
+                //         preserveNullAndEmptyArrays: true
+                //     }
+                // },
+                // {
+                //     $unwind: {
+                //         path: '$quiz_result',
+                //         preserveNullAndEmptyArrays: true
+                //     }
+                // },
+                {
+                    $project: {
+                        name: 1,
+                        po_name: 1,
+                        qualification: 1,
+                        no_of_students: 1,
+                        candidate_selected: '$quiz_result.candidate_selected',
+                        test_status: {
+                            $cond: ['$quiz.status', '$quiz.status', 0]
+                        }
+                    }
+                },
+            ]
+            let p1 = walkings.count({
+                organisation_id: req.user.organisation_id,
+                is_walkin: 1,
+                is_deleted: 0
+            })
+            let p2 = walkings.aggregate(aggregation_query)
+            Promise.all([p1, p2])
+            .then(([count, result]) => {
+                let last = parseInt(
+                    count % global.config.pagination_limit == 0 ?
+                    count / global.config.pagination_limit :
+                    count / global.config.pagination_limit + 1
+                )
+                let pages = []
+                for (i = 1; i <= last; i++) {
+                    pages.push(i)
+                }
+                if (req.query.page) {
+                    res.render('institute/table', {
+                        response: result,
+                        count: count,
+                        prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
+                        last: last,
+                        pages: pages,
+                        next: options.page == last ? last : last + 1,
+                        message: req.flash(),
+                        options: options,
+                        current: req.query.page || 1,
+                        delta: global.config.delta,
+                        title: 'Manage Walkings',
+                        active: 'manage_institutions_page'
+                    })
+                } else {
+                    res.render('institute/addWalkinsForm', {
+                        response: result,
+                        count: count,
+                        prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
+                        last: last,
+                        pages: pages,
+                        next: options.page == last ? last : last + 1,
+                        message: req.flash(),
+                        options: options,
+                        current: req.query.page || 1,
+                        delta: global.config.delta,
+                        title: 'Manage Walkings',
+                        active: 'manage_institutions_page'
+                    })
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+            // res.render('institute/addWalkinsTable', {title: 'Walkins'})
+    } catch (error) {
+        console.log(error)
+    }
+};
+exports.addNewWalkies = (req,res,next)=>{
+    try {
+        upload(req, res, async function(err) {
+            if (!err) {
+                const settingData = await settings.findOnePromise({},{qualification: 1})
+                if(settingData){
+                   res.render('institute/addW',{title:"Add Walkings", qualification: settingData.qualification,})
+                }
+            }
+        })
+    } catch (err) {
+        res.render('error', {
+            error: err
+        })
+    }
+}
+exports.postAddWalkins = (req,res,next)=>{
+    try {
+        upload(req, res, async function(err) {
+            if (!err) {
+                const settingData = await settings.findOnePromise({}, {instruction: 1})
+                if(parseInt(req.body.resume) == 1 ||parseInt(req.body.resume) == 0){
+                    let insertData = {
+                        name: req.body.name.trim(),
+                        qualification: req.body.qualification,
+                        is_walkin: 1,
+                        resume: parseInt(req.body.resume),
+                        instruction: JSON.parse(JSON.stringify(settingData))[
+                            'instruction'
+                        ],
+                        organisation_id: req.user.organisation_id
+                    }
+                    const walkingData = await walkings.save(insertData);
+                    const questionCategories = await question_categories.find({ default: 1, is_deleted: 0, status: 1 })
+                    req.flash('success',"New Walkings added successfully")
+                    res.redirect('/institutes/get-walkins')
+                }
+            } else {
+                console.log(err)
+                res.render('error', {
+                    error: err
+                })
+            }
+        })
+    } catch (err) {
+        res.render('error', {
+            error: err
+        })
+    }
+}
+exports.get_edit_walkings = async(req,res,next)=>{
+    try {
+        new Promise((resolve, reject) => {
+            let p1 = settings.findOnePromise({}, {
+                qualification: 1
+            })
+            let p2 = walkings.findOne({
+                _id: mongoose.Types.ObjectId(req.params.id),
+                status: 1,
+                is_deleted: 0
+            })
+            Promise.all([p1, p2])
+                .then(([qualificationData, data]) => {
+                    if (data) {
+                        compQualification = qualificationData.qualification.map(obj => {
+                            if (data['qualification'].includes(obj)) {
+                                return {
+                                    match: 1,
+                                    text: obj
+                                }
+                            } else {
+                                return {
+                                    match: 0,
+                                    text: obj
+                                }
+                            }
+                        })
+                        res.render('institute/walkingsEdit', {
+                            title: 'Edit Walkings Detals',
+                            qualification: compQualification,
+                            institute: data,
+                            message: req.flash()
+                        })
+                    } else {
+                        reject({
+                            message: 'Walkings data can not be edit.'
+                        })
+                    }
+                })
+                .catch(error => {
+                    reject(error)
+                })
+                // render view add institution page
+        }).catch(error => {
+            req.flash('error', error.message)
+            res.redirect('/institutes')
+        })
+    }
+    catch (error) {
+        res.render('error', {
+            error: err
+        })
+    }
+}
+exports.post_edit_walkings = (req, res, next) => {
+    new Promise((resolve, reject) => {
+        //        console.log(req.body);       
+            if (parseInt(req.body.resume) == 1 || parseInt(req.body.resume) == 0) {
+                let updateData = {
+                    name: req.body.name.trim(),
+                    qualification: req.body.qualification,
+                    is_walkin: 1,
+                    resume: parseInt(req.body.resume)
+                }
+                walkings
+                    .update({
+                            organisation_id: req.user.organisation_id,
+                            _id: mongoose.Types.ObjectId(req.params.id),
+                            status: 1,
+                            is_deleted: 0
+                        },
+                        updateData
+                    )
+                    .then(ressult => {
+                        req.flash('success', 'Walkings detail changed successfully!!')
+                        res.redirect('/institutes/get-walkins')
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
+            } else {
+                req.flash('error', 'invalid value for resume.')
+                res.redirect('/institutes/get-edit-walkings/' + req.param.id)
+            }
+    }).catch(err => {
+        res.render('error', {
+            error: err
+        })
+    })
+}
+exports.enable_test_walkings = (req, res, next) => {
+    new Promise(async(resolve, reject) => { 
+        let datetime = req.body.date + " " + req.body.time;
+        let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").format("YYYY-MM-DD HH:mm");
+        var newdate = momenttz.tz(scheduleDate, req.cookies.time_zone_offset).utc();
+        let endDate = newdate.clone();
+
+        endDate = endDate.add(parseInt(req.body.duration), "m");
+        let dataToinsert = req.body.walkings.map(walkings_id => {
+            return {
+                "walkings_id": mongoose.Types.ObjectId(walkings_id),
+                "organisation_id": mongoose.Types.ObjectId(req.user.organisation_id),
+                "start_time": newdate,
+                "duration": parseInt(req.body.duration),
+                "end_time": endDate,
+                "status": 1,
+                "is_walking":1
+            }
+        });
+        let insertedData = await quizzes.insertMany(dataToinsert);
+        // console.log(insertedData);
+        res.status(200).send({ status: 1, message: "Success" });
+    }).catch(err => {
+        req.flash('error', err.message)
+        res.redirect('/institutes')
+    })
+};
+exports.add_new_walkings = (req, res, next) => {
+    try {
+        upload(req, res, function(err) {
+            if (!err) {
+                if (req.file) {
+                    let response = dataUploadWalkings(req.user.organisation_id.toString(), req.body.walkings_id, req.file.path);
+                    req.flash('success', 'Students added successfully!!')
+                    res.redirect('/institutes/get-walkins')
+                } else {
+                    req.flash('error', 'Please Upload a csv file of student details')
+                    res.redirect('/institutes/get-walkins')
+                }
+            } else {
+                console.log(err)
+                res.render('error', {
+                    error: err
+                })
+            }
+        })
+    } catch (err) {
+        res.render('error', {
+            error: err
+        })
+    }
+}
+function dataUploadWalkings(organisation_id, walkings_id,path) {
+    // let organisation_id = req.user.organisation_id
+    organisation_id = mongoose.Types.ObjectId(organisation_id);
+    let invalidArray = [];
+    let validArray = [];
+    let csvDataArray = [];
+    let emailArray = [];
+    let completePath = process.cwd() + '/' + path;
+    //    console.log(completePath);
+    var stream = fs.createReadStream(completePath)
+    csv.fromStream(stream, {
+        headers: true
+    }).on('data', function(data) {
+        if (emailArray.includes(data.email)) {
+            data["message"] = "Email repeated in csv";
+            data["errorStatus"] = 6;
+            data["reject"] = 1;
+        }
+        emailArray.push(data.email)
+        csvDataArray.push(data)
+    }).on('end', function(count) {
+        if (count > 0) {
+            users.find({
+                organisation_id: organisation_id,
+                email: {
+                    $in: emailArray
+                },
+                is_deleted: 0
+            }).then(userData => {
+                if (userData.status == 1) {
+                    let data = userData.data;
+                    let matchedData = {};
+                    for (index = 0; index < csvDataArray.length; index++) {
+                        let obj = csvDataArray[index];
+                        let alreadyExist = 0;
+                        if (obj["email"] && obj["name"] && obj["qualification"] && obj["branch"] && obj["roll_no"] && obj["phone_no"] && obj["father_name"] && obj["dob"]) {
+                            if (moment(obj["dob"], "MM/DD/YYYY", true).isValid()) {
+                                if (!validateEmail(obj["email"])) {
+                                    obj["message"] = "Invalid Email format.Please check";
+                                    obj["errorStatus"] = 6; //field missing
+                                    obj["index"] = index;
+                                    invalidArray.push(obj);
+                                    continue;
+                                }
+                                if (obj["reject"] == 1) {
+                                    invalidArray.push(obj);
+                                    continue;
+                                }
+                                //check whether user already exist in system with same organisation
+                                data.forEach(userobj => {
+                                    if (userobj.email == obj.email) {
+                                        alreadyExist = 1;
+                                        matchedData = userobj;
+                                    }
+                                });
+                                if (alreadyExist == 1) {
+                                    if (matchedData.walkings_id.toString() != walkings_id    ) {
+                                        obj["message"] = "User email is already registered with another institute.";
+                                        obj["errorStatus"] = 3; //field missing
+                                        obj["index"] = index;
+                                        invalidArray.push(obj);
+                                        continue;
+                                    } else if (matchedData.is_walkin_user == 1) {
+                                        obj["message"] = "User already present as walkin user in the system.";
+                                        obj["errorStatus"] = 4; //field missing
+                                        obj["index"] = index;
+                                        invalidArray.push(obj);
+                                        continue;
+                                    }  else {
+                                        obj["message"] = "User already present in the system.";
+                                        obj["errorStatus"] = 5; //field missing
+                                        obj["index"] = index;
+                                        invalidArray.push(obj);
+                                        continue;
+                                    }
+                                } else {
+                                    validArray.push({
+                                        "walkings_id": walkings_id,
+                                        "organisation_id": organisation_id,
+                                        "is_walkin_user": 0,
+                                        "role": roles.app_user,
+                                        "status": 1,
+                                        "name": obj["name"],
+                                        "roll_no": obj["roll_no"],
+                                        "phone_no": obj["phone_no"],
+                                        "father_name": obj["father_name"],
+                                        "dob": obj["dob"],
+                                        "email": obj["email"].toString().toLowerCase(),
+                                        "qualification": obj["qualification"],
+                                        "branch": obj["branch"]
+                                    });
+                                }
+                            } else {
+                                obj["message"] = "dob format is not correct.";
+                                obj["errorStatus"] = 2; //field missing
+                                obj["index"] = index;
+                                invalidArray.push(obj);
+                                continue;
+                            }
+                        } else {
+                            obj["message"] = "Fields are missing.";
+                            obj["errorStatus"] = 1; //field missing
+                            obj["index"] = index;
+                            invalidArray.push(obj);
+                            continue;
+                        }
+                    }
+                    console.log("valid array");
+                    console.log(validArray);
+                    console.log("invalid array");
+                    console.log(invalidArray)
+                    let promiseArray = [];
+                    if (validArray.length > 0) {
+                        promiseArray.push(users.insertMany(validArray));
+                    }
+                 
+                    let no_of_students = validArray.length 
+                    promiseArray.push(walkings.update({ _id: mongoose.Types.ObjectId(walkings_id), is_deleted: 0 }, { no_of_students: no_of_students }));
+                    Promise.all(promiseArray).then(([insert, update, updatecount]) => {
+                        return { message: "success", status: 1, errorData: invalidArray };
+                    }).catch(err => {
+                        return { message: err.message, status: 0 }
+                    })
+                } else {
+                    console.log("error in find data")
+                }
+            }).catch(error => {
+                console.log(error)
+                return {
+                    message: error.message,
+                    status: 0
+                }
+            })
+        }
+    })
+}

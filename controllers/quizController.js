@@ -19,6 +19,7 @@ var util = require("util");
 var fs = require("fs");
 var csv = require("fast-csv");
 const e = require("connect-flash");
+const { Console } = require("console");
 const ObjectID = require("mongodb").ObjectID;
 
 function fileFilter(req, file, cb) {
@@ -248,15 +249,115 @@ exports.get_scheduledList = (req, res, next) => {
             active: "schedule_test",
           });
         }
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  }).catch((err) => {
-    console.log(err);
-    //        res.redirect('/institutes');
-  });
-};
+        /** ***skip check*****/
+        let skipPages = options.page - 1
+        let startOfYear = new Date(moment.utc().startOf('year'))
+        let aggregation_query = [{
+                $match: {
+                    organisation_id: req.user.organisation_id,
+                    is_deleted: 0
+                }
+            },
+            {
+                $sort: {
+                    start_time: 1
+                }
+            },
+            {
+                $lookup: {
+                    from: 'walkings',
+                    let: {
+                        ref_id: '$walkings_id'
+                    },
+                    pipeline: [{ $match: { $expr: { $eq: ['$_id', '$$ref_id'] } } }, { $project: { _id: 1, name: 1, no_of_students: 1 } }],
+                    as: 'walkings'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$walkings',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: 'institutes',
+                    let: {
+                        ref_id: '$institute_id'
+                    },
+                    pipeline: [{ $match: { $expr: { $eq: ['$_id', '$$ref_id'] } } }, { $project: { _id: 1, name: 1, no_of_students: 1 } }],
+                    as: 'institute'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$institute',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $sort: {
+                    start_time: -1
+                }
+            }
+        ];
+        let p1 = quizzes.count({
+            organisation_id: req.user.organisation_id,
+            is_deleted: 0
+        })
+        let p2 = quizzes.aggregate(aggregation_query)
+            // console.log(util.inspect(aggregation_query, { depth: null }));
+        Promise.all([p1, p2])
+            .then(([count, result]) => {
+                // console.log(util.inspect(result, { depth: null }));
+                let last = parseInt(
+                    count % global.config.pagination_limit == 0 ?
+                    count / global.config.pagination_limit :
+                    count / global.config.pagination_limit + 1
+                )
+                let pages = []
+                for (i = 1; i <= last; i++) {
+                    pages.push(i)
+                }
+                if (req.query.page) {
+                        res.render('quiz/scheduledList', {
+                        response: JSON.parse(JSON.stringify(result)),
+                        count: count,
+                        prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
+                        last: last,
+                        pages: pages,
+                        next: options.page == last ? last : last + 1,
+                        message: req.flash(),
+                        options: options,
+                        current: req.query.page || 1,
+                        delta: global.config.delta,
+                        title: 'Manage Scheduled Test',
+                        active: 'schedule_test'
+                    });
+                } else {
+                        res.render('quiz/scheduledList', {
+                        response: JSON.parse(JSON.stringify(result)),
+                        count: count,
+                        prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
+                        last: last,
+                        pages: pages,
+                        next: options.page == last ? last : last + 1,
+                        message: req.flash(),
+                        options: options,
+                        current: req.query.page || 1,
+                        delta: global.config.delta,
+                        title: 'Manage Scheduled Test',
+                        active: 'schedule_test'
+                    })
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+    }).catch(err => {
+        console.log(err)
+            //        res.redirect('/institutes');
+    })
 exports.add_category = (req, res, next) => {
   try {
     settings
@@ -283,7 +384,7 @@ exports.add_category = (req, res, next) => {
       error: err,
     });
   }
-};
+}
 exports.save_new_category = (req, res, next) => {
   try {
     var sub_category = [];
@@ -377,7 +478,6 @@ exports.getQuizDetail = (req, res, next) => {
 };
 exports.getQuizDetailById = (req, res, next) => {
   quizId = mongoose.Types.ObjectId(req.params.id);
-  // req.params.id,"ajaxxxxxxidddd"
   const query = {
     _id: quizId,
     is_deleted: 0,
@@ -397,9 +497,24 @@ exports.getQuizDetailById = (req, res, next) => {
       });
     });
 };
-
-exports.updateQuizDetail = (req, res, next) => {
+//update test
+exports.updateQuizDetail = async (req, res, next) => {
+  console.log(req.body.quiz_id)
+  //query
+  const query = {
+    _id: req.body.quiz_id,
+    is_deleted: 0,
+  };
+  //find test data
+  const chkTest = await quizzes.findone(query);
+  //chk wheteher test has started or not
+  if (chkTest.status == 2) {
+    req.flash("error", "cannot update!!");
+    return res.send({ status: 0 });
+  }
+  //promise
   new Promise((resolve, reject) => {
+    //handling body data
     let datetime = req.body.date + " " + req.body.time;
     let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").format(
       "YYYY-MM-DD HH:mm"
@@ -407,14 +522,17 @@ exports.updateQuizDetail = (req, res, next) => {
     var newdate = momenttz.tz(scheduleDate, req.cookies.time_zone_offset).utc();
     let endDate = newdate.clone();
     endDate = endDate.add(parseInt(req.body.duration), "m");
-    req.body.batch = parseInt(req.body.batch);
+    req.body.batch_year = parseInt(req.body.batch);
     req.body.start_time = newdate;
     req.body.end_time = endDate;
     req.body.duration = parseInt(req.body.duration);
+    //update data
     quizzes.update({ _id: req.body.quiz_id }, req.body).then((data) => {
       if (data != null) {
-        res.send({ status: 1, data: data });
-      } else res.send({ status: 0 });
+        req.flash("success", "updated successfully!!");
+        return res.send({ status: 1 });
+      } else req.flash("error", "could not update!!");
+      return res.send({ status: 0 });
     });
   }).catch((err) => {
     res.render("error", {
@@ -479,8 +597,11 @@ exports.addCsv = (req, res, next) => {
 //delete
 exports.deleteQuiz = async (req, res, next) => {
   try {
+    //converting id in to Object Id
     const id = mongoose.Types.ObjectId(req.params.id);
+    //delete data
     const result = await quizzes.delete({ _id: id }, { is_deleted: 1 });
+    //condition
     if (!result) {
       req.flash("error", "could not delete!!");
       return res.redirect("/quiz/scheduled");
@@ -540,6 +661,7 @@ async function dataUpload(organisation_id, category_id, sub_cat_id, path) {
         csvDataArray.push(data);
       })
       .on("end", async function (count) {
+    
         if (count > 0) {
           for (let index = 0; index < csvDataArray.length; index++) {
             let answer = [];
@@ -639,15 +761,15 @@ async function dataUpload(organisation_id, category_id, sub_cat_id, path) {
               invalidArray.push(obj);
             }
           }
+       
           // console.log(validArray.length);
           // console.log(util.inspect(validArray, { depth: null }));
           console.log("Invalid Questions  ", invalidArray.length);
           console.log(util.inspect(invalidArray, { depth: null }));
           await questionModel.create(validArray);
           return Promise.resolve();
-        }
-      });
-  } catch (err) {
+        }) 
+     }catch (err) {
     return Promise.reject(err);
   }
 }
