@@ -162,15 +162,16 @@
               value="/students/{{institute_id}}"
             />
             <div class="row">
+              <button style="margin-right:590px"class="btn btn green pull-right check_list" id="check_list" message_data="student"  url=/students/student_shortlist redirect_url='/result/students?i={{inst_id}}&q={{quiz_id}}'>Shortlist</button>
               <br />
             </div>
-        
+           
             <form id="frm">
               <input type="hidden" id="action" name="action" />
               <div id="ajaxResponce">
                 <div class="table-responsive">
                   <!-- <input type="hidden" id="url" value="/institutes/"> -->
-                  <button style="margin-right:250px"class="btn btn green pull-right check_list" id="check_list" message_data="student"  url=/students/student_shortlist redirect_url='/result/students?i={{inst_id}}&q={{quiz_id}}'>Shortlist</button>
+                 
                   <table
                     class="table table-bordered table-hover horizontal-table"
                     id="datatable"

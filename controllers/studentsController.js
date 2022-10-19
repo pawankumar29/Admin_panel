@@ -26,8 +26,8 @@ exports.get_students = (req, res, next) => {
       options.page = req.query.page;
     }
     var condition = {
-      //organisation_id: req.user.organisation_id,
-      //institute_id: mongoose.Types.ObjectId(req.params.inst_id),
+      organisation_id: req.user.organisation_id,
+      institute_id: mongoose.Types.ObjectId(req.params.inst_id),
       student_shortlist: 1,
       is_deleted: 0,
     };
