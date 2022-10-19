@@ -208,66 +208,7 @@
                     </div>
                 </div>
             </div>
-            <form id="frm">
-              <input type="hidden" id="action" name="action" />
-              <div id="ajaxResponce">
-                <div class="table-responsive">
-                  <!-- <input type="hidden" id="url" value="/institutes/"> -->
-                  <table
-                    class="table table-bordered table-hover horizontal-table"
-                    id="datatable"
-                  >
-                    <thead>
-                      <tr>
-                        <th>S.No.</th>
-                        <th>Institute</th>
-                        <th>Start Time</th>
-                        <th>Duration</th>
-                        <th>Status</th>
-                        <th width="15%">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% for quiz in response %}
-                      <tr>
-                        <td></td>
-                        <td>{{quiz.institute.name}}</td>
-                        <td>{{quiz.start_time | date('d-m-Y H:i',-330)}}</td>
-                        <td>{{quiz.duration}}</td>
-                        {% if quiz.status == 1 %}
-                        <td>Upcoming</td>
-                        {% elseif quiz.status == 2 %}
-                        <td>Started</td>
-                        {% elseif quiz.status == 3 %}
-                        <td>Finished</td>
-                        {% else %}
-                        <td>--</td>
-                        {% endif %}
-                        <td>
-                          {% if quiz.status == 1%}
-                          <a
-                            class="btn btn-circle btn-icon-only btn-default editQuiz"
-                            quiz_id="{{quiz._id}}"
-                            title="Edit"
-                            link="/quiz/edit/{{quiz._id}}"
-                            ><i style="color: orange" class="fa fa-edit"></i
-                          ></a>
-                          {% endif %} {% if quiz.status == 2%}
-                          <a
-                            deleteLink="/quiz/delete/{{quiz._id}}"
-                            class="btn btn-circle btn-icon-only btn-default delete"
-                          >
-                            <i style="color: red" class="fa fa-times"></i>
-                          </a>
-                          {% endif %}
-                        </td>
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </form>
+            
           </div>
         </div>
       </div>

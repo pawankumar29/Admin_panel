@@ -3,8 +3,7 @@ var router = express.Router();
 const controller = require("../controllers/quizController");
 
 router.get('/', controller.get_categoriesList);
-router.get('/scheduled', controller.get_scheduled.List);
-router.get('/add', controller.add_category);
+router.get('/scheduled', controller.get_scheduledList);
 router.post('/add', controller.save_new_category);
 router.get('/sampeCSV', controller.csvDowload);
 router.get('/importCsv/:cat_id', controller.importCsvCat);
