@@ -168,6 +168,22 @@ exports.get_scheduledList = (req, res, next) => {
             },
             {
                 $lookup: {
+                    from: 'walkings',
+                    let: {
+                        ref_id: '$walkings_id'
+                    },
+                    pipeline: [{ $match: { $expr: { $eq: ['$_id', '$$ref_id'] } } }, { $project: { _id: 1, name: 1, no_of_students: 1 } }],
+                    as: 'walkings'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$walkings',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
                     from: 'institutes',
                     let: {
                         ref_id: '$institute_id'
@@ -187,12 +203,6 @@ exports.get_scheduledList = (req, res, next) => {
                     start_time: -1
                 }
             }
-            // {
-            //     $skip: skipPages * global.config.pagination_limit
-            // },
-            // {
-            //     $limit: global.config.pagination_limit
-            // }
         ];
         let p1 = quizzes.count({
             organisation_id: req.user.organisation_id,
@@ -213,7 +223,7 @@ exports.get_scheduledList = (req, res, next) => {
                     pages.push(i)
                 }
                 if (req.query.page) {
-                    res.render('quiz/scheduledList', {
+                        res.render('quiz/scheduledList', {
                         response: JSON.parse(JSON.stringify(result)),
                         count: count,
                         prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
@@ -228,7 +238,7 @@ exports.get_scheduledList = (req, res, next) => {
                         active: 'schedule_test'
                     });
                 } else {
-                    res.render('quiz/scheduledList', {
+                        res.render('quiz/scheduledList', {
                         response: JSON.parse(JSON.stringify(result)),
                         count: count,
                         prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),

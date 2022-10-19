@@ -227,6 +227,21 @@ jQuery(document).ready(function () {
             $("#enable_test_modal").modal("show");
         }
     });
+    $('#enable_test_walkings').click(function () {
+        $(".save").attr("disabled", false)
+        if ($('.check:checked').length == 0) {
+            bootbox.alert("Select atleast One Walkings to enable the test!");
+        } else {
+            let checkedData = $('.check:checked').serializeArray()
+            let text = "";
+            checkedData.forEach(function (obj) {
+                text = text + "<span class='chip' data-value='" + obj.value + "'>" + obj.name + "<span class='custom_close'><i class='fa fa-remove' aria-hidden='true'></i></span></span>"
+            });
+        
+            $(".chipcontainer").html(text);
+            $("#enable_test_modal").modal("show");
+        }
+    });
     $('.save').click(function (e) {
         e.preventDefault();
 //        $(".date").removeAttr("readonly");

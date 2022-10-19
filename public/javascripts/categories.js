@@ -75,7 +75,39 @@ jQuery(document).ready(function () {
             }
         });
     });
-
+    $(document).on("click", ".add_walking_category", function (event) {
+        console.log("click to add category");
+        let button = $(this);
+        let text = "";
+        let walking_id = $("#walking_id").val();
+        $.ajax({
+            url: "/categories/walkings/list?i=" + walking_id,
+            type: "GET",
+            dataType: 'JSON',
+            success: function (result) {
+                if (result == 'unauthorised') {
+                    return {
+                        status: 0,
+                        message: "unauthorised"
+                    };
+                } else {
+                    text = '<form class="category_form" action=""><div class="form-body"><div class="form-group"><div class="row"><div class="col-md-3"><label class="control-label"><b>Select Category Type:</b></label></div><div class="col-md-6"><select class="bs-select form-control category" data-placeholder="Select category type" name="category"><option value="" disabled selected hidden>Select category type:</option>'
+                    for (let i = 0; i < result.data.length; i++) {
+                        text = text + '<option value="' + result.data[i]["_id"] + '">' + result.data[i]["name"] + '</option>';
+                    }
+                    text = text + '</select></div><button type="button" class="btn btn-labeled btn-danger delete-category"><span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span></button></div></div><div class="form-group"></div></div></form>';
+                    button.parents(".portlet-body").find(".form-container").append(text);
+                }
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+                return {
+                    status: 0,
+                    message: xhr.responseText
+                };
+            }
+        });
+    });
     $(document).on("change", ".category", function (e) {
         let event = $(this);
         let category_id = $(this).find('option:selected').val();
@@ -143,7 +175,6 @@ jQuery(document).ready(function () {
             data: data,
             dataType: 'JSON',
             success: function (result) {
-                console.log("===============================")
                 console.log(result);
                  window.location.reload();
             },
@@ -154,3 +185,22 @@ jQuery(document).ready(function () {
         });
     })
 });
+$(document).on("click", "#save-walking-category-btn", function (e) {
+    var data = $("form").serializeArray();
+    data = JSON.parse(JSON.stringify(data));
+    data.push({ name: "walking_id", value: $("#walking_id").val()});
+    $.ajax({
+        url: "/categories/walkings-category/update",
+        type: "PUT",
+        data: data,
+        dataType: 'JSON',
+        success: function (result) {
+            console.log(result);
+             window.location.reload();
+        },
+        error: function (xhr) {
+            console.log(xhr);
+            window.location = "/institutes/get-walkins";
+        }
+    });
+})
