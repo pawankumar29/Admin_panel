@@ -182,6 +182,10 @@ var userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'institutes'
     },
+    walkings_id:{
+        type:Schema.Types.ObjectId,
+        ref:'walkings'
+    },
     institute_name: {
         type: String,
         default: ""
@@ -344,6 +348,10 @@ var quizSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'organisations'
     },
+    walkings_id:{
+        type:Schema.Types.ObjectId,
+        ref:'walkings'
+    },
     institute_id: {
         type: Schema.Types.ObjectId,
         ref: 'institutes'
@@ -399,10 +407,10 @@ var questionCategoriesSchema = new Schema({
         default: ""
     },
     sub_category: [{
-        _id: {
-            type: Schema.Types.ObjectId,
-            default: new mongoose.Types.ObjectId
-        },
+        // _id: {
+        //     type: Schema.Types.ObjectId,
+        //     default: new mongoose.Types.ObjectId
+        // },
         name: {
             type: String,
             default: ""
@@ -469,6 +477,64 @@ var instituteWiseCategoriesSchema = new Schema({
     }
 });
 
+const walkingCategoriesSchema = new Schema({
+    organisation_id: {
+        type: Schema.Types.ObjectId,
+        ref: "organisations"
+    },
+    walkings_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'walkings'
+    },
+    category_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'question_categories'
+    },
+    sub_category: [{
+        sub_category_id: {
+            type: Schema.Types.ObjectId,
+            ref: 'question_categories'
+        },
+        number_of_question: {
+            type: Number,
+            default: 0
+        }
+    }],
+    number_of_question: {
+        type: Number,
+        default: 0
+    },
+    user_id: {
+        type: Schema.Types.ObjectId,
+        ref: "users"
+    },
+    status: {
+        type: Number,
+        default: 1
+    }, // 0-inactive,1-active     
+    is_deleted: {
+        type: Number,
+        default: 0
+    }, //1-deleted by admin
+}, {
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+});
+const walkingSchema = new Schema({
+    organisation_id: { type: Schema.Types.ObjectId, ref: "organisations" },
+    name: {type: String,default: ""},
+    qualification: {type: [String],default: []},
+    instruction: {type: [String],default: []},
+    no_of_students: { type: Number,default: 0 },
+    is_walkin: {type: Number,default: 0},
+    resume: {type: Number,default: 0},
+    status: {type: Number,default: 1}, // 0-inactive,1-active     
+    is_deleted: {type: Number,default: 0}, //1-deleted by admin
+}, {
+    timestamps: {createdAt: 'created_at',updatedAt: 'updated_at'}
+})
 var questionSchema = new Schema({
     organisation_id: { type: Schema.Types.ObjectId, ref: "organisations" },
     "question": { type: String, default: "" },
@@ -740,6 +806,8 @@ mongoose.model("contact_us", contactUsSchema);
 mongoose.model("settings", settingSchema);
 mongoose.model('password_reset', password_reset);
 mongoose.model('cms_page', cms_page);
+mongoose.model('walkings', walkingSchema);
+mongoose.model('walking_categories',walkingCategoriesSchema)
 
 
 

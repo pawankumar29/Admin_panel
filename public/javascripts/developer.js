@@ -1,3 +1,4 @@
+//const moment = require("moment");
 jQuery(document).ready(function () {
   // set local timezone offset in cookies
   var time_zone_offset = -new Date().getTimezoneOffset();
@@ -256,7 +257,16 @@ jQuery(document).ready(function () {
       $("#enable_test_modal").modal("show");
     }
   });
+//   $("#test_time").keyup(function () {
+// console.log($(this).val(),"vallllllllllllll")
+// const testTime=$(this).val();
+// const curruntTime=moment(new Date().getTime()).format('h:mm');
+// if(testTime<=curruntTime){
+// $('#enable_test').
+// }
+  })
   $(".save").click(function (e) {
+    console.log("kjhkjhkjhkhhkhk")
     e.preventDefault();
     //        $(".date").removeAttr("readonly");
     //        $(".time").removeAttr("readonly");
@@ -267,6 +277,7 @@ jQuery(document).ready(function () {
     let date = $(".date").data("value");
     date = dateConvert(date);
     let time = $(".time").val();
+      console.log("kjhkjhkjhkhhkhk")
     //        $(".enable_quiz_form").submit();
     let dateMessage = "";
     let timeMessage = "";
@@ -304,7 +315,7 @@ jQuery(document).ready(function () {
           if (result == "unauthorised") {
             window.location = "/login";
           } else if (result["status"] == 1) {
-            window.location = "/institutes";
+           // window.location = "/institutes";
           }
         },
         //                error: function (xhr, status, error) {
@@ -519,10 +530,6 @@ jQuery(document).ready(function () {
     if ($("#url").val() === "/institutes/") {
       message = "Are you sure you want to delete this Institution?";
     }
-    if ($("#url").val() === "/test/") {
-      message = "Are you sure you want to delete quiz test?";
-    }
-
     //        if ($("#url").val() === "/contact_us/") {
     //            message = "Are you sure you want to delete the query?";
     //        }
@@ -754,6 +761,33 @@ jQuery(document).ready(function () {
     }
     return str;
   }
+  $("#check_list").click(function () {
+    const message = $(this).attr("message_data");
+    const url = $(this).attr("url");
+    const redirect_url = $(this).attr("redirect_url");
+    let ids = [];
+    if ($(".check:checked").length == 0) {
+      //alert("lyhukl")
+      bootbox.alert(`Select atleast one ${message}`);
+    } else {
+      $(".check:checked").each(function () {
+        ids.push($(this).val());
+      });
+    }
+    $.ajax({
+      url: url,
+      type: "POST",
+      data: { data: ids },
+      // dataType: 'JSON',
+      success: function (result) {
+        if (result == "unauthorised") {
+          window.location = "/login";
+        } else {
+        window.location = redirect_url;
+        }
+      },
+    });
+  });
 
   //    $(document).on("click", ".view", function () {
   //        /***********user ajax view *******/
@@ -1105,4 +1139,4 @@ jQuery(document).ready(function () {
       return false;
     }
   });
-});
+
