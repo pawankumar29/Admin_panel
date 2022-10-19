@@ -1,3 +1,4 @@
+//const moment = require("moment");
 jQuery(document).ready(function () {
   // set local timezone offset in cookies
   var time_zone_offset = -new Date().getTimezoneOffset();
@@ -256,7 +257,16 @@ jQuery(document).ready(function () {
       $("#enable_test_modal").modal("show");
     }
   });
+//   $("#test_time").keyup(function () {
+// console.log($(this).val(),"vallllllllllllll")
+// const testTime=$(this).val();
+// const curruntTime=moment(new Date().getTime()).format('h:mm');
+// if(testTime<=curruntTime){
+// $('#enable_test').
+// }
+ // })
   $(".save").click(function (e) {
+    console.log("kjhkjhkjhkhhkhk")
     e.preventDefault();
     //        $(".date").removeAttr("readonly");
     //        $(".time").removeAttr("readonly");
@@ -267,6 +277,7 @@ jQuery(document).ready(function () {
     let date = $(".date").data("value");
     date = dateConvert(date);
     let time = $(".time").val();
+      console.log("kjhkjhkjhkhhkhk")
     //        $(".enable_quiz_form").submit();
     let dateMessage = "";
     let timeMessage = "";
@@ -304,7 +315,7 @@ jQuery(document).ready(function () {
           if (result == "unauthorised") {
             window.location = "/login";
           } else if (result["status"] == 1) {
-            window.location = "/institutes";
+           // window.location = "/institutes";
           }
         },
         //                error: function (xhr, status, error) {
