@@ -548,6 +548,7 @@ var questionSchema = new Schema({
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
 
 var quizResultScehma = new Schema({
+   
     organisation_id: {
         type: Schema.Types.ObjectId,
         ref: "organisations"
@@ -649,6 +650,7 @@ var quizResultScehma = new Schema({
         type: Number,
         default: 0
     }, //1-deleted by admin
+    'student_shortlist':{type:Number,default:0},//1 for shortlist
 }, {
     timestamps: {
         createdAt: 'created_at',
