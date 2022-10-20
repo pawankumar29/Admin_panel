@@ -141,73 +141,29 @@
 {% endblock %} {% extends "../layout.html" %} {% block content %}
 
 <div class="page-content">
-    <div class="row">
-        <div class="col-md-12">
-            {% include "../flashMessage_Success.html" %}
-            <!-- BEGIN BORDERED TABLE PORTLET-->
-            <div class="portlet box green">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-university"></i>{{title}}
-                    </div>
-                </div>
-                <div class="portlet-body">
-
-                    <div class="row">
-                        <br/>
-                    </div>
-                    <div class="">
-                        <input type="hidden" id="url" name="url" value="/students/{{institute_id}}">
-                        <div class="row">
-                            <br/>
-                        </div>
-                        <form id="frm">
-                            <input type="hidden" id="action" name="action">
-                            <div id="ajaxResponce">
-                                <div class="table-responsive">
-                                    <!-- <input type="hidden" id="url" value="/institutes/"> -->
-                                    <table class="table table-bordered table-hover horizontal-table" id="datatable">
-                                        <thead>
-                                            <tr>
-                                                <th>S.No.</th>
-                                                <th>Institute/Walkings</th>
-                                                <th>Start Time</th>
-                                                <th>Duration</th>
-                                                <th>Status</th>
-                                                <th width="15%">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for quiz in response %}
-                                            <tr>
-                                                <td></td>
-                                                <td>{{quiz.institute.name || quiz.walkings.name}}</td>
-                                                <td>{{quiz.start_time | date('d-m-Y H:i',-330)}}</td>
-                                                <td>{{quiz.duration}}</td>
-                                                {% if quiz.status == 1 %}
-                                                <td>Upcoming</td>
-                                                {% elseif quiz.status == 2 %}
-                                                <td>Started</td>
-                                                {% elseif quiz.status == 3 %}
-                                                <td>Finished</td>
-                                                {% else %}
-                                                <td>--</td>
-                                                {% endif %}
-                                                <td>
-                                                    {% if quiz.status == 1 || quiz.status == 2 %}
-                                                    <a class="btn btn-circle btn-icon-only btn-default editQuiz" quiz_id="{{quiz._id}}" title="Edit" link="/quiz/edit/{{quiz._id}}"><i style="color:orange" class="fa fa-edit"></i></a> {% else %}
-                                                    <a class="btn btn-circle btn-icon-only btn-default" title="Delete" href="/quiz/delete/{{quiz._id}}"><i style="color:red" class="fa fa-times"></i></a> {% endif %}
-                                                </td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+  <div class="row">
+    <div class="col-md-12">
+      {% include "../flashMessage_Success.html" %}
+      <!-- BEGIN BORDERED TABLE PORTLET-->
+      <div class="portlet box green">
+        <div class="portlet-title">
+          <div class="caption"><i class="fa fa-university"></i>{{title}}</div>
+        </div>
+        <div class="portlet-body">
+          <div class="row">
+            <br />
+          </div>
+          <div class="">
+            <input
+              type="hidden"
+              id="url"
+              name="url"
+              value="/students/{{institute_id}}"
+            />
+            <div class="row">
+              <br />
             </div>
+
             <form id="frm">
               <input type="hidden" id="action" name="action" />
               <div id="ajaxResponce">
@@ -244,7 +200,6 @@
                         <td>--</td>
                         {% endif %}
                         <td>
-                          {% if quiz.status == 1%}
                           <a
                             class="btn btn-circle btn-icon-only btn-default editQuiz"
                             quiz_id="{{quiz._id}}"
@@ -252,14 +207,20 @@
                             link="/quiz/edit/{{quiz._id}}"
                             ><i style="color: orange" class="fa fa-edit"></i
                           ></a>
-                          {% endif %} {% if quiz.status == 2%}
                           <a
+                          deleteLink="/quiz/delete/{{quiz._id}}"
+                          class="btn btn-circle btn-icon-only btn-default delete"
+                        >
+                          <i style="color: red" class="fa fa-times"></i>
+                        </a>
+                          <!-- {% if quiz.status == 2%} -->
+                          <!-- <a
                             deleteLink="/quiz/delete/{{quiz._id}}"
                             class="btn btn-circle btn-icon-only btn-default delete"
                           >
                             <i style="color: red" class="fa fa-times"></i>
                           </a>
-                          {% endif %}
+                          {% endif %} -->
                         </td>
                       </tr>
                       {% endfor %}
@@ -288,47 +249,25 @@
         <h3 class="modal-title center">Schedule Test</h3>
       </div>
 
-            <div class="modal-body">
-                <form action="" method="POST" class="enable_quiz_form">
-                    <!-- <div class="scroller" style="height:450px" data-always-visible="1" data-rail-visible1="1"> -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-3">Choose Date</label>
-                                <div class="input-group" id="test_date">
-                                    <input type="text" class="form-control date" id="date_test" readonly="" name="date">
-                                </div>
-                                <div class="col-md-3"></div>
-                                <label class="error date-error"></label>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3">Set Time</label>
-                                    <div class="input-group">
-                                        <input type="text" id="test_time" class="form-control timepicker timepicker-24">
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                    <label class="error time-error"></label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3">Duration Of Test (in minutes)</label>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control" id="test_duration" value="" placeholder="in minutes" name="duration">
-                                        <input type="hidden" class="form-control" id="quiz_id" value="" name="quiz_id">
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                    <label class="error time-error"></label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3">Batch</label>
-                                    <div class="input-group">
-                                        <select name="batch" id="batch_year" class="form-control batch_year" placeholder="Batch">
-                                        </select>
-
+      <div class="modal-body">
+        <form action="" method="POST" class="enable_quiz_form">
+          <!-- <div class="scroller" style="height:450px" data-always-visible="1" data-rail-visible1="1"> -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="control-label col-md-3">Choose Date</label>
+                <div class="input-group" id="test_date">
+                  <input
+                    type="text"
+                    class="form-control date"
+                    id="date_test"
+                    readonly=""
+                    name="date"
+                  />
+                </div>
+                <div class="col-md-3"></div>
+                <label class="error date-error"></label>
+              </div>
               <div class="form-group">
                 <div class="form-group">
                   <label class="control-label col-md-3">Set Time</label>
@@ -441,8 +380,10 @@
   TableManaged.init();
 
   $(".editQuiz").click(function (e) {
+    console.log("edittttttttttttttttttt");
     e.preventDefault();
     let url = $(this).attr("link");
+    console.log(url, "llllllllll");
     let quiz_id = $(this).attr("quiz_id");
     $.ajax({
       url: url,
