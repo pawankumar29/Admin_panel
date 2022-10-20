@@ -609,19 +609,8 @@ $(document).on("click", ".change_status", function () {
         success: function (result) {
           if (result == "unauthorised") {
             window.location = "/login";
-          } else {
-            //                            if ($("#url").val() == "/users/") {
-            //                                window.location = "/users";
-            //                            }
-            if ($("#url").val() == "/faqs/") {
-              window.location = "/faqs";
-            }
-            //                            if ($("#url").val() == "/category/") {
-            //                                window.location = "/category";
-            //                            }
-            //                            if ($("#url").val() == "/drive_image/") {
-            //                                window.location = "/drive_image";
-            //                            }
+          } else if (result["status"] == 1) {
+            window.location = "/institutes";
           }
         },
       });
@@ -1122,13 +1111,11 @@ $(document).on("click", "#checkbox_switch", function (e) {
   let href = $("#my_anchor").attr("linkdata");
   $(this).parents("#resolve_container").empty();
 
-  window.location = href;
-});
-
-//stop enter working on search field
-$("#search_by").keydown(function (event) {
-  if (event.keyCode == 13) {
-    event.preventDefault();
-    return false;
-  }
+  //stop enter working on search field
+  $("#search_by").keydown(function (event) {
+    if (event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
 });

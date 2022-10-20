@@ -141,6 +141,7 @@
 {% endblock %} {% extends "../layout.html" %} {% block content %}
 
 <div class="page-content">
+  
   <div class="row">
     <div class="col-md-12">
       {% include "../flashMessage_Success.html" %}
@@ -161,21 +162,25 @@
               value="/students/{{institute_id}}"
             />
             <div class="row">
+              <button style="margin-right:590px"class="btn btn green pull-right check_list" id="check_list" message_data="student"  url=/students/student_shortlist redirect_url='/result/students?i={{inst_id}}&q={{quiz_id}}'>Shortlist</button>
               <br />
             </div>
+           
             <form id="frm">
               <input type="hidden" id="action" name="action" />
               <div id="ajaxResponce">
                 <div class="table-responsive">
                   <!-- <input type="hidden" id="url" value="/institutes/"> -->
+                 
                   <table
                     class="table table-bordered table-hover horizontal-table"
                     id="datatable"
                   >
                     <thead>
                       <tr>
-                        <th>S.No.</th>
-                        <th>Name</th>
+                        <th width="2%"><input type="checkbox" id="checkAll"/></th>
+                          <th>S.No.</th>
+                          <th>Name</th>
                         <th>Roll no</th>
                         <th>Branch</th>
                         <th>Technical Marks</th>
@@ -190,7 +195,10 @@
                       {% set curr = current-1 %} {% set index = curr*
                       options.perPage +1 %} {% for student in response %}
                       <tr>
-                        <td></td>
+                        
+                        <td width="2%"><span class="checked"><input type="checkbox" class="check" value={{JSON.stringify(student._id)}}></span></td>
+                        <!-- name="{{institute.name}}" value="{{institute._id | safe}}" -->
+                <td>{{index}}</td>
                         {% if !student.user_detail.name %}
                         <td>--</td>
                         {% else %}
@@ -203,7 +211,8 @@
                         <td>--</td>
                         {% else %}
                         <td>{{student.user_detail.qualification}}</td>
-                        {% endif %} {% if student.category_marks.length > 0 %}
+                        {% endif %} 
+                        {% if student.category_marks.length > 0 %}
                         <td>
                 {{student.category_marks[0].marks}}
                         </td>

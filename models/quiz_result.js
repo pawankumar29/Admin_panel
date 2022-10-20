@@ -1,7 +1,6 @@
 "use strict";
 const mongoose = require("mongoose");
 const quiz_results = mongoose.model("quiz_results");
-const question_categories = mongoose.model("question_categories");
 
 exports.count = (query) => {
   return new Promise((resolve, reject) => {
@@ -9,6 +8,7 @@ exports.count = (query) => {
       if (error) {
         reject(error);
       } else {
+        //console.log(data)
         resolve(data);
       }
     });
@@ -25,12 +25,31 @@ exports.update = (query, updatedata) => {
     });
   });
 };
+exports.updateMany = (query, updatedata) => {
+  try{
+  return new Promise((resolve, reject) => {
+    quiz_results.updateMany(query, updatedata, (error, data) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+}
+catch(err){
+  res.render("error", {
+    error: err,
+  });
+}
+};
 exports.aggregate = (aggregate_query) => {
   return new Promise((resolve, reject) => {
     quiz_results.aggregate(aggregate_query, (error, data) => {
       if (error) {
         reject(error);
       } else {
+        //console.log(data)
         resolve(data);
       }
     });

@@ -11,7 +11,7 @@
                 <th>Total Marks</th>
                 <th>Offer Letter</th>
                 <th width="5%">Status</th>
-                <th width="5%">Action</th>
+                <th width="5%">Action</th>              
             </tr>
         </thead>
         <tbody>
@@ -20,8 +20,7 @@
             {% if response.length > 0 %}
             {% for student in response %}	 
             <tr>
-                <td width="2%"><span class="checked"><input type="checkbox" class="check" name="{{institute.name}}" value="{{institute._id | safe}}"></span></td>
-
+                <td width="2%"><span class="checked"><input type="checkbox" class="check" value={{JSON.stringify(student._id)}} ></span></td>
                 <td>{{index}}</td>
 
                 {% if !student.user_detail  %}
@@ -30,8 +29,8 @@
                 <td>{{student.user_detail.name}} </td>
                 {% endif %}
 
-                <td>--</td>
-                <td>--</td>
+                <td>{{student.category_marks[0].marks}}</td>
+                <td>{{student.category_marks[1].marks}}</td>
                 <td>{{student.total_marks}}</td> 
                 {% if student.offer_letter_issued == 1 %}
                 <td>Yes</td>  
@@ -39,9 +38,10 @@
                 <td>No</td>  
                 {% endif %}
                 <td>
-                    {% if student.status == 0  %}
+                    {% if student.user_detail.status == 0  %}
                     <a class="btn btn-circle btn-icon-only btn-default" title="Disabled"><i class="fa fa-circle" style="color:#428bca"></i></a>
-                    {% elseif student.status == 1  %}
+                    {% endif %}
+                    {% if student.user_detail.status == 1  %}
                     <a class="btn btn-circle btn-icon-only btn-default" title="Enabled"><i class="fa fa-circle" style="color:green"></i></a>
                     {% endif %}
                 </td>

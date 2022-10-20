@@ -15,6 +15,7 @@ const institute_categories = require("../models/institute_categories");
 const question_categories = require("../models/question_categories");
 
 exports.get_quiz = async (req, res, next) => {
+ 
   try {
     let condition = {
       organisation_id: mongoose.Types.ObjectId(req.user.organisation_id),
@@ -80,8 +81,6 @@ exports.get_quiz = async (req, res, next) => {
   }
 };
 exports.get_quiz_result = async (req, res, next) => {
-  let questionCategories = await question_categories.find({ status: 1 });
-  questionCategories = JSON.parse(JSON.stringify(questionCategories));
   new Promise((resolve, reject) => {
     // make global variable options for paginate method parameter
     let options = {
@@ -97,6 +96,7 @@ exports.get_quiz_result = async (req, res, next) => {
       institute_id: mongoose.Types.ObjectId(req.query.i),
       quiz_id: mongoose.Types.ObjectId(req.query.q),
       is_deleted: 0,
+      student_shortlist: 0,
     };
     var user_lookup = {
       from: "users",
@@ -151,13 +151,10 @@ exports.get_quiz_result = async (req, res, next) => {
         for (i = 1; i <= last; i++) {
           pages.push(i);
         }
-
-        // console.log(util.inspect(result, { depth: null }));
         if (req.query.page) {
           res.render("result/student_list", {
             response: result,
             count: count,
-            question_categories: questionCategories,
             prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
             last: last,
             pages: pages,
@@ -169,13 +166,13 @@ exports.get_quiz_result = async (req, res, next) => {
             title: "Results",
             active: "result_page",
             institute_id: req.params.inst_id,
+            quiz_id:req.query.q,
+            inst_id:req.query.i
           });
         } else {
           res.render("result/student_list", {
             response: result,
             count: count,
-            question_categories: questionCategories,
-            data: "kjhjk",
             prev: parseInt(options.page - 1 < 1 ? 1 : options.page - 1),
             last: last,
             pages: pages,
@@ -187,6 +184,8 @@ exports.get_quiz_result = async (req, res, next) => {
             title: "Results",
             active: "result_page",
             institute_id: req.params.inst_id,
+            quiz_id:req.query.q,
+            inst_id:req.query.i
           });
         }
       })
