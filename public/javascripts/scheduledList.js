@@ -12,6 +12,7 @@ var TableManaged = function() {
                 $("td:first", nRow).html(page * length + (iDisplayIndex + 1));
                 // $("td:first", nRow).html(iDisplayIndex + 1);
                 console.log(nRow,"====================")
+                showDetails()
                 return nRow;
             },
             "infoCallback": function(settings, start, end, max, total, pre) {
@@ -124,3 +125,55 @@ var TableManaged = function() {
     };
 
 }();
+function showDetails() {
+    $(".editQuiz").on('click', function (e) {
+    console.log("edittttttttttttttttttt");
+    e.preventDefault();
+    let url = $(this).attr("link");
+    console.log(url, "llllllllll");
+    let quiz_id = $(this).attr("quiz_id");
+    $.ajax({
+      url: url,
+      type: "GET",
+      success: function (result) {
+        if (result == "unauthorised") {
+          window.location = "/login";
+        } else {
+          // var dt = new Date(result.data.start_time);
+          // dt.setDate(dt.getDate() + 1);
+          ComponentsPickers.init();
+          $(".date")
+            .datepicker({
+              autoclose: true,
+              format: "mm/dd/yyyy",
+              startDate: new Date(),
+            })
+            .on("changeDate", function (e) {
+              $(".date").attr("data-value", e.dates);
+              $(".date-error").html("");
+            });
+          $(".date").datepicker("setDate", new Date(result.data.start_time));
+          var current_year = new Date().getFullYear();
+          var start_year = current_year - 2;
+          var html = "";
+          for (var year = current_year; year >= start_year; year--) {
+            html += "<option value = '" + year + "'>" + year + "</option>";
+          }
+          $(".batch_year").html(html);
+          $("#batch_year_test").html(html);
+          let H = new Date(result.data.start_time).getHours();
+          let M = new Date(result.data.start_time).getMinutes();
+          if (M < 10) M = "0" + M;
+          $("#test_time").val(H + ":" + M);
+          $("#quiz_id").val(quiz_id);
+          $("#test_duration").val(result.data.duration);
+          $("#batch_year").val(result.data.batch_year);
+          $("#edit_test_modal").modal("show");
+        }
+      },
+    });
+  });
+  }
+
+
+  

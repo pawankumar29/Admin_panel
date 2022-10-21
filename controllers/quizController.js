@@ -352,10 +352,8 @@ exports.getQuizDetail = (req, res, next) => {
       });
     });
 };
-
-//get quiz by id
+//get quiz by Id
 exports.getQuizDetailById = (req, res, next) => {
-    try{
     quizId = mongoose.Types.ObjectId(req.params.id);
     const query = {
       _id: quizId,
@@ -375,10 +373,6 @@ exports.getQuizDetailById = (req, res, next) => {
           error: err,
         });
       });
-    }
-    catch(err){
-        res.render('error',{error:err})
-    }
   };
 //update test
 exports.updateQuizDetail = async (req, res, next) => {
