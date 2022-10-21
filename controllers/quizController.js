@@ -352,6 +352,34 @@ exports.getQuizDetail = (req, res, next) => {
       });
     });
 };
+
+//get quiz by id
+exports.getQuizDetailById = (req, res, next) => {
+    try{
+    quizId = mongoose.Types.ObjectId(req.params.id);
+    const query = {
+      _id: quizId,
+      is_deleted: 0,
+    };
+    quizzes
+      .findOne(query)
+      .then((quizData) => {
+        if (quizData != null) {
+          res.send({ status: 1, data: quizData });
+        } else {
+          res.send({ status: 0 });
+        }
+      })
+      .catch((err) => {
+        res.render("error", {
+          error: err,
+        });
+      });
+    }
+    catch(err){
+        res.render('error',{error:err})
+    }
+  };
 //update test
 exports.updateQuizDetail = async (req, res, next) => {
   //query
