@@ -241,7 +241,7 @@ jQuery(document).ready(function () {
     //testTime
     const testTime = $(this).val();
     //curruntTime
-    const curruntTime = moment(new Date().getTime()).format("HH:mm ");
+   const curruntTime = moment().format("HH:mm");
     //condition
     if (testTime > curruntTime) {
       $(".enable_test").prop("disabled", false);
@@ -250,7 +250,6 @@ jQuery(document).ready(function () {
       $(".enable_test").prop("disabled", true);
     }
   });
-  
   $("#enable_test").click(function () {
     $(".save").attr("disabled", false);
     if ($(".check:checked").length == 0) {

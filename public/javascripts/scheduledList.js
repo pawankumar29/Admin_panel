@@ -10,9 +10,9 @@ var TableManaged = function() {
                 var page = this.fnPagingInfo().iPage;
                 var length = this.fnPagingInfo().iLength;
                 $("td:first", nRow).html(page * length + (iDisplayIndex + 1));
+                showDetails();
                 // $("td:first", nRow).html(iDisplayIndex + 1);
                 console.log(nRow,"====================")
-                showDetails()
                 return nRow;
             },
             "infoCallback": function(settings, start, end, max, total, pre) {
@@ -88,7 +88,6 @@ var TableManaged = function() {
         });
 
         var tableWrapper = jQuery('#sample_1_wrapper');
-
         table.find('.group-checkable').change(function() {
             var set = jQuery(this).attr("data-set");
             var checked = jQuery(this).is(":checked");
@@ -174,6 +173,3 @@ function showDetails() {
     });
   });
   }
-
-
-  
