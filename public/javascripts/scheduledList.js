@@ -125,11 +125,9 @@ var TableManaged = function() {
 
 }();
 function showDetails() {
-    $(".editQuiz").on('click', function (e) {
-    console.log("edittttttttttttttttttt");
+    $(".editQuiz").on('click', function (e){
     e.preventDefault();
     let url = $(this).attr("link");
-    console.log(url, "llllllllll");
     let quiz_id = $(this).attr("quiz_id");
     $.ajax({
       url: url,
