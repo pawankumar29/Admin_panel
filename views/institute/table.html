@@ -39,7 +39,7 @@
                 {% if !institute.no_of_students %}
                 <td>-NA-</td>  
                 {% else %}                                   
-                <td>{{institute.no_of_students}}</td> 
+                <td><a href="/institutes/get-institute-wise-student/{{institute._id | safe}}">{{institute.no_of_students}}</a></td> 
                 {% endif %}
 
                 {% if !institute.candidate_selected %}
@@ -109,6 +109,9 @@
                                     <i class="glyphicon glyphicon-trash"></i>
                                     <span>Delete Institution</span>
                                 </a>
+                            </li>
+                            <li>
+                                <a href="/institutes/get-institute-wise-student/{{institute._id | safe}}"><span>Get Stduent list</span></a>
                             </li>
                         </ul>
                     </div>

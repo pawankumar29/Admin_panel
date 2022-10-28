@@ -1,0 +1,261 @@
+<!--admin userList.html-->
+
+{% block css %}
+<link href="{{getVersionedPath('/assets/layout/stylesheet/datepicker3.css')}}" id="style_components" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="{{getVersionedPath('/assets/layout/stylesheet/bootstrap-timepicker.min.css')}}" />
+
+<!-- BEGIN PAGE LEVEL STYLES -->
+<style>
+    th,
+    td {
+        text-align: left !important;
+        padding: 15px
+    }
+    
+    .action_dropdown {
+        height: 30px;
+        width: 30px;
+        background-color: white;
+    }
+    
+    .action_dropdown>i {
+        color: black;
+    }
+    
+    .dropdown-left-manual {
+        right: 0;
+        left: auto;
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+    
+    .dropdown>.dropdown-menu:after,
+    .dropdown-toggle>.dropdown-menu:after,
+    .btn-group>.dropdown-menu:after {
+        position: absolute;
+        top: -7px;
+        left: auto;
+        right: 20px;
+        display: inline-block !important;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #fff;
+        border-left: 7px solid transparent;
+        content: '';
+    }
+    
+    .dropdown>.dropdown-menu:before,
+    .dropdown-toggle>.dropdown-menu:before,
+    .btn-group>.dropdown-menu:before {
+        position: absolute;
+        top: -7px;
+        left: auto;
+        right: 20px;
+        display: inline-block !important;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #fff;
+        border-left: 7px solid transparent;
+        content: '';
+    }
+    
+    .table-responsive {
+        min-height: .01%;
+        overflow-x: initial;
+    }
+    
+    #add_new_institute {
+        margin-left: 2%;
+    }
+    
+    h1 {
+        font-size: 15px
+    }
+    
+    .collegeContainer {
+        text-align: center;
+        min-height: 85px;
+    }
+    
+    .chip {
+        display: inline-block;
+        height: 32px;
+        font-size: 13px;
+        font-weight: 500;
+        color: black;
+        line-height: 25px;
+        padding: 0 12px;
+        border-radius: 16px;
+        background-color: white;
+        margin-bottom: 5px;
+        margin-right: 5px;
+        border: 2px solid black;
+    }
+    
+    .custom_close {
+        line-height: 25px;
+        padding-left: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+    
+    .form-control[disabled],
+    .form-control[readonly] {
+        background-color: #fff;
+        cursor: default;
+    }
+    
+    label.error {
+        color: red;
+    }
+    
+    .width-45 {
+        width: 45%;
+    }
+    
+    .sampleCsv {
+        padding-left: 80px;
+        font-size: 15px;
+        line-height: 0px;
+    }
+    
+    .form-actions {
+        padding-top: 20px;
+        text-align: center;
+    }
+</style>
+
+{% endblock %} {% extends "../layout.html" %} {% block content %}
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include "../flashMessage_Success.html" %}
+            <!-- BEGIN BORDERED TABLE PORTLET-->
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-university"></i>{{title}}
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="btn btn green pull-right" id="add_new_institute" href="/institutes/get-the-students-form/{{institute_id.toString()}}">Add New Student</a>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <br />
+                    </div>
+                    <div class="">
+                        <div class="row">
+                            <br />
+                        </div>
+                        <form>
+                            <input type="hidden" id="action" name="action">
+                            <div id="ajaxResponce">
+                                <!-- To show Ajax Responce -->
+                                
+<div class="table-responsive">
+    <table class="table table-bordered table-hover" role="grid">
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Name</th>
+                <th>Father Name</th>
+                <th>DOB</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Qualification</th>
+                <th>Brnach</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set curr = current-1  %}
+            {% set index = curr* options.perPage +1  %}
+            {% if studentList.data.length > 0 %}
+            {% for institute in studentList.data %}	 
+            <tr>
+                <td>{{index}}</td>
+
+                {% if !institute.name  %}
+                <td>--</td>
+                {% else %} 
+                <td>{{institute.name}} </td>
+                {% endif %}
+
+                {% if !institute.father_name %}
+                <td>--</td>
+                {% else %}
+                <td>{{institute.father_name}}</td>
+                {% endif %}
+
+                {% if !institute.dob %}
+                <td>--</td>
+                {% else %}
+                <td>{{Date(institute.dob)}}</td>
+                {% endif %}
+
+                {% if !institute.phone_no %}
+                <td>--</td>
+                {% else %}
+                <td>{{institute.phone_no}}</td>
+                {% endif %}
+
+                {% if !institute.email %}
+                <td>--</td>
+                {% else %}
+                <td>{{institute.email}}</td>
+                {% endif %}
+
+                {% if !institute.qualification %}
+                <td>--</td>
+                {% else %}
+                <td>{{institute.qualification | | join(', ') }}</td>
+                {% endif %}
+
+                {% if !institute.branch %}
+                <td>--</td>
+                {% else %}
+                <td>{{institute.branch}}</td>
+                {% endif %}
+            </tr>
+            {% set index=index+1 %}
+            {% endfor %}					
+            {% else %}
+            <tr><td colspan="12"><p class="text-center">No records to display</p></td></tr>
+            {% endif %}				
+        </tbody>
+    </table>
+</div>
+<div class="text-center">{% include "../paginate.html" %}</div><br><br>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- END BORDERED TABLE PORTLET-->
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %} {% block js %}
+
+<script src="{{getVersionedPath('/javascripts/bootstrap-datepicker.js')}}" type="text/javascript"></script>
+<script type="text/javascript" src="{{getVersionedPath('/assets/layout/javascript/bootstrap-timepicker.min.js')}}"></script>
+<script src="{{getVersionedPath('/javascripts/bootstrap-datepicker.js')}}" type="text/javascript"></script>
+<script src="{{getVersionedPath('/assets/layout/javascript/components-pickers.js')}}"></script>
+
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- include developer js file -->
+<script src="{{getVersionedPath('/javascripts/developer.js')}}" type="text/javascript"></script>
+<script src="{{getVersionedPath('/javascripts/bootbox.min.js')}}" type="text/javascript"></script>
+<script src="{{getVersionedPath('/javascripts/pagination.js')}}"></script>
+<script src="{{getVersionedPath('/javascripts/institutes.js')}}"></script>
+
+{% endblock %}

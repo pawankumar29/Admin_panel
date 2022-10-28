@@ -667,7 +667,40 @@ exports.post_edit_institution = (req, res, next) => {
         })
     })
 }
+exports.get_institutes_students_list = async(req,res,next) =>{
+  try {
+        const institute_id = mongoose.Types.ObjectId(req.params.id)
+        const studentList = await users.find({institute_id:institute_id})
+        console.log(studentList,"=====")
+            res.render('institute/instituteStudentList',{studentList:studentList,institute_id:institute_id, title: 'Student Listing',
+        active: 'stude_list'})
+  } catch (error) {
+      console.log(error)
+  }
+}
+exports.post_student_add_form = async(req,res,next)=>{
+    try {
+        //    const organisation_id = req.user.organisation_id
+        const institute_id = req.body.institute_id
+        const addStudent = await users.insertMany(req.body)
+        req.flash('success','New Student added successfully')
+        res.redirect('/institutes')
+        
+    } catch (error) {
+        
+    }
+}
+exports.get_students_add_form = async(req,res)=>{
+    try {
+            const institute_id = mongoose.Types.ObjectId(req.params.id)
+            const organisation_id = req.user.organisation_id
+            res.render('institute/studentAddForm',{title: 'Add Students',
+            active: 'Add Student',institute_id:institute_id,organisation_id:organisation_id})
 
+    } catch (error) {
+        
+    }
+}
 exports.delete_institute = (req, res, next) => {
     new Promise((resolve, reject) => {
         let institute_id = mongoose.Types.ObjectId(req.params.id);

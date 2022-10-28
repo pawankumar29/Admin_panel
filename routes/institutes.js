@@ -27,8 +27,15 @@ router.get('/sampeCSV', controller.csvDowload);
 // Get method for delete institution
 router.get('/delete/:id', controller.delete_institute);
 
-
+//Get institutes wise student list
+router.get('/get-institute-wise-student/:id',controller.get_institutes_students_list)
+//Add the students  
+//get the forms 
+router.get('/get-the-students-form/:id',controller.get_students_add_form)
+//post add the student information
+router.post('/post-the-student-form',controller.post_student_add_form)
 router.post('/enable_test', controller.enable_test);
+
 
 
 //predictive search

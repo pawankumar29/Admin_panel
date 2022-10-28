@@ -1,0 +1,117 @@
+{% extends "../layout.html" %} {% block content %}
+<link href="{{getVersionedPath('/assets/layout/stylesheet/datepicker3.css')}}" id="style_components" rel="stylesheet" type="text/css" />
+<!-- BEGIN PAGE LEVEL STYLES -->
+<link rel="stylesheet" type="text/css" href="{{getVersionedPath('/assets/select2/select2.css')}}" />
+
+<!-- BEGIN THEME STYLES -->
+{% block css %}
+<style>
+    label.error {
+        color: red;
+    }
+
+    .batch-div {
+        display: none;
+    }
+
+    .form-actions {
+        padding-top: 20px;
+        text-align: center;
+    }
+
+    .form-group {
+        width: 70%;
+    }
+    .sub_cat_row {
+        margin:5px;
+    }
+
+
+</style>
+{% endblock %}
+<div class="page-content">
+    <div class="row margin-top-12">
+        <div class="col-md-12">
+            {% include "../flashMessage_Success.html" %}
+            <!-- BEGIN BORDERED TABLE PORTLET-->
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="glyphicon glyphicon-plus"></i>{{title}}
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <form action="/institutes/post-the-student-form" method="post">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="hidden" name="institute_id" value="{{institute_id.toString()}}">
+                                <input type="hidden" name="organisation_id" value="{{organisation_id.toString()}}">
+                                <div class="form-group">
+                                    <label class="control-label"><b>Student Name</b></label>
+                                    <span class="star">*</span>
+                                    <input type="text" name="name" class="form-control" placeholder="Student name" value="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label"><b>Roll Number</b></label>
+                                    <span class="star">*</span>
+                                    <input type="text" name="roll_no" class="form-control" placeholder="Roll Number" value="">
+                                </div>
+                              
+                                <div class="form-group">
+                                    <label class="control-label"><b>Father Name</b></label>
+                                    <span class="star">*</span>
+                                    <input type="text" name="father_name" class="form-control" placeholder="Father Name" value="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label"><b>Date of Birth </b></label>
+                                    <span class="star">*</span>
+                                    <input type="date" name="dob" class="form-control" placeholder="DOB" value="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label"><b>Phone Number</b></label>
+                                    <span class="star">*</span>
+                                    <input type="number" name="phone_no" class="form-control" placeholder="Phone number" value="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label"><b>Email</b></label>
+                                    <span class="star">*</span>
+                                    <input type="text" name="email" class="form-control" placeholder="email" value="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label"><b>Qualification</b></label>
+                                    <span class="star">*</span>
+                                    <input type="text" name="qualification" class="form-control" placeholder="Qualification" value="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label"><b>Branch</b></label>
+                                    <span class="star">*</span>
+                                    <input type="text" name="branch" class="form-control" placeholder="Branch" value="">
+                                </div>
+
+                                <div class="form-actions">
+                                    <input type="submit" class="btn btn-success" value="Save">
+                                    <a class="btn default" href="/institutes/">Cancel</a><br><br>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block js %}
+<script src="{{getVersionedPath('/javascripts/bootstrap-datepicker.js')}}" type="text/javascript"></script>
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script type="text/javascript" src="{{getVersionedPath('/assets/select2/select2.min.js')}}"></script>
+
+<!-- END PAGE LEVEL PLUGINS -->
+
+<script src="{{getVersionedPath('/javascripts/quiz.js')}}" type="text/javascript"></script>
+{% endblock %}
