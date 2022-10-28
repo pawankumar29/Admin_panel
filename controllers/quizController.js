@@ -346,36 +346,76 @@ exports.getQuizDetail = (req, res, next) => {
             error: err
         })
     })
-}
-exports.updateQuizDetail = (req, res, next) => {
-    new Promise((resolve, reject) => {
-        let datetime = req.body.date + " " + req.body.time;
-        let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").format("YYYY-MM-DD HH:mm");
-        var newdate = momenttz.tz(scheduleDate, req.cookies.time_zone_offset).utc();
-        let endDate = newdate.clone();
-        endDate = endDate.add(parseInt(req.body.duration), "m");
-        req.body.batch = parseInt(req.body.batch);
-        req.body.start_time = newdate;
-        req.body.end_time = endDate;
-        req.body.duration = parseInt(req.body.duration);
-        quizzes.update({ _id: req.body.quiz_id }, req.body).then(data => {
-            if (data != null) {
-                res.send({ status: 1, data: data });
-            } else
-                res.send({ status: 0 });
+    .catch((err) => {
+      res.render("error", {
+        error: err,
+      });
+    });
+};
+//get quiz by Id
+exports.getQuizDetailById = (req, res, next) => {
+    quizId = mongoose.Types.ObjectId(req.params.id);
+    const query = {
+      _id: quizId,
+      is_deleted: 0,
+    };
+    quizzes
+      .findOne(query)
+      .then((quizData) => {
+        if (quizData != null) {
+          res.send({ status: 1, data: quizData });
+        } else {
+          res.send({ status: 0 });
+        }
+      })
+      .catch((err) => {
+        res.render("error", {
+          error: err,
         });
-    }).catch(err => {
-        res.render('error', {
-            error: err
-        })
-    })
-}
-exports.deleteQuiz = async(req, res, next) => {
-    await quiz_id.delete({ quiz_id: req.params.id });
-    await quizzes.delete({ _id: req.params.id });
-    res.redirect('/quiz/scheduled');
-
-}
+      });
+  };
+//update test
+exports.updateQuizDetail = async (req, res, next) => {
+  //query
+  const query = {
+    _id: req.body.quiz_id,
+    is_deleted: 0,
+  };
+  //find test data
+  const chkTest = await quizzes.findone(query);
+  //check test status
+  if (chkTest.status == 2 || chkTest.status == 3) {
+    req.flash("error", "cannot update!!");
+    return res.send({ status: 0 });
+  }
+  //promise
+  new Promise((resolve, reject) => {
+    //handling body data
+    let datetime = req.body.date + " " + req.body.time;
+    let scheduleDate = moment(datetime, "MM/DD/YYYY HH:mm").format(
+      "YYYY-MM-DD HH:mm"
+    );
+    var newdate = momenttz.tz(scheduleDate, req.cookies.time_zone_offset).utc();
+    let endDate = newdate.clone();
+    endDate = endDate.add(parseInt(req.body.duration), "m");
+    req.body.batch_year = parseInt(req.body.batch);
+    req.body.start_time = newdate;
+    req.body.end_time = endDate;
+    req.body.duration = parseInt(req.body.duration);
+    //update data
+    quizzes.update({ _id: req.body.quiz_id }, req.body).then((data) => {
+      if (data != null) {
+        req.flash("success", "updated successfully!!");
+        return res.send({ status: 1 });
+      } else req.flash("error", "could not update!!");
+      return res.send({ status: 0 });
+    });
+  }).catch((err) => {
+    res.render("error", {
+      error: err,
+    });
+  });
+};
 exports.importCsvCat = (req, res, next) => {
     try {
         question_categories.findOne({ _id: req.params.cat_id }).then(data => {
@@ -417,12 +457,45 @@ exports.addCsv = (req, res, next) => {
                 })
             }
         })
-
-    } catch (err) {
+      }
+      catch (err) {
         res.render('error', {
             error: err
         })
+      }
     }
+    
+//delete
+exports.deleteQuiz = async (req, res, next) => {
+  try {
+    //converting id in to Object Id
+    const id = mongoose.Types.ObjectId(req.params.id);
+    //query
+    const query = {
+      _id: id,
+      is_deleted: 0,
+    };
+    //find test data
+    const chkTest = await quizzes.findone(query);
+    //check test status
+    if (chkTest.status == 2) {
+      req.flash("error", "cannot delete!!");
+      return res.redirect("/quiz/scheduled");
+    }
+    //delete data
+    const result = await quizzes.delete({ _id: id }, { is_deleted: 1 });
+    //condition
+    if (!result) {
+      req.flash("error", "could not delete!!");
+      return res.redirect("/quiz/scheduled");
+    }
+    req.flash("success", "deleted successfully!!");
+    return res.redirect("/quiz/scheduled");
+  } catch (err) {
+    res.render("error", {
+      error: err,
+    });
+  }
 }
 exports.importCsvSubCat = (req, res, next) => {
     try {
