@@ -237,7 +237,7 @@ jQuery(document).ready(function () {
     }
     $(".save").attr("disabled", true);
   });
-  $("#test_time").keyup(function () {
+    $('#test_time').on("change keyup", function () {
     //testTime
     const testTime = $(this).val();
     //curruntTime
