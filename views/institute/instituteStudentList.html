@@ -193,7 +193,7 @@
                 {% if !institute.dob %}
                 <td>--</td>
                 {% else %}
-                <td>{{Date(institute.dob)}}</td>
+                <td>{{institute.dob.toDateString()}}</td>
                 {% endif %}
 
                 {% if !institute.phone_no %}
