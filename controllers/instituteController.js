@@ -671,6 +671,10 @@ exports.get_institutes_students_list = async(req,res,next) =>{
   try {
         const institute_id = mongoose.Types.ObjectId(req.params.id)
         const studentList = await users.find({institute_id:institute_id})
+        const studentEstimateCount = await users.count({institute_id:institute_id})
+        const updatenumberofstudnet = await institutes.update({_id:institute_id},{
+            no_of_students:studentEstimateCount.data
+        })
         res.render('institute/instituteStudentList',{studentList:studentList,institute_id:institute_id, title: 'Student Listing',
         active: 'stude_list'})
   } catch (error) {

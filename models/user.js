@@ -220,7 +220,7 @@ exports.insertMany = (user_data) => {
 //};
 exports.update = (query, update_data) => {
     return new Promise((resolve, reject) => {
-        user.update(query, update_data, {
+        user.updateOne(query, update_data, {
             multi: true
         }, (error, data) => {
             if (!error) {
