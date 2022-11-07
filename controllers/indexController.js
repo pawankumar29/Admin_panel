@@ -222,19 +222,6 @@ exports.post_forgot_password = (req, res, next) => {
                                 content = content.replace('@project_name@', global.config.project_name);
                                 subject = subject.replace('@project_name@', global.config.project_name);
                                 let tpl_admin = tpl_swig({content: content, logo_path: env.adminUrl + 'images/logo.png'});
-                                // call the sendMail method
-                                // smtpTransport.sendMail(
-                                //         {
-                                //             subject: templateData.subject, // Subject line
-                                //             to: req.body.email,
-                                //             html: tpl_admin
-                                //         }, function (error, info) {
-                                //     if (error) {
-                                //         console.log(error);
-                                //     } else {
-                                //         console.log('Message Id: ' + info.messageId);
-                                //     }
-                                // });
                                 mails.send(req.body.email, templateData.subject, tpl_admin);
                                 req.flash('success', 'Reset link has been sent to your Email');
                                 res.redirect('/login');
