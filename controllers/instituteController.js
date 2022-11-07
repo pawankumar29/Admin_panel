@@ -849,69 +849,6 @@ exports.addWalkins = async(req, res, next) => {
                         as: 'quiz'
                     }
                 },
-                // {
-                //     $lookup: {
-                //         from: 'quiz_results',
-                //         let: {
-                //             ref_id: '$_id'
-                //         },
-                //         pipeline: [{
-                //                 $match: {
-                //                     $expr: {
-                //                         $and: [{
-                //                                 $eq: ['$walkings_id', '$$ref_id']
-                //                             },
-                //                             {
-                //                                 $eq: ['$organisation_id', req.user.organisation_id]
-                //                             },
-                //                             {
-                //                                 $eq: ['$is_deleted', 0]
-                //                             },
-                //                             {
-                //                                 $eq: ['$status', 2]
-                //                             },
-                //                             {
-                //                                 $eq: ['$placed_status', 1]
-                //                             },
-                //                             {
-                //                                 $gte: ['$created_at', startOfYear]
-                //                             },
-                //                             {
-                //                                 $lte: ['$created_at', endOfYear]
-                //                             }
-                //                         ]
-                //                     }
-                //                 }
-                //             },
-                //             {
-                //                 $group: {
-                //                     _id: null,
-                //                     candidate_selected: {
-                //                         $sum: 1
-                //                     }
-                //                 }
-                //             },
-                //             {
-                //                 $project: {
-                //                     candidate_selected: 1
-                //                 }
-                //             }
-                //         ],
-                //         as: 'quiz_result'
-                //     }
-                // },
-                // {
-                //     $unwind: {
-                //         path: '$quiz',
-                //         preserveNullAndEmptyArrays: true
-                //     }
-                // },
-                // {
-                //     $unwind: {
-                //         path: '$quiz_result',
-                //         preserveNullAndEmptyArrays: true
-                //     }
-                // },
                 {
                     $project: {
                         name: 1,
