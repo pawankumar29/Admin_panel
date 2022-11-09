@@ -201,12 +201,6 @@ exports.get_scheduledList = (req, res, next) => {
                     start_time: -1
                 }
             }
-            // {
-            //     $skip: skipPages * global.config.pagination_limit
-            // },
-            // {
-            //     $limit: global.config.pagination_limit
-            // }
         ];
         let p1 = quizzes.count({
             organisation_id: req.user.organisation_id,
