@@ -945,7 +945,7 @@ exports.postAddWalkins = (req,res,next)=>{
                         name: req.body.name.trim(),
                         qualification: req.body.qualification,
                         is_walkin: 1,
-                        resume: parseInt(req.body.resume),
+                         resume: parseInt(req.body.resume),
                         instruction: JSON.parse(JSON.stringify(settingData))[
                             'instruction'
                         ],

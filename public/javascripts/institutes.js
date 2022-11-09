@@ -392,8 +392,6 @@ jQuery(document).ready(function() {
             var duration = $("#test_duration").val();
             var time = $("#test_time").val();
             var date = $("#date_test").val();
-         
-
             var chips = [];
             $(".chipcontainer").children(".chip").each(function() {
                 chips.push($(this).data("value"));
