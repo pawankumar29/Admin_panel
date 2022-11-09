@@ -176,7 +176,7 @@
                     <thead>
                       <tr>
                         <th>S.No.</th>
-                        <th>Institute</th>
+                        <th>Institute/Walkings</th>
                         <th>Start Time</th>
                         <th>Duration</th>
                         <th>Status</th>
@@ -187,7 +187,7 @@
                       {% for quiz in response %}
                       <tr>
                         <td></td>
-                        <td>{{quiz.institute.name}}</td>
+                        <td>{{quiz.institute.name || quiz.walkings.name}}</td>
                         <td>{{quiz.start_time | date('d-m-Y H:i',-330)}}</td>
                         <td>{{quiz.duration}}</td>
                         {% if quiz.status == 1 %}
