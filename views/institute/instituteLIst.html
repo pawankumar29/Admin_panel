@@ -305,7 +305,6 @@
 <script>
     $(function() {
         jQuery(document).ready(function() {
-            console.log("jjjjjjjjjjjjjjjjjj")
             var current_year = new Date().getFullYear();
             var start_year = current_year - 2;
             var html = "";
@@ -315,7 +314,7 @@
             $('.batch_year').html(html);
             $('#batch_year_test').html(html);
             var dt = new Date();
-            dt.setDate(dt.getDate());
+            dt.setDate(dt.getDate() + 1);
             ComponentsPickers.init();
             $(".date").datepicker({
                 autoclose: true,

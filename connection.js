@@ -241,6 +241,7 @@ var userSchema = new Schema({
 
 var roleSchema = new Schema({
     name: {
+        
         type: String,
         default: ""
     },

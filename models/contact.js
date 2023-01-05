@@ -25,16 +25,19 @@ exports.save = function (contact_data, callback) {
 };
 
 exports.count = (query) => {
+   
     return new Promise((resolve,reject) => {
         contact_us.count(query).exec((error, data) => {
             if (!error) {
+               
                 resolve({status: 1, message: 'success', data: data});
             } else {
+             
                 resolve({status: 0, message: error.message});
             }
         })
     });
-};
+};     
 
 exports.find_count = (query) => {
     return new Promise((resolve,reject)=> {

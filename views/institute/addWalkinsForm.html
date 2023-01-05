@@ -288,8 +288,10 @@
             for (var year = current_year; year >= start_year; year--) {
                 html += "<option value = '" + year + "'>" + year + "</option>"
             }
+            $('.batch_year').html(html);
+            $('#batch_year_test').html(html);
             var dt = new Date();
-            dt.setDate(dt.getDate() );
+            dt.setDate(dt.getDate() + 1);
             ComponentsPickers.init();
             $(".date").datepicker({
                 autoclose: true,

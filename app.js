@@ -22,12 +22,13 @@ const router = require('./routes/quiz');
 
 function startTheAsyncOperation() {
     return new Promise((resolve, reject) => {
-        let p1 = require("./models//settings").findOnePromise({});
+        let p1 = require("./models/settings").findOnePromise({});
         p1.then((config) => {
             global.config = config;
+           
             resolve();
         }).catch(err => {
-            console.log("error in get settings");
+            console.log("error in get settings",err);
         });
     });
 }

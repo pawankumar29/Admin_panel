@@ -20,6 +20,7 @@ exports.dashboard_get = async(req, res, next) => {
             }
             //user data
               const userData=await users.count(query)
+              
               var user_data_count=0;
               if(userData.status=1 && userData.message=="success"){
                   user_data_count=userData.data;
